@@ -1,3 +1,5 @@
+name: Compile Test
+
 on:
   - pull_request
 jobs:
@@ -7,5 +9,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: arduino/compile-sketches@v1
         with: 
-          sketch_paths : |
+          # Search the root dir for projects
+          sketch-paths: |
             - ./
+          
+          # No libraries needed
+          libraries: |
+            - 
