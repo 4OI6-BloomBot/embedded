@@ -8,7 +8,9 @@
 // =================
 // Includes
 // =================
-#include <Arduino.h>;
+#include <Arduino.h>
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
 
 
 class GPS {
