@@ -1,6 +1,6 @@
 # BloomBot Embedded
 
-[![Compile Test](https://github.com/4OI6-BloomBot/embedded/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/4OI6-BloomBot/embedded/actions/workflows/main.yml)
+[![Compile Test](https://github.com/4OI6-BloomBot/embedded/actions/workflows/main.yml/badge.svg)](https://github.com/4OI6-BloomBot/embedded/actions/workflows/main.yml)
 
 ## About
 This repository is for the software run on the BloomBot buoy hardware. 
