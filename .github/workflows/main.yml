@@ -10,7 +10,7 @@ jobs:
       - uses: arduino/compile-sketches@v1
         with: 
           # Search the root dir for projects
-          sketch-paths : |
+          sketch-paths: |
             - ./
           
           # No libraries needed
