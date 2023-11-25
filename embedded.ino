@@ -5,21 +5,19 @@
 
 */
 
-// ===============
-// Config
-// ===============
-// #define DEBUG;
-
 // ==========
 // Includes
 // ==========
-#include "MotorController.h";
+#include "src/MotorController/MotorController.h"
+#include "src/GPS/GPS.h"
+
+#define DEBUG
 
 // =======================
 // Variable Declaration
 // =======================
-MotorController test(7, 8, 9);
-
+// MotorController test(7, 8, 9);
+GPS gps(6, 7);
 
 
 // ====================================
@@ -36,8 +34,5 @@ void setup() {
 // loop() - Main program loop, runs continuously after setup()
 // =============================================================
 void loop() {
-  test.setDirection(FORWARD);
-  delay(1000);
-  test.setDirection(BACKWARD);
-  delay(1000);
+  gps.getLocation();
 }

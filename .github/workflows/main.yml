@@ -15,4 +15,4 @@ jobs:
           
           # No libraries needed
           libraries: |
-            - 
+            - name: TinyGPSPlus
