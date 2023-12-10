@@ -44,8 +44,7 @@ class GPS {
     byte PIN_TX;
     byte PIN_RX;
 
-    coord * position;
-    long    update_time;
+    long update_time;
 
     TinyGPSPlus    * gps;
     SoftwareSerial * serial;

@@ -30,8 +30,6 @@ void GPS::setup() {
   // Create new objects and add to pointers
   this->gps    = new TinyGPSPlus();
   this->serial = new SoftwareSerial(PIN_RX, PIN_TX);
-
-  this->position = new coord();
  
   // Initialize the serial connection
   serial->begin(GPS_BAUD_RATE);
@@ -72,13 +70,14 @@ poll_status GPS::pollHardware() {
 // =======================================================
 coord * GPS::getLocation() {
   poll_status status = pollHardware();
+  coord current_pos;
 
   if (status == UNCHANGED) {
-    position->lat = gps->location.lat();
-    position->lng = gps->location.lng();
+    current_pos.lat = gps->location.lat();
+    current_pos.lng = gps->location.lng();
   }
 
-  if (status != FAILURE) return position;
+  if (status != FAILURE) return &current_pos;
   else                   return nullptr;
 }
 
