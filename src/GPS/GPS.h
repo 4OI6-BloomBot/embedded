@@ -36,7 +36,7 @@ struct coord {
 };
 
 
-class GPS : private TimedLoop {
+class GPS : public TimedLoop {
   
   // ==================================================================
   // Private fields. 
