@@ -11,7 +11,7 @@
 // ====================================================
 // GPS - Constructor for the NEO-6M GPS wrapper class.
 // ====================================================
-GPS::GPS(byte PIN_TX, byte PIN_RX) {
+GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_POLLING_TIME_MS) {
 
   // Assign class variables 
   this->PIN_TX = PIN_TX;
@@ -38,47 +38,35 @@ void GPS::setup() {
 
 
 // =========================================================================
-// pollHardware() - Waits for data from the GPS module and updates the 
-//                  parser.
-//                  If not enough time has passed since the last poll then
-//                  exit with unchanged status.
+// loop() - Waits for data from the GPS module and updates the parser.
 // =========================================================================
-poll_status GPS::pollHardware() {
-  long entry_time = millis();
-
-  if (entry_time < (update_time + GPS_MIN_POLLING_TIME_MS))
-    return UNCHANGED;
-
-  // ========================================================================
-  // Continuously poll the serial connection for data. Once we receive some,
-  // update the decoder and return success.
-  // If the task runs for too long, return failure.
-  // ========================================================================
-  while (true) {
-    if (gps->encode(serial->read()))
-      return SUCCESS;
-      
-    if (millis() > (entry_time + GPS_RESPONSE_TIMEOUT_MS))
-      return FAILURE;
-  }
+void GPS::loop() {
+  if (gps->encode(serial->read()))
+    last_update_time = millis();    
 }
 
 
 // =======================================================
 // getLocation() - Returns a struct with updated lat/long
 //                 coordinates from the GPS module
+//                 If the data is too old or not available
+//                 a null pointer is returned.
 // =======================================================
 coord * GPS::getLocation() {
-  poll_status status = pollHardware();
   coord current_pos;
 
-  if (status == UNCHANGED) {
+  if (millis() > (last_update_time + GPS_VALID_PERIOD))
+    return nullptr;
+
+  // Check that the data in the GPS parser is valid
+  if (gps->location.isValid()) {
     current_pos.lat = gps->location.lat();
     current_pos.lng = gps->location.lng();
-  }
 
-  if (status != FAILURE) return &current_pos;
-  else                   return nullptr;
+    return &current_pos;
+  }
+   
+  return nullptr;
 }
 
 #endif
