@@ -24,7 +24,8 @@
 // ==================
 #define GPS_BAUD_RATE       9600
 #define GPS_VALID_PERIOD    300000 // Period of time that the GPS data is good for (5 mins)
-#define GPS_POLLING_TIME_MS 5000   // The minimum wait before polling for a new position from the GPS
+#define GPS_LOOP_DELAY      5000   // The wait period between main loop runs/polling for a new location
+#define GPS_POLLING_TIME_MS 1000   // The period that will wait for a response from the GPS module
 
 
 // ==================
