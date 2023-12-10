@@ -16,6 +16,7 @@
 // Includes
 #include "TimedLoop.h"
 
+
 // ====================================================
 // TimedLoop - Constructor.
 // ====================================================
@@ -28,11 +29,11 @@ TimedLoop::TimedLoop(unsigned long int delay) {
 }
 
 
-// ============================================
-// tryLoop() - Check the current time against
-//             the set run conditions. 
+// ========================================================
+// tryLoop() - Check the current time against the set run
+//             conditions. 
 //             Call loop (abstract) if so.
-// ============================================
+// ========================================================
 void TimedLoop::tryLoop() {
   unsigned long int current_time = millis();
 
@@ -41,6 +42,5 @@ void TimedLoop::tryLoop() {
     last_run_time = current_time;
   }
 }
-
 
 #endif

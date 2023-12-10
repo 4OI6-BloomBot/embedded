@@ -7,18 +7,9 @@
 
 // ==================================================================
 // Includes
-//  - TinyGPS++:      Helps to parse NMEA data that is output from 
-//                    the GPS module
-//  - SoftwareSerial: Required to interface with the GPS module
 // ==================================================================
 #include <Arduino.h>
 
-
-
-// ==================
-// Parameter defines
-// ==================
-#define LOOP_RUN_RATE
 
 class TimedLoop {
   
@@ -42,6 +33,7 @@ class TimedLoop {
     // Constructor: Takes the delay period in ticks as an input
     // =========================================================
     TimedLoop(unsigned long int delay);
+
 
     // ====================================================
     // Checks the current time against the run conditions.
