@@ -70,10 +70,6 @@ coord * GPS::getLocation() {
     current_pos.lat = gps->location.lat();
     current_pos.lng = gps->location.lng();
 
-    Serial.print(current_pos.lat);
-    Serial.print(" : ");
-    Serial.println(current_pos.lng);
-
     return &current_pos;
   }
    
