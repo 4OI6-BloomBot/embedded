@@ -34,5 +34,5 @@ void setup() {
 // loop() - Main program loop, runs continuously after setup()
 // =============================================================
 void loop() {
-  gps.getLocation();
+  gps.tryLoop();
 }

@@ -7,11 +7,14 @@
 
 // ==================================================================
 // Includes
+//  - TimeLoop:       Allows for scheduling periodic polling of
+//                    the GPS module
 //  - TinyGPS++:      Helps to parse NMEA data that is output from 
 //                    the GPS module
 //  - SoftwareSerial: Required to interface with the GPS module
 // ==================================================================
 #include <Arduino.h>
+#include "../TimedLoop/TimedLoop.h"
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 
@@ -19,9 +22,10 @@
 // ==================
 // Parameter defines
 // ==================
-#define GPS_BAUD_RATE           9600
-#define GPS_RESPONSE_TIMEOUT_MS 1000 // Timeout to wait for new data from the GPS module
-#define GPS_MIN_POLLING_TIME_MS 5000 // The minimum wait before polling for a new position from the GPS
+#define GPS_BAUD_RATE       9600
+#define GPS_VALID_PERIOD    300000 // Period of time that the GPS data is good for (5 mins)
+#define GPS_LOOP_DELAY      5000   // The wait period between main loop runs/polling for a new location
+#define GPS_POLLING_TIME_MS 1000   // The period that will wait for a response from the GPS module
 
 
 // ==================
@@ -32,10 +36,8 @@ struct coord {
   double lng;
 };
 
-enum poll_status {SUCCESS, FAILURE, UNCHANGED};
 
-
-class GPS {
+class GPS : public TimedLoop {
   
   // ==================================================================
   // Private fields. 
@@ -44,24 +46,22 @@ class GPS {
     byte PIN_TX;
     byte PIN_RX;
 
-    coord * position;
-    long    update_time;
+    unsigned long int last_update_time;
 
     TinyGPSPlus    * gps;
     SoftwareSerial * serial;
 
 
     // =======================================================
+    // loop() - Override the loop function from the TimedLoop 
+    //          class
+    // =======================================================
+    void loop() override;
+
+    // =======================================================
     // setup() - Handles hardware setup after object creation
     // =======================================================
     void setup();
-
-
-    // =======================================================
-    // pollHardware() - Waits for data from the GPS module 
-    //                  and updates the parser.
-    // =======================================================
-    poll_status pollHardware();
 
 
   public:
