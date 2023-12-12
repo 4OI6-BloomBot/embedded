@@ -18,7 +18,9 @@ class TimedLoop {
   // ==================================================================
   private:
 
+    // Configuration and run time tracking
     unsigned long int last_run_time;
+    unsigned long int next_run_time;
     unsigned long int loop_delay;
    
     // =============================================================
@@ -26,6 +28,12 @@ class TimedLoop {
     // Abstract, needs to be implemented by the child class 
     // =============================================================
     virtual void loop();
+
+    // =============================================================
+    // Update the next runtime parameter to be one delay period
+    // from the current time.
+    // =============================================================
+    void setNextRuntime();
 
 
   public:
@@ -41,6 +49,12 @@ class TimedLoop {
     // passed
     // ====================================================
     void tryLoop();
+
+
+    // ====================================================
+    // Setter/accessor methods
+    // ====================================================
+    unsigned long int getLastRuntime();
 
 };
 

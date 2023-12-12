@@ -36,6 +36,15 @@ TimedLoop::TimedLoop(unsigned long int delay) {
   this->loop_delay    = delay;
   this->last_run_time = 0;
 
+  setNextRuntime();
+}
+
+
+// ========================================================
+// updateNextRuntime() - Set the next runtime
+// ========================================================
+void TimedLoop::setNextRuntime() {
+  this->next_run_time = millis() + loop_delay;
 }
 
 
@@ -47,10 +56,19 @@ TimedLoop::TimedLoop(unsigned long int delay) {
 void TimedLoop::tryLoop() {
   unsigned long int current_time = millis();
 
-  if (current_time - last_run_time >= loop_delay) {
+  if (current_time >= next_run_time) {
     this->loop();
     last_run_time = current_time;
+    setNextRuntime();
   }
+}
+
+
+// ========================================================
+// getLastRuntime() - Accessor method for last runtime
+// ========================================================
+unsigned long int TimedLoop::getLastRuntime() {
+  return this->last_run_time;
 }
 
 #endif
