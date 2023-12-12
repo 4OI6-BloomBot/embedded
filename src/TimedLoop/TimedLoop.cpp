@@ -8,6 +8,16 @@
 
   Todo: Need to account for the case where millis() overflows
         (~49 days)
+
+
+  TODO: Should change the structure of this to queue events 
+        to be run at a certain time.
+        That way the system can be put into a low-power state
+        for the periods where there are no events. 
+        Would also need to implement interrupts for this
+        (packet RX)
+        Need to also ensure that high priority tasks (pump/movement)
+        are always prioritized.
 */
 
 #ifndef TIMED_LOOP_CPP
