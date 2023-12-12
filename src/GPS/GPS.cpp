@@ -11,7 +11,7 @@
 // ====================================================
 // GPS - Constructor for the NEO-6M GPS wrapper class.
 // ====================================================
-GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_POLLING_TIME_MS) {
+GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
 
   // Assign class variables 
   this->PIN_TX = PIN_TX;
@@ -41,8 +41,15 @@ void GPS::setup() {
 // loop() - Waits for data from the GPS module and updates the parser.
 // =========================================================================
 void GPS::loop() {
-  if (gps->encode(serial->read()))
-    last_update_time = millis();    
+  long int entry_time = millis();
+
+  // Check the serial connection for a set period
+  while (millis() > entry_time + GPS_POLLING_TIME_MS){
+    if (gps->encode(serial->read())) {
+      last_update_time = millis();    
+      return;
+    }
+  }
 }
 
 
