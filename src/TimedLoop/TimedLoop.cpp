@@ -26,6 +26,11 @@
 // Includes
 #include "TimedLoop.h"
 
+// ====================================================
+// Static variable initialization
+// ====================================================
+TimedLoop* TimedLoop::timedObjects[NUM_OBJECTS] = {nullptr};
+
 
 // ====================================================
 // TimedLoop - Constructor.
@@ -37,11 +42,15 @@ TimedLoop::TimedLoop(unsigned long int delay) {
   this->last_run_time = 0;
 
   setNextRuntime();
+
+  // Add object to list
+  TimedLoop::addObject(this);
 }
 
 
 // ========================================================
-// updateNextRuntime() - Set the next runtime
+// updateNextRuntime() - Set the next runtime and update
+//                       static next event time.
 // ========================================================
 void TimedLoop::setNextRuntime() {
   this->next_run_time = millis() + loop_delay;
@@ -69,6 +78,24 @@ void TimedLoop::tryLoop() {
 // ========================================================
 unsigned long int TimedLoop::getLastRuntime() {
   return this->last_run_time;
+}
+
+
+// ========================================================
+// addObject() - Add an object to the static list of 
+//               TimedLoop objects.
+// ========================================================
+void TimedLoop::addObject(TimedLoop *obj) {
+  // ======================================================================
+  // Iterate over all of the objects and add the given pointer to the next
+  // free slot
+  // ======================================================================
+  for (int i = 0; i < NUM_OBJECTS; i++) {
+    if (TimedLoop::timedObjects[i] == nullptr) {
+      TimedLoop::timedObjects[i] = obj;
+      return;
+    }
+  }
 }
 
 #endif

@@ -11,6 +11,12 @@
 #include <Arduino.h>
 
 
+// ==================================================================
+// Params
+// ==================================================================
+#define NUM_OBJECTS 1
+
+
 class TimedLoop {
   
   // ==================================================================
@@ -18,16 +24,27 @@ class TimedLoop {
   // ==================================================================
   private:
 
+    // =============================================================
+    // Static list of TimedLoop objects that is filled at startup
+    // Used to determine/handle next event times.
+    // =============================================================
+    // static TimedLoop* timedObjects[NUM_OBJECTS];
+
+
+    // ============================================================= 
     // Configuration and run time tracking
+    // =============================================================
     unsigned long int last_run_time;
     unsigned long int next_run_time;
     unsigned long int loop_delay;
+
    
     // =============================================================
     // Loop to run in the main loop when the timing is appropriate.
     // Abstract, needs to be implemented by the child class 
     // =============================================================
-    virtual void loop();
+    virtual void loop() = 0;
+
 
     // =============================================================
     // Update the next runtime parameter to be one delay period
@@ -37,6 +54,7 @@ class TimedLoop {
 
 
   public:
+    static TimedLoop* timedObjects[NUM_OBJECTS];
     // =========================================================
     // Constructor: Takes the delay period in ticks as an input
     // =========================================================
@@ -55,6 +73,7 @@ class TimedLoop {
     // Setter/accessor methods
     // ====================================================
     unsigned long int getLastRuntime();
+    static void       addObject(TimedLoop *obj);
 
 };
 
