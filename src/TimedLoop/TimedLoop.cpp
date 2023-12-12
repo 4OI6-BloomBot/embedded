@@ -98,4 +98,24 @@ void TimedLoop::addObject(TimedLoop *obj) {
   }
 }
 
+// ======================================================================
+// getTimeToNextEvent() - Static method that returns the time (in millis)
+//                        until the next event
+// ======================================================================
+unsigned long int TimedLoop::getTimeToNextEvent() {
+  unsigned long int next_time = (unsigned long) - 1; // Set to max value
+  unsigned long int obj_time;
+
+  for (int i = 0; i < NUM_OBJECTS; i++) {
+    obj_time = TimedLoop::timedObjects[i]->next_run_time;
+    
+    if (obj_time < next_time && obj_time > millis())
+      next_time = obj_time;
+  }
+
+  // TODO: Might need to handle this differently
+  if (next_time == (unsigned long) - 1) return 0;
+  else                                  return next_time - millis();
+}
+
 #endif

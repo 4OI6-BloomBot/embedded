@@ -14,7 +14,7 @@
 // ==================================================================
 // Params
 // ==================================================================
-#define NUM_OBJECTS 1
+#define NUM_OBJECTS 2
 
 
 class TimedLoop {
@@ -28,7 +28,7 @@ class TimedLoop {
     // Static list of TimedLoop objects that is filled at startup
     // Used to determine/handle next event times.
     // =============================================================
-    // static TimedLoop* timedObjects[NUM_OBJECTS];
+    static TimedLoop* timedObjects[NUM_OBJECTS];
 
 
     // ============================================================= 
@@ -54,7 +54,6 @@ class TimedLoop {
 
 
   public:
-    static TimedLoop* timedObjects[NUM_OBJECTS];
     // =========================================================
     // Constructor: Takes the delay period in ticks as an input
     // =========================================================
@@ -72,8 +71,9 @@ class TimedLoop {
     // ====================================================
     // Setter/accessor methods
     // ====================================================
-    unsigned long int getLastRuntime();
-    static void       addObject(TimedLoop *obj);
+           unsigned long int  getLastRuntime();
+    static void               addObject(TimedLoop *obj);
+    static unsigned long int  getTimeToNextEvent();
 
 };
 
