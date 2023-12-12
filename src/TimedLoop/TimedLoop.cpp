@@ -29,7 +29,7 @@
 // ====================================================
 // Static variable initialization
 // ====================================================
-TimedLoop* TimedLoop::timedObjects[NUM_OBJECTS] = {nullptr};
+TimedLoop* TimedLoop::timedObjects[NUM_TIMEDLOOP_OBJECTS] = {nullptr};
 
 
 // ====================================================
@@ -74,6 +74,16 @@ void TimedLoop::tryLoop() {
 
 
 // ========================================================
+// tryEvents() - Calls tryLoop on each of the objects in
+//               the static list
+// ========================================================
+void TimedLoop::tryEvents() {
+  for (int i = 0; i < NUM_TIMEDLOOP_OBJECTS; i++)
+    TimedLoop::timedObjects[i]->tryLoop();
+}
+
+
+// ========================================================
 // getLastRuntime() - Accessor method for last runtime
 // ========================================================
 unsigned long int TimedLoop::getLastRuntime() {
@@ -90,7 +100,7 @@ void TimedLoop::addObject(TimedLoop *obj) {
   // Iterate over all of the objects and add the given pointer to the next
   // free slot
   // ======================================================================
-  for (int i = 0; i < NUM_OBJECTS; i++) {
+  for (int i = 0; i < NUM_TIMEDLOOP_OBJECTS; i++) {
     if (TimedLoop::timedObjects[i] == nullptr) {
       TimedLoop::timedObjects[i] = obj;
       return;
@@ -106,7 +116,7 @@ unsigned long int TimedLoop::getTimeToNextEvent() {
   unsigned long int next_time = (unsigned long) - 1; // Set to max value
   unsigned long int obj_time;
 
-  for (int i = 0; i < NUM_OBJECTS; i++) {
+  for (int i = 0; i < NUM_TIMEDLOOP_OBJECTS; i++) {
     obj_time = TimedLoop::timedObjects[i]->next_run_time;
     
     if (obj_time < next_time && obj_time > millis())
