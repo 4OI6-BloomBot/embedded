@@ -33,7 +33,7 @@
 // GPS gps(6, 7);
 // SONIC sonic(11,12);
 // TURB turb(A0);
-Radio rf(9, 10);
+Radio rf(10, 9);
 
 // =====================================================
 // setup() - Runs once during power-up
@@ -42,6 +42,11 @@ void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
   #endif
+
+  // =========================
+  // Configure the RF module 
+  // =========================
+  rf.setup();
 }
 
 
@@ -55,7 +60,6 @@ void loop() {
   // Check each of the timed objects and run their loops
   // if it is time.
   // =====================================================
-
   TimedLoop::tryEvents();
   
   // =====================================================
