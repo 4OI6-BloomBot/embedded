@@ -10,6 +10,7 @@
 // =====================================================
 #include "src/MotorController/MotorController.h"
 #include "src/GPS/GPS.h"
+#include "src/SonicSensor/SonicSensor.h"
 
 
 // =====================================================
@@ -27,8 +28,8 @@
 //       children.
 // =====================================================
 // MotorController test(7, 8, 9);
-GPS gps(6, 7);
-
+//GPS gps(6, 7);
+//SONIC sonic(11,12);
 
 // =====================================================
 // setup() - Runs once during power-up
@@ -50,6 +51,7 @@ void loop() {
   // Check each of the timed objects and run their loops
   // if it is time.
   // =====================================================
+
   TimedLoop::tryEvents();
   
   // =====================================================
