@@ -1,21 +1,20 @@
 /*
-  The AJ-SR04M wrapper class.
+  The Turb wrapper class.
 */
 
-#ifndef SONIC_CPP
-#define SONIC_CPP
+#ifndef TURB_CPP
+#define TURB_CPP
 
 // Includes
-#include "SonicSensor.h"
+#include "Turb.h"
 
 // ====================================================
-// SONIC - Constructor for the  AJ-SR04M wrapper class
+// TURB - Constructor for the turb wrapper class
 // ====================================================
-SONIC::SONIC(byte PIN_ECHO, byte PIN_TRIG) : TimedLoop(SONIC_LOOP_DELAY) {
+TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
 
   // Assign class variables 
-  this->PIN_ECHO = PIN_ECHO;
-  this->PIN_TRIG = PIN_TRIG;
+  this->PIN_OUT = PIN_OUT;
 
   // After assigning the pins run setup
   setup();
@@ -24,16 +23,16 @@ SONIC::SONIC(byte PIN_ECHO, byte PIN_TRIG) : TimedLoop(SONIC_LOOP_DELAY) {
 // =======================================
 // setup() - Configure the pin directions
 // =======================================
-void SONIC::setup() {
+void TURB::setup() {
   // Create new objects and add to pointers
-  distance=-1;
+  turb=-1;
 }
 
 // =========================================================================
 // loop() - Waits for data from the GPS module and updates the parser.
 // =========================================================================
-void SONIC::loop() {
-    getDistance();
+void TURB::loop() {
+    getTurb();
 }
 
 
@@ -43,28 +42,14 @@ void SONIC::loop() {
 //                 If the data is too old or not available
 //                 a null pointer is returned.
 // =======================================================
-int SONIC::getDistance() {
+float TURB::getTurb() {
+  int sensorValue = analogRead(PIN_OUT);// read the input on analog pin A0:
+  turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
 
-  long duration, distance_calc;
-  digitalWrite(PIN_TRIG, LOW);  
-  delayMicroseconds(2); 
-  digitalWrite(PIN_TRIG, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(PIN_TRIG, LOW);
-  duration = pulseIn(PIN_ECHO, HIGH);
-  distance_calc = (duration/2) / 29.1;
+  Serial.print(turb);
+  Serial.println(" V");
 
-  if (distance_calc >= 200 || distance_calc <= 0){
-    distance=-1;
-  }
-  else {
-    distance=(int)distance_calc;
-  }
-
-Serial.print(distance);
-Serial.println(" cm");
-
-return distance;
+  return turb;
 }
 
 #endif

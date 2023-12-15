@@ -1,15 +1,15 @@
 /*
-  Header for the AJ-SR04M wrapper header class.
+  Header for the turb sensor
 */
 
-#ifndef SONIC_H
-#define SONIC_H
+#ifndef TURB_H
+#define TURB_H
 
 // ==================================================================
 // Includes
 //  - TimeLoop:       Allows for scheduling periodic polling of
-//                    the sonic module
-//  - SoftwareSerial: Required to interface with the sonic sensor
+//                    the turb module
+//  - SoftwareSerial: Required to interface with the turb sensor
 // ==================================================================
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
@@ -18,20 +18,19 @@
 // ==================
 // Parameter defines
 // ==================
-#define SONIC_BAUD_RATE       9600
-#define SONIC_LOOP_DELAY      2000 // How often are we probing distance? (2 seconds)
+#define TURB_BAUD_RATE       9600
+#define TURB_LOOP_DELAY      2000 // How often are we probing turb? (2 seconds)
 
 
-class SONIC : public TimedLoop {
+class TURB : public TimedLoop {
   
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-    byte PIN_ECHO;
-    byte PIN_TRIG;
+    byte PIN_OUT;
 
-    int distance;
+    float turb;
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class
@@ -48,12 +47,12 @@ class SONIC : public TimedLoop {
     // ======================================
     // Constructor: Takes TX & RX pin inputs
     // ======================================
-    SONIC(byte PIN_ECHO, byte PIN_TRIG);
+    TURB(byte PIN_OUT);
 
     // ===============================
     // getDistance: Accessor method
     // ===============================
-    int getDistance();
+    float getTurb();
 };
 
 #endif
