@@ -45,7 +45,7 @@ class TURB : public TimedLoop {
 
   public:
     // ======================================
-    // Constructor: Takes TX & RX pin inputs
+    // Constructor: Take analog pin out
     // ======================================
     TURB(byte PIN_OUT);
 

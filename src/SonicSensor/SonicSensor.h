@@ -46,7 +46,7 @@ class SONIC : public TimedLoop {
 
   public:
     // ======================================
-    // Constructor: Takes TX & RX pin inputs
+    // Constructor: Takes Echo and trig pins for module
     // ======================================
     SONIC(byte PIN_ECHO, byte PIN_TRIG);
 

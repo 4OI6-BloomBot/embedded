@@ -30,7 +30,7 @@ void SONIC::setup() {
 }
 
 // =========================================================================
-// loop() - Waits for data from the GPS module and updates the parser.
+// loop() - Keeps distance variable up to date
 // =========================================================================
 void SONIC::loop() {
     getDistance();
@@ -38,10 +38,7 @@ void SONIC::loop() {
 
 
 // =======================================================
-// getLocation() - Returns a struct with updated lat/long
-//                 coordinates from the GPS module
-//                 If the data is too old or not available
-//                 a null pointer is returned.
+// getDistnace() - Returns distance in cm. -1 is invalid. Sensor ets messy when <20cm
 // =======================================================
 int SONIC::getDistance() {
 

@@ -21,15 +21,14 @@ TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
 }
 
 // =======================================
-// setup() - Configure the pin directions
+// setup() - Initial setup
 // =======================================
 void TURB::setup() {
-  // Create new objects and add to pointers
   turb=-1;
 }
 
 // =========================================================================
-// loop() - Waits for data from the GPS module and updates the parser.
+// loop() - Keeps turb variable up to date
 // =========================================================================
 void TURB::loop() {
     getTurb();
@@ -37,10 +36,7 @@ void TURB::loop() {
 
 
 // =======================================================
-// getLocation() - Returns a struct with updated lat/long
-//                 coordinates from the GPS module
-//                 If the data is too old or not available
-//                 a null pointer is returned.
+// getTurb() - Returns voltage for turb (lower is darker)
 // =======================================================
 float TURB::getTurb() {
   int sensorValue = analogRead(PIN_OUT);// read the input on analog pin A0:
