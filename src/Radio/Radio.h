@@ -45,6 +45,8 @@ class Radio : public TimedLoop {
 
     RF24 *rf24;
 
+    byte payload[32];
+
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -52,17 +54,30 @@ class Radio : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
 
 
-  public:
+
+  public:  
     // ======================================
     // Constructor: Takes RF24 pins
     // ======================================
     Radio(byte PIN_CE, byte PIN_CSN);
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    //           Note: Has to happen in the embedded.ino
+    //                 setup function or else system hangs.
+    // =======================================================
+    void setup();
+
+
+    // ======================================================
+    // Testing method for Tx.
+    // TODO: Going to need to think through how to structure
+    // this considering the struct. of the sensor classes 
+    // and such.
+    // ======================================================
+    void testSend();
 
 };
 
