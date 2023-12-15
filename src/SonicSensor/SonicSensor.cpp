@@ -1,5 +1,5 @@
 /*
-  Header for the AJ-SR04M wrapper class.
+  The AJ-SR04M wrapper class.
 */
 
 #ifndef SONIC_CPP
@@ -27,15 +27,10 @@ SONIC::SONIC(byte PIN_ECHO, byte PIN_TRIG) : TimedLoop(SONIC_LOOP_DELAY) {
 void SONIC::setup() {
   // Create new objects and add to pointers
   distance=-1;
-  this->serial = new SoftwareSerial(PIN_ECHO, PIN_TRIG);
- 
-  // Initialize the serial connection
-  serial->begin(SONIC_BAUD_RATE);
-
 }
 
 // =========================================================================
-// loop() - Waits for data from the GPS module and updates the parser.
+// loop() - Keeps distance variable up to date
 // =========================================================================
 void SONIC::loop() {
     getDistance();
@@ -43,10 +38,7 @@ void SONIC::loop() {
 
 
 // =======================================================
-// getLocation() - Returns a struct with updated lat/long
-//                 coordinates from the GPS module
-//                 If the data is too old or not available
-//                 a null pointer is returned.
+// getDistnace() - Returns distance in cm. -1 is invalid. Sensor ets messy when <20cm
 // =======================================================
 int SONIC::getDistance() {
 
