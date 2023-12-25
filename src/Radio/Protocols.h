@@ -10,13 +10,18 @@
 // ===============================
 #define DATA_ARR_SIZE 31
 
+// ===============================
+// Imports
+// ===============================
+#include "../GPS/GPS.h" // Need to include GPS to access the coord typedef
+
 
 // ============================================
 // Protocol base structure. The size of the
 // structure cannot exceed 32-bytes (Tx 
 // module constraint).
 //  id:   Byte (8-bits), 0 --> 255
-//  data: Byte array (3 entries) 
+//  data: Byte array,
 //        Array of values associated with the
 //        protocol
 // ============================================
@@ -41,7 +46,7 @@ struct protocol {
       
       // Copy the data to the array
       memcpy(data + data_count, (byte *) (& val), size);
-    };
+    }
 
   private:
     // Helper var
@@ -54,6 +59,17 @@ struct protocol {
 // ===================================
 struct location : protocol {
   location() : protocol(1) {};
+
+  // ======================================================
+  // setLocation - Attempt to add the location data to the 
+  //               struct
+  // ======================================================
+  bool setLocation(coord *location) {
+    if (addVal(location->lat) && addVal(location->lng)) 
+      return true;
+    
+    return false;
+  }
 };
 
 #endif
