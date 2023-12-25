@@ -54,7 +54,7 @@ void Radio::setup() {
 // https://github.com/bjarne-hansen/py-nrf24/tree/master
 // ==========================================================
 void Radio::testSend() {
-  byte protocol  = 1;
+  byte  protocol = 1;
   float temp     = 10.2;
   float humidity = 1.4;
   
