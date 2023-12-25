@@ -20,13 +20,6 @@
 #define PACKET_QUEUE_LEN 10
 
 
-// ====================
-// Static declaration
-// ====================
-protocol *packets[PACKET_QUEUE_LEN];
-
-
-
 class DataTransmit {
   
   // ==================================================================
@@ -44,7 +37,7 @@ class DataTransmit {
     // =======================================================
     // queuePacket - Adds a packet to the Tx queue
     // =======================================================
-    bool queuePacket(protocol packet);
+    static bool queuePacket(protocol packet);
 
 };
 
