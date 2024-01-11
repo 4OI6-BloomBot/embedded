@@ -80,6 +80,7 @@ class Radio : public TimedLoop {
     // and such.
     // ======================================================
     void testSend();
+    void testReceive();
 
 };
 

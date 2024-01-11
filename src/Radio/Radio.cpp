@@ -45,7 +45,7 @@ void Radio::setup() {
   rf24->setCRCLength(NRF24_CRC_LENGTH);
   rf24->setPayloadSize(NRF24_PAYLOAD_SIZE);
   rf24->openWritingPipe(tx_addr);  
-  rf24->openReadingPipe(1, rx_addr)
+  rf24->openReadingPipe(1, rx_addr);
   // rf24->stopListening();
 
 }
@@ -88,8 +88,11 @@ void Radio::testSend() {
 void Radio::testReceive() {
 
   if(rf24->available()) {
-    if(rf24->read(rxpayload, sizeof(rxpayload)))  Serial.println("Receive OK");
-    else                                          Serial.println("Not Received");
+    rf24->read(&rxpayload, 32);
+    Serial.println("Received: ");
+    Serial.println((char)rxpayload);
+    // if()  Serial.println("Receive OK");
+    // else                                          Serial.println("Not Received");
   }
 
 
