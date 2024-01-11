@@ -47,6 +47,8 @@ class Radio : public TimedLoop {
 
     byte payload[32];
 
+    byte rxpayload[32];
+
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 

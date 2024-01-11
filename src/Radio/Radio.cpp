@@ -11,6 +11,7 @@
 
 // TODO: Move me and review this
 byte tx_addr[6] = "1SNSR";
+byte rx_addr[6] = "2SNSR";
 
 // ====================================================
 // Radio - Constructor for the radio module wrapper
@@ -44,7 +45,8 @@ void Radio::setup() {
   rf24->setCRCLength(NRF24_CRC_LENGTH);
   rf24->setPayloadSize(NRF24_PAYLOAD_SIZE);
   rf24->openWritingPipe(tx_addr);  
-  rf24->stopListening();
+  rf24->openReadingPipe(1, rx_addr)
+  // rf24->stopListening();
 
 }
 
@@ -83,12 +85,27 @@ void Radio::testSend() {
 
 }
 
+void Radio::testReceive() {
+
+  if(rf24->available()) {
+    if(rf24->read(rxpayload, sizeof(rxpayload)))  Serial.println("Receive OK");
+    else                                          Serial.println("Not Received");
+  }
+
+
+}
+
 
 // =========================================================================
 // loop() -
 // =========================================================================
 void Radio::loop() {
-  testSend();
+  // rf24->stopListening();
+  // testSend();
+  // delay(10);
+  rf24->startListening();
+  testReceive();
+
 }
 
 #endif
