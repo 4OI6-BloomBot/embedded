@@ -88,10 +88,10 @@ void Radio::testSend() {
 void Radio::testReceive() {
   if(rf24->available()) {
     rf24->read(&rxpayload, sizeof(rxpayload));
-    long id;
-    memcpy(&id, rxpayload, 4);
+    char message[32] = "";
+    memcpy(&message, rxpayload, sizeof(rxpayload));
     Serial.println("Received: ");
-    Serial.println(id);
+    Serial.println(message);
     // if()  Serial.println("Receive OK");
     // else                                          Serial.println("Not Received");
   }
