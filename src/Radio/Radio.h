@@ -47,8 +47,12 @@ class Radio : public TimedLoop {
 
     byte payload[32];
 
-    byte rxpayload[32];
 
+    struct {
+      byte id;
+      float temperature;
+      float humidity;
+    } rxpayload;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 

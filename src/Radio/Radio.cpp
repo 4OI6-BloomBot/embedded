@@ -88,12 +88,9 @@ void Radio::testSend() {
 void Radio::testReceive() {
   if(rf24->available()) {
     rf24->read(&rxpayload, sizeof(rxpayload));
-    char message[32] = "";
-    memcpy(&message, rxpayload, sizeof(rxpayload));
-    Serial.println("Received: ");
-    Serial.println(message);
-    // if()  Serial.println("Receive OK");
-    // else                                          Serial.println("Not Received");
+    Serial.println(rxpayload.id);
+    Serial.println(rxpayload.temperature);
+    Serial.println(rxpayload.humidity);
   }
 
 
@@ -104,9 +101,9 @@ void Radio::testReceive() {
 // loop() -
 // =========================================================================
 void Radio::loop() {
-  // rf24->stopListening();
-  // testSend();
-  // delay(10);
+  rf24->stopListening();
+  testSend();
+  delay(10); 
   rf24->startListening();
   testReceive();
 
