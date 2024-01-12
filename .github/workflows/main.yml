@@ -16,3 +16,4 @@ jobs:
           # No libraries needed
           libraries: |
             - name: TinyGPSPlus
+            - name: RF24
