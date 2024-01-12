@@ -12,6 +12,7 @@
 #include "src/GPS/GPS.h"
 #include "src/SonicSensor/SonicSensor.h"
 #include "src/Turb/Turb.h"
+#include "src/Radio/Radio.h"
 
 
 // =====================================================
@@ -29,9 +30,10 @@
 //       children.
 // =====================================================
 // MotorController test(7, 8, 9);
-//GPS gps(6, 7);
-//SONIC sonic(11,12);
-//TURB turb(A0);
+// GPS gps(6, 7);
+// SONIC sonic(11,12);
+// TURB turb(A0);
+Radio rf(10, 9);
 
 // =====================================================
 // setup() - Runs once during power-up
@@ -40,6 +42,11 @@ void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
   #endif
+
+  // =========================
+  // Configure the RF module 
+  // =========================
+  rf.setup();
 }
 
 
@@ -53,13 +60,12 @@ void loop() {
   // Check each of the timed objects and run their loops
   // if it is time.
   // =====================================================
-
-  //TimedLoop::tryEvents();
+  TimedLoop::tryEvents();
   
   // =====================================================
   // Wait for the next scheduled event
   // =====================================================
   // TODO: Change to low power mode enable/sleep
-  //delay(TimedLoop::getTimeToNextEvent());
+  delay(TimedLoop::getTimeToNextEvent());
 
 }

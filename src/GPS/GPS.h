@@ -75,6 +75,11 @@ class GPS : public TimedLoop {
     // ===============================
     coord * getLocation();
 
+    // =======================================================
+    // sendLocation: Add packet with location to Tx queue
+    // =======================================================
+    bool sendLocation();
+
 };
 
 #endif
