@@ -35,7 +35,7 @@
 // SONIC sonic(11,12);
 // TURB turb(A0);
 // Radio rf(10, 9);
-Detection detect;
+Detection detect();
 
 
 // =====================================================
@@ -49,7 +49,7 @@ void setup() {
   // =========================
   // Configure the module 
   // =========================
-
+  // Serial.println("setup ino");
 }
 
 
@@ -58,7 +58,7 @@ void setup() {
 //          after setup()
 // =====================================================
 void loop() {
-
+  // Serial.println("loop ino");
   // =====================================================
   // Check each of the timed objects and run their loops
   // if it is time.
