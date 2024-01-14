@@ -13,6 +13,7 @@
 #include "src/SonicSensor/SonicSensor.h"
 #include "src/Turb/Turb.h"
 #include "src/Radio/Radio.h"
+#include "src/Detection/Detection.h"
 
 
 // =====================================================
@@ -33,7 +34,9 @@
 // GPS gps(6, 7);
 // SONIC sonic(11,12);
 // TURB turb(A0);
-Radio rf(10, 9);
+// Radio rf(10, 9);
+Detection detect;
+
 
 // =====================================================
 // setup() - Runs once during power-up
@@ -44,9 +47,9 @@ void setup() {
   #endif
 
   // =========================
-  // Configure the RF module 
+  // Configure the module 
   // =========================
-  rf.setup();
+
 }
 
 
