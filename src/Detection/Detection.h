@@ -19,8 +19,8 @@
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        5000 // How often are we probing turb? (2 seconds)
-#define DELTA_TURB_THRESHOLD        5
+#define DETECTION_LOOP_DELAY        5000
+#define DELTA_TURB_THRESHOLD        1
 #define TEMP_THRESHOLD              25
 #define DELTA_TEMP_THRESHOLD        5
 #define IS_DETECTED_THRESHOLD       3

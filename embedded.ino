@@ -25,9 +25,9 @@
 
 // =====================================================
 // Variable Declaration
-// Note: For any classes that extend TimedLoop the 
+// Note: For any classes that extend TimedLoop the
 //       NUM_TIMEDLOOP_OBJECTS macro needs to be
-//       updated to properly reflect the number of 
+//       updated to properly reflect the number of
 //       children.
 // =====================================================
 // MotorController test(7, 8, 9);
@@ -35,7 +35,7 @@
 // SONIC sonic(11,12);
 // TURB turb(A0);
 // Radio rf(10, 9);
-Detection detect();
+Detection detect;
 
 
 // =====================================================
@@ -46,8 +46,9 @@ void setup() {
     Serial.begin(115200);
   #endif
 
+  // Detection detect;
   // =========================
-  // Configure the module 
+  // Configure the module
   // =========================
   // Serial.println("setup ino");
 }
@@ -64,11 +65,10 @@ void loop() {
   // if it is time.
   // =====================================================
   TimedLoop::tryEvents();
-  
+
   // =====================================================
   // Wait for the next scheduled event
   // =====================================================
   // TODO: Change to low power mode enable/sleep
   delay(TimedLoop::getTimeToNextEvent());
-
 }

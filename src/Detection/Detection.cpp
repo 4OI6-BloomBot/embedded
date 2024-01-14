@@ -39,7 +39,7 @@ void Detection::setup() {
   this->curr_turb  = 7;
   this->prev_turb  = 5;
   this->delta_turb = -1;
-  this->curr_temp  = 27;
+  this->curr_temp  = 35;
   this->prev_temp  = 26;
   this->delta_temp = -1;
   #endif
