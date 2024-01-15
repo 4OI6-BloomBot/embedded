@@ -43,13 +43,22 @@ struct Protocol {
     // ===============================
     bool addVal(float val);
 
+    // =======================================================
+    // toPayload() - Create a byte array that can be used by
+    //               the radio.
+    // =======================================================
+    byte* toPayload();
+
+    // =======================================================
+    // getPayloadSize() - Returns the size of the data in the
+    //                    packet.
+    // =======================================================
+    int getPayloadSize();
+
   private:
     // Tracks the mem offset of the data byte array
     byte data_offset = 0;
 
-    byte* toPayload();
-
-    int getPayloadSize();
 };
 
 
