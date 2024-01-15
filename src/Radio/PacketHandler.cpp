@@ -12,8 +12,17 @@
 // ========================================================
 // DataTransmit - Constructor
 // ========================================================
-PacketHandler::PacketHandler() {
+PacketHandler::PacketHandler() : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
   this->tx_queue_cnt = 0;
+}
+
+// =========================================================
+// loop() - Monitor the queues and take action when ready 
+// =========================================================
+void PacketHandler::loop() {
+  if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LOW_WATER) {
+    // Transmit pkts 
+  }
 }
 
 
