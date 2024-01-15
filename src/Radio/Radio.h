@@ -19,7 +19,6 @@
 // ==================
 // Parameter defines
 // ==================
-#define RADIO_LOOP_DELAY 3000 // Likely use as something to monitor a Tx queue?
 
 // TODO: Review these params
 #define NRF24_CHANNEL         100          // 0 ... 125
@@ -73,7 +72,7 @@ class Radio {
     // Transmit a passed byte array
     // =======================================================
     bool tx(byte* payload, int offset);
-    
+
 
     // ======================================================
     // Testing method for Tx.
