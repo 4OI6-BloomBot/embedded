@@ -13,8 +13,10 @@
 // ===============================
 // Imports
 // ===============================
-#include "../GPS/GPS.h" // Need to include GPS to access the coord typedef
+#include <Arduino.h>
+#include "../../GPS/Coord.h" // Need to access the coord typedef
 
+struct coord;
 
 // ============================================
 // Protocol base structure. The size of the
@@ -25,28 +27,29 @@
 //        Array of values associated with the
 //        protocol
 // ============================================
-struct protocol {
+struct Protocol {
   public:
     // Transmitted values
     byte id;
     byte data[DATA_ARR_SIZE];
 
     // Constructor
-    protocol(byte id) : id(id) {};
+    Protocol(byte id) : id(id) {};
 
     // ===============================
     // addVal - Add data to the array
     // ===============================
-    bool addVal(float val) {
-      // Calc the size of the data
-      int size = sizeof(val);
+    bool addVal(float val);
+    // bool addVal(float val) {
+    //   // Calc the size of the data
+    //   int size = sizeof(val);
 
-      // Return false if there is no room in the array
-      if ((data_count + size) > DATA_ARR_SIZE) return false;
+    //   // Return false if there is no room in the array
+    //   if ((data_count + size) > DATA_ARR_SIZE) return false;
       
-      // Copy the data to the array
-      memcpy(data + data_count, (byte *) (& val), size);
-    }
+    //   // Copy the data to the array
+    //   memcpy(data + data_count, (byte *) (& val), size);
+    // }
 
   private:
     // Helper var
@@ -57,19 +60,23 @@ struct protocol {
 // ===================================
 // Location protocol (id = 1)
 // ===================================
-struct location : protocol {
-  location() : protocol(1) {};
+struct Location : Protocol {
+  
 
-  // ======================================================
-  // setLocation - Attempt to add the location data to the 
-  //               struct
-  // ======================================================
-  bool setLocation(coord *location) {
-    if (addVal(location->lat) && addVal(location->lng)) 
-      return true;
+  // bool setLocation(coord *location) {
+  //   if (addVal(location->lat) && addVal(location->lng)) 
+  //     return true;
     
-    return false;
-  }
+  //   return false;
+  // }
+  public: 
+    Location() : Protocol(1) {};
+
+    // ======================================================
+    // setLocation - Attempt to add the location data to the 
+    //               struct
+    // ======================================================
+    bool setLocation(coord *location);
 };
 
 #endif

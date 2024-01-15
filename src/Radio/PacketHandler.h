@@ -11,7 +11,7 @@
 //  - Protocols: Required to reference the protocol struct type
 // ==================================================================
 #include <Arduino.h>
-#include "Protocols.h"
+#include "Protocols/Protocols.h"
 
 
 // ====================
@@ -26,7 +26,7 @@ class PacketHandler {
   // Private fields. 
   // ==================================================================
   private:
-    protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
+    Protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
     uint16_t tx_queue_cnt;
 
   public:  
@@ -39,7 +39,7 @@ class PacketHandler {
     // =======================================================
     // queuePacket - Adds a packet to the Tx queue
     // =======================================================
-    static bool queuePacket(protocol packet);
+    bool queuePacket(Protocol *packet);
 
 };
 

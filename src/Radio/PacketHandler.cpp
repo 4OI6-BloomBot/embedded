@@ -20,8 +20,14 @@ PacketHandler::PacketHandler() {
 // ==============================================
 // queuePacket() - Add a packet to the Tx queue
 // ==============================================
-bool PacketHandler::queuePacket(protocol packet) {
-  // if (tx_pkt_queue)
+bool PacketHandler::queuePacket(Protocol *packet) {
+  if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN)
+    return false;
+
+  this->tx_pkt_queue[this->tx_queue_cnt] = packet;
+  this->tx_queue_cnt++;
+  
+  return true;
 }
 
 #endif
