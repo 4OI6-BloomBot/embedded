@@ -17,7 +17,7 @@
 // ====================
 // Parameters
 // ====================
-#define PACKET_QUEUE_LEN 10
+#define PACKET_QUEUE_TX_LEN 10
 
 
 class PacketHandler {
@@ -26,6 +26,8 @@ class PacketHandler {
   // Private fields. 
   // ==================================================================
   private:
+    protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
+    uint16_t tx_queue_cnt;
 
   public:  
     // ======================================

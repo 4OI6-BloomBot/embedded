@@ -9,16 +9,11 @@
 #include "PacketHandler.h"
 
 
-// ====================
-// Static declaration
-// ====================
-protocol *packets[PACKET_QUEUE_LEN];
-
-
 // ========================================================
 // DataTransmit - Constructor
 // ========================================================
 PacketHandler::PacketHandler() {
+  this->tx_queue_cnt = 0;
 }
 
 
@@ -26,7 +21,7 @@ PacketHandler::PacketHandler() {
 // queuePacket() - Add a packet to the Tx queue
 // ==============================================
 bool PacketHandler::queuePacket(protocol packet) {
-  // TODO: Implement
+  // if (tx_pkt_queue)
 }
 
 #endif
