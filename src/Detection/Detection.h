@@ -19,7 +19,7 @@
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        5000
+#define DETECTION_LOOP_DELAY        2000
 #define DELTA_TURB_THRESHOLD        1
 #define TEMP_THRESHOLD              25
 #define DELTA_TEMP_THRESHOLD        5
@@ -27,24 +27,21 @@
 
 
 class Detection : public TimedLoop {
-  
+
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-
     float curr_turb;
     float prev_turb;
     float delta_turb;
     float curr_temp;
     float prev_temp;
     float delta_temp;
-
     int detect_count;
     bool is_detected;
 
     // TURB turb(byte);
-
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -64,12 +61,11 @@ class Detection : public TimedLoop {
     // ======================================
     Detection();
 
-
-
     // ===============================
     // monitorDetection: monitor method
     // ===============================
     bool monitorDetection();
+
 };
 
 #endif

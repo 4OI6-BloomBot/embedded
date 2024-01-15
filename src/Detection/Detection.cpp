@@ -14,11 +14,11 @@
 // DETECTION - Constructor for the Detection wrapper class
 // ====================================================
 Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
-
   // Call sensor constructors
   // this->turb(A0);
   // TEMP temp(<insert pins>);
-  Serial.println("from constructor");
+  // Serial.println("from constructor");
+  // Serial.println(temp);
 
   // After assigning the pins run setup
   setup();
@@ -46,7 +46,7 @@ void Detection::setup() {
   
   this->detect_count = 0;
     
-  Serial.println("from setup");
+  // Serial.println("from setup");
     
 
 }

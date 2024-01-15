@@ -33,7 +33,7 @@
 // MotorController test(7, 8, 9);
 // GPS gps(6, 7);
 // SONIC sonic(11,12);
-// TURB turb(A0);
+TURB turb(A0);
 // Radio rf(10, 9);
 Detection detect;
 
@@ -46,7 +46,6 @@ void setup() {
     Serial.begin(115200);
   #endif
 
-  // Detection detect;
   // =========================
   // Configure the module
   // =========================
