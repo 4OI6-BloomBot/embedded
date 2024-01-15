@@ -34,7 +34,7 @@
 #define PROTOCOL 0x01                      // 0x01 (byte), temperature (float), humidity (float)
 
 
-class Radio : public TimedLoop {
+class Radio {
   
   // ==================================================================
   // Private fields. 
@@ -54,13 +54,6 @@ class Radio : public TimedLoop {
       float humidity;
     } rxpayload;
 
-    // =======================================================
-    // loop() - Override the loop function from the TimedLoop 
-    //          class
-    // =======================================================
-    void loop() override;
-
-
 
 
   public:  
@@ -76,6 +69,11 @@ class Radio : public TimedLoop {
     // =======================================================
     void setup();
 
+    // =======================================================
+    // Transmit a passed byte array
+    // =======================================================
+    bool tx(byte* payload, int offset);
+    
 
     // ======================================================
     // Testing method for Tx.

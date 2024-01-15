@@ -16,7 +16,7 @@ byte rx_addr[6] = "2SNSR";
 // ====================================================
 // Radio - Constructor for the radio module wrapper
 // ====================================================
-Radio::Radio(byte PIN_CE, byte PIN_CSN) : TimedLoop(RADIO_LOOP_DELAY) {
+Radio::Radio(byte PIN_CE, byte PIN_CSN) {
 
   // Assign class variables 
   this->PIN_CE  = PIN_CE;
@@ -48,6 +48,15 @@ void Radio::setup() {
   rf24->openReadingPipe(1, rx_addr);
   // rf24->stopListening();
 
+}
+
+
+// ==========================================================
+// Transmit a passed payload
+// TODO: Should probably add some checks and logic here
+// ==========================================================
+bool Radio::tx(byte* payload, int offset) {
+  return rf24->write(payload, offset);
 }
 
 
@@ -100,13 +109,13 @@ void Radio::testReceive() {
 // =========================================================================
 // loop() -
 // =========================================================================
-void Radio::loop() {
-  rf24->stopListening();
-  testSend();
-  delay(10); 
-  rf24->startListening();
-  testReceive();
+// void Radio::loop() {
+//   rf24->stopListening();
+//   testSend();
+//   delay(10); 
+//   rf24->startListening();
+//   testReceive();
 
-}
+// }
 
 #endif
