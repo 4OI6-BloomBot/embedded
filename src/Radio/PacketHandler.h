@@ -12,6 +12,7 @@
 // ==================================================================
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
+#include "Radio.h"
 #include "Protocols/Protocols.h"
 
 
@@ -30,6 +31,8 @@ class PacketHandler : TimedLoop {
   // Private fields. 
   // ==================================================================
   private:
+    Radio *radio;
+
     Protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
     uint16_t tx_queue_cnt;
     
@@ -39,12 +42,19 @@ class PacketHandler : TimedLoop {
     // ==================================================
     void loop() override;
 
+    // ==================================================
+    // popTxQueue() - Get a pointer to the first packet
+    //                in the queue.
+    // ==================================================
+    Protocol* popTxQueue();
+
 
   public:  
     // ======================================
     // Constructor:
+    // Requires a pointer to a Radio object
     // ======================================
-    PacketHandler();
+    PacketHandler(Radio *radio);
 
 
     // =======================================================
