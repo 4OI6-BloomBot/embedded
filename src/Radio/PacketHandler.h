@@ -1,10 +1,10 @@
 /*
-  Header for the class used to handle transmitting data
+  Header for the class used to handle data Tx/Rx
   through the radio.
 */
 
-#ifndef DATA_TX_H
-#define DATA_TX_H
+#ifndef PACKET_HANDLER_H
+#define PACKET_HANDLER_H
 
 // ==================================================================
 // Includes
@@ -20,7 +20,7 @@
 #define PACKET_QUEUE_LEN 10
 
 
-class DataTransmit {
+class PacketHandler {
   
   // ==================================================================
   // Private fields. 
@@ -31,7 +31,7 @@ class DataTransmit {
     // ======================================
     // Constructor:
     // ======================================
-    DataTransmit();
+    PacketHandler();
 
 
     // =======================================================

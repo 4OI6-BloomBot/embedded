@@ -7,7 +7,7 @@
 
 // Includes
 #include "GPS.h"
-#include "../Radio/DataTransmit.h"
+#include "../Radio/PacketHandler.h"
 
 // ====================================================
 // GPS - Constructor for the NEO-6M GPS wrapper class.
@@ -78,20 +78,20 @@ coord * GPS::getLocation() {
 }
 
 
-  // =========================================================================
-  // sendLocation - Add a packet with the current location data to the Tx
-  //                queue.
-  // =========================================================================
-  bool GPS::sendLocation() {
-    coord *pkt = getLocation();
+// =========================================================================
+// sendLocation - Add a packet with the current location data to the Tx
+//                queue.
+// =========================================================================
+bool GPS::sendLocation() {
+  coord *pkt = getLocation();
 
-    // Stop if the GPS data doesn't exist
-    if (pkt == nullptr) return false;
+  // Stop if the GPS data doesn't exist
+  if (pkt == nullptr) return false;
 
-    location packet;
-    if (!packet.setLocation(pkt)) return false;
+  location packet;
+  if (!packet.setLocation(pkt)) return false;
 
-    return DataTransmit::queuePacket(packet);
-  }
+  return DataTransmit::queuePacket(packet);
+}
 
 #endif

@@ -2,11 +2,11 @@
   Wrapper class for the NEO-6M GPS.
 */
 
-#ifndef DATA_TX_CPP
-#define DATA_TX_CPP
+#ifndef PACKET_HANDLER_CPP
+#define PACKET_HANDLER_CPP
 
 // Includes
-#include "DataTransmit.h"
+#include "PacketHandler.h"
 
 
 // ====================
@@ -18,14 +18,14 @@ protocol *packets[PACKET_QUEUE_LEN];
 // ========================================================
 // DataTransmit - Constructor
 // ========================================================
-DataTransmit::DataTransmit() {
+PacketHandler::PacketHandler() {
 }
 
 
 // ==============================================
 // queuePacket() - Add a packet to the Tx queue
 // ==============================================
-bool DataTransmit::queuePacket(protocol packet) {
+bool PacketHandler::queuePacket(protocol packet) {
   // TODO: Implement
 }
 
