@@ -12,11 +12,12 @@
 // ====================================================
 // GPS - Constructor for the NEO-6M GPS wrapper class.
 // ====================================================
-GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
+GPS::GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler) : TimedLoop(GPS_LOOP_DELAY) {
 
   // Assign class variables 
   this->PIN_TX = PIN_TX;
   this->PIN_RX = PIN_RX;
+  this->packet_handler = p_handler;
 
   // After assigning the pins run setup
   setup();
@@ -88,10 +89,10 @@ bool GPS::sendLocation() {
   // Stop if the GPS data doesn't exist
   if (pkt == nullptr) return false;
 
-  location packet;
+  Location packet;
   if (!packet.setLocation(pkt)) return false;
 
-  return DataTransmit::queuePacket(packet);
+  return this->packet_handler->queuePacket(&packet);
 }
 
 #endif

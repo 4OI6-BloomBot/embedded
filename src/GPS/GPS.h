@@ -14,9 +14,11 @@
 //  - SoftwareSerial: Required to interface with the GPS module
 // ==================================================================
 #include <Arduino.h>
-#include "../TimedLoop/TimedLoop.h"
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
+#include "Coord.h"
+#include "../TimedLoop/TimedLoop.h"
+#include "../Radio/PacketHandler.h"
 
 
 // ==================
@@ -27,14 +29,6 @@
 #define GPS_LOOP_DELAY      5000   // The wait period between main loop runs/polling for a new location
 #define GPS_POLLING_TIME_MS 1000   // The period that will wait for a response from the GPS module
 
-
-// ==================
-// Type definition
-// ==================
-struct coord {
-  double lat;
-  double lng;
-};
 
 
 class GPS : public TimedLoop {
@@ -50,6 +44,8 @@ class GPS : public TimedLoop {
 
     TinyGPSPlus    * gps;
     SoftwareSerial * serial;
+
+    PacketHandler * packet_handler;
 
 
     // =======================================================
@@ -68,7 +64,7 @@ class GPS : public TimedLoop {
     // ======================================
     // Constructor: Takes TX & RX pin inputs
     // ======================================
-    GPS(byte PIN_TX, byte PIN_RX);
+    GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler);
 
     // ===============================
     // getLocation: Accessor method
