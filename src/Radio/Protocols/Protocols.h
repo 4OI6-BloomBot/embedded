@@ -44,8 +44,12 @@ struct Protocol {
     bool addVal(float val);
 
   private:
-    // Helper var
-    byte data_count = 0;
+    // Tracks the mem offset of the data byte array
+    byte data_offset = 0;
+
+    byte* toPayload();
+
+    int getPayloadSize();
 };
 
 

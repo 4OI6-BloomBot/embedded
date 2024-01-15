@@ -16,14 +16,56 @@ bool Protocol::addVal(float val) {
   int size = sizeof(val);
 
   // Return false if there is no room in the array
-  if ((data_count + size) > DATA_ARR_SIZE) return false;
+  if ((this->data_offset + size) > DATA_ARR_SIZE) return false;
       
   // Copy the data to the array
-  memcpy(data + data_count, (byte *) (& val), size);
+  memcpy(data + this->data_offset, (byte *) (& val), size);
+
+  // Update the data offset
+  this->data_offset += size;
+
+  return true;
+}
+
+
+// ====================================================
+// Create a payload byte array that can be used 
+// by the Radio for Tx
+// ====================================================
+byte* Protocol::toPayload() {
+  byte* payload = new byte[32]; // TODO: Should change hard-coded val to macro?
+  int   offset  = 0;
+
+  // Add the protocol ID
+  // TODO: Should abstract this repeating code.
+  memcpy(payload + offset, (byte *) (&this->id), sizeof(this->id));
+  offset += sizeof(this->id);
+
+  // Add the hwID
+  memcpy(payload + offset, (byte *) (&this->hwID), sizeof(this->hwID));
+  offset += sizeof(this->hwID);
+
+  // Add the data
+  memcpy(payload + offset, (byte *) (&this->data), sizeof(this->data));
+  offset += sizeof(this->data);
+
+  return payload;
+}
+
+
+// ====================================================
+// Returns the total size of the packet
+// ====================================================
+int Protocol::getPayloadSize() {
+  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->data);
 }
 
 
 
+// ====================================================
+// Add the values from the coord struct to the Location
+// packet
+// ====================================================
 bool Location::setLocation(coord *location) {
   if (addVal(location->lat) && addVal(location->lng)) 
     return true;
