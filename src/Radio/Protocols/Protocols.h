@@ -8,7 +8,7 @@
 // ===============================
 // Const definitions
 // ===============================
-#define DATA_ARR_SIZE 31
+#define DATA_ARR_SIZE 30
 
 // ===============================
 // Imports
@@ -23,6 +23,7 @@ struct coord;
 // structure cannot exceed 32-bytes (Tx 
 // module constraint).
 //  id:   Byte (8-bits), 0 --> 255
+//  hwID: Byte, unique ID associated w/ the HW
 //  data: Byte array,
 //        Array of values associated with the
 //        protocol
@@ -31,6 +32,7 @@ struct Protocol {
   public:
     // Transmitted values
     byte id;
+    byte hwID;
     byte data[DATA_ARR_SIZE];
 
     // Constructor
@@ -40,16 +42,6 @@ struct Protocol {
     // addVal - Add data to the array
     // ===============================
     bool addVal(float val);
-    // bool addVal(float val) {
-    //   // Calc the size of the data
-    //   int size = sizeof(val);
-
-    //   // Return false if there is no room in the array
-    //   if ((data_count + size) > DATA_ARR_SIZE) return false;
-      
-    //   // Copy the data to the array
-    //   memcpy(data + data_count, (byte *) (& val), size);
-    // }
 
   private:
     // Helper var
@@ -62,13 +54,6 @@ struct Protocol {
 // ===================================
 struct Location : Protocol {
   
-
-  // bool setLocation(coord *location) {
-  //   if (addVal(location->lat) && addVal(location->lng)) 
-  //     return true;
-    
-  //   return false;
-  // }
   public: 
     Location() : Protocol(1) {};
 
