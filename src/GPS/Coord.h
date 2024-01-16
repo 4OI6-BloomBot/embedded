@@ -5,7 +5,6 @@
 // Type definition
 // ==================
 struct coord {
-  bool   isValid = false;
   double lat;
   double lng;
 };
