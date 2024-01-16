@@ -48,6 +48,11 @@ class PacketHandler : TimedLoop {
     // ==================================================
     Protocol* popTxQueue();
 
+    // ==================================================
+    // sendPkt - Send a packet from the front of the 
+    //           Tx queue
+    // ==================================================
+    void sendPkt();
 
   public:  
     // ======================================

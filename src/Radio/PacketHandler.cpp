@@ -25,20 +25,31 @@ PacketHandler::PacketHandler(Radio *r) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
 void PacketHandler::loop() {
   // If there are enough packets in the queue, Tx them.
   if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LOW_WATER) {
-    Protocol *pkt = this->popTxQueue();
-
-    byte* payload = pkt->toPayload();
-    bool success  = this->radio->tx(payload, pkt->getPayloadSize());
-    
-    // TODO: Should be more verbose.
-    // TODO: Need to handle the error condition (bool result)
-    if (success) Serial.println("Tx success");
-    else         Serial.println("Tx failed"); 
-
-    // Garbage collection
-    delete[] payload;
-    delete   pkt;
+    int pkt_cnt = this->tx_queue_cnt;
+    for (int i = 0; i < pkt_cnt; i++) 
+      this->sendPkt();
   }
+}
+
+
+// =========================================================
+// transmitQueue - Attempt to transmit each packet in the
+//                 queue.
+// =========================================================
+void PacketHandler::sendPkt() {
+  Protocol *pkt     = this->popTxQueue();
+  byte*     payload = pkt->toPayload();;
+  
+  bool success = this->radio->tx(payload, pkt->getPayloadSize());
+
+  // TODO: Should be more verbose.
+  // TODO: Need to handle the error condition (bool result)
+  if (success) Serial.println("Tx success");
+  else         Serial.println("Tx failed"); 
+
+  // Garbage collection
+  delete[] payload;
+  delete   pkt;
 }
 
 
