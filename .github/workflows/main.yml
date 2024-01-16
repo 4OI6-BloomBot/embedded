@@ -1,11 +1,9 @@
 name: Compile Test
 
 on:
-  - pull_request:
-    - branches:
-      - "**"
-  - push:
-    - branches:
+  - pull_request
+  push:
+    branches:
       - "main"
 jobs:
   compile_project:
