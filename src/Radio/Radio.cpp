@@ -60,40 +60,6 @@ bool Radio::tx(byte* payload, int offset) {
 }
 
 
-// ==========================================================
-// Temp to test Tx. Compatible with starter file from repo:
-// https://github.com/bjarne-hansen/py-nrf24/tree/master
-// ==========================================================
-void Radio::testSend() {
-  byte  protocol = 1;
-  float temp     = 10.2;
-  float humidity = 1.4;
-  
-  int offset = 0;
-
-  // Copy the value (normally this was passed in as a param)
-  // to the 32 bit payload. Update the offset so that it's all
-  // side by side in mem.
-  // We can define a couple of protocols for the data we're 
-  // sending:
-  //  1. Location
-  //  2. Sensor data
-  //  3. Treatments
-  //  4. Status (power, config, etc)
-  memcpy(payload + offset, (byte *) (&protocol), sizeof(protocol));
-  offset += sizeof(protocol);
-
-  memcpy(payload + offset, (byte *) (&temp), sizeof(temp));
-  offset += sizeof(temp);
-
-  memcpy(payload + offset, (byte *) (&humidity), sizeof(humidity));
-  offset += sizeof(humidity);
-
-  if (rf24->write(payload, offset)) Serial.println("Sent OK");
-  else                              Serial.println("Not sent");
-
-}
-
 void Radio::testReceive() {
   if(rf24->available()) {
     rf24->read(&rxpayload, sizeof(rxpayload));
@@ -101,21 +67,6 @@ void Radio::testReceive() {
     Serial.println(rxpayload.temperature);
     Serial.println(rxpayload.humidity);
   }
-
-
 }
-
-
-// =========================================================================
-// loop() -
-// =========================================================================
-// void Radio::loop() {
-//   rf24->stopListening();
-//   testSend();
-//   delay(10); 
-//   rf24->startListening();
-//   testReceive();
-
-// }
 
 #endif

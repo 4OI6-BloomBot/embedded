@@ -75,12 +75,11 @@ class Radio {
 
 
     // ======================================================
-    // Testing method for Tx.
+    // Testing method for Radio.
     // TODO: Going to need to think through how to structure
     // this considering the struct. of the sensor classes 
     // and such.
     // ======================================================
-    void testSend();
     void testReceive();
 
 };
