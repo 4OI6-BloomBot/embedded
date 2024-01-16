@@ -61,15 +61,17 @@ class GPS : public TimedLoop {
 
 
   public:
-    // ======================================
+    // =======================================================
     // Constructor: Takes TX & RX pin inputs
-    // ======================================
+    //              and optional pointer to packet handler
+    // =======================================================
+    GPS(byte PIN_TX, byte PIN_RX);
     GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler);
 
     // ===============================
     // getLocation: Accessor method
     // ===============================
-    coord * getLocation();
+    coord getLocation();
 
     // =======================================================
     // sendLocation: Add packet with location to Tx queue

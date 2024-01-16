@@ -12,17 +12,19 @@
 // ====================================================
 // GPS - Constructor for the NEO-6M GPS wrapper class.
 // ====================================================
-GPS::GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler) : TimedLoop(GPS_LOOP_DELAY) {
+GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
 
   // Assign class variables 
   this->PIN_TX = PIN_TX;
   this->PIN_RX = PIN_RX;
-  this->packet_handler = p_handler;
 
   // After assigning the pins run setup
   setup();
 }
 
+GPS::GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler) : GPS(PIN_TX, PIN_RX) {
+  this->packet_handler = p_handler;
+}
 
 // =======================================
 // setup() - Configure the pin directions
@@ -46,9 +48,13 @@ void GPS::loop() {
   long int entry_time = millis();
 
   // Check the serial connection for a set period
-  while (millis() > entry_time + GPS_POLLING_TIME_MS){
+  while (millis() < entry_time + GPS_POLLING_TIME_MS) {
     if (gps->encode(serial->read())) {
-      last_update_time = millis();    
+      last_update_time = millis();
+        
+      // TODO: Should we send every update, or just to correlate w/ other data?
+      this->sendLocation();
+      
       return;
     }
   }
@@ -61,21 +67,22 @@ void GPS::loop() {
 //                 If the data is too old or not available
 //                 a null pointer is returned.
 // =======================================================
-coord * GPS::getLocation() {
+coord GPS::getLocation() {
   coord current_pos;
 
   if (millis() > (last_update_time + GPS_VALID_PERIOD))
-    return nullptr;
+    return;
 
   // Check that the data in the GPS parser is valid
   if (gps->location.isValid()) {
     current_pos.lat = gps->location.lat();
     current_pos.lng = gps->location.lng();
+    current_pos.isValid = true;
 
-    return &current_pos;
+    return current_pos;
   }
-   
-  return nullptr;
+
+  return;
 }
 
 
@@ -84,15 +91,16 @@ coord * GPS::getLocation() {
 //                queue.
 // =========================================================================
 bool GPS::sendLocation() {
-  coord *pkt = getLocation();
+  coord data = getLocation();
 
   // Stop if the GPS data doesn't exist
-  if (pkt == nullptr) return false;
+  if (!data.isValid) return false;
 
-  Location packet;
-  if (!packet.setLocation(pkt)) return false;
+  // Create and add data
+  Location *packet = new Location();
+  if (!packet->setLocation(&data)) return false;
 
-  return this->packet_handler->queuePacket(&packet);
+  return this->packet_handler->queuePacket(packet);
 }
 
 #endif
