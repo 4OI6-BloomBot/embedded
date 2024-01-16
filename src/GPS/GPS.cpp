@@ -49,6 +49,10 @@ void GPS::loop() {
 
   // Check the serial connection for a set period
   while (millis() < entry_time + GPS_POLLING_TIME_MS) {
+    
+    // Need a small delay to reliably get serial data
+    delay(5);
+    
     if (gps->encode(serial->read())) {
       last_update_time = millis();
         
@@ -75,8 +79,8 @@ coord* GPS::getLocation() {
 
   // Check that the data in the GPS parser is valid
   if (gps->location.isValid()) {
-    current_pos->lat     = gps->location.lat();
-    current_pos->lng     = gps->location.lng();
+    current_pos->lat = gps->location.lat();
+    current_pos->lng = gps->location.lng();
 
     return current_pos;
   }
