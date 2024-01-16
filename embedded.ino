@@ -13,6 +13,7 @@
 #include "src/SonicSensor/SonicSensor.h"
 #include "src/Turb/Turb.h"
 #include "src/Radio/Radio.h"
+#include "src/Radio/PacketHandler.h"
 
 
 // =====================================================
@@ -30,10 +31,13 @@
 //       children.
 // =====================================================
 // MotorController test(7, 8, 9);
-// GPS gps(6, 7);
 // SONIC sonic(11,12);
 // TURB turb(A0);
-Radio rf(10, 9);
+Radio         rf(10, 9);
+PacketHandler packet_handler(&rf);
+
+GPS gps(6, 7, &packet_handler);
+
 
 // =====================================================
 // setup() - Runs once during power-up
@@ -41,6 +45,7 @@ Radio rf(10, 9);
 void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
+    Serial.println("%%%%% [RESET] %%%%%");
   #endif
 
   // =========================
@@ -65,7 +70,7 @@ void loop() {
   // =====================================================
   // Wait for the next scheduled event
   // =====================================================
-  // TODO: Change to low power mode enable/sleep
+  // TODO: Change to low power mode/sleep
   delay(TimedLoop::getTimeToNextEvent());
-
+  
 }
