@@ -67,22 +67,21 @@ void GPS::loop() {
 //                 If the data is too old or not available
 //                 a null pointer is returned.
 // =======================================================
-coord GPS::getLocation() {
-  coord current_pos;
+coord* GPS::getLocation() {
+  coord *current_pos = new coord();
 
   if (millis() > (last_update_time + GPS_VALID_PERIOD))
-    return;
+    return nullptr;
 
   // Check that the data in the GPS parser is valid
   if (gps->location.isValid()) {
-    current_pos.lat = gps->location.lat();
-    current_pos.lng = gps->location.lng();
-    current_pos.isValid = true;
+    current_pos->lat     = gps->location.lat();
+    current_pos->lng     = gps->location.lng();
 
     return current_pos;
   }
 
-  return;
+  return nullptr;
 }
 
 
@@ -91,14 +90,18 @@ coord GPS::getLocation() {
 //                queue.
 // =========================================================================
 bool GPS::sendLocation() {
-  coord data = getLocation();
+  coord *data = getLocation();
 
   // Stop if the GPS data doesn't exist
-  if (!data.isValid) return false;
+  if (!data) return false;
+
 
   // Create and add data
   Location *packet = new Location();
-  if (!packet->setLocation(&data)) return false;
+  if (!packet->setLocation(data)) return false;
+
+  // Garbage collection
+  delete data;
 
   return this->packet_handler->queuePacket(packet);
 }

@@ -71,7 +71,7 @@ class GPS : public TimedLoop {
     // ===============================
     // getLocation: Accessor method
     // ===============================
-    coord getLocation();
+    coord* getLocation();
 
     // =======================================================
     // sendLocation: Add packet with location to Tx queue
