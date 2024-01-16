@@ -54,7 +54,10 @@ Protocol* PacketHandler::popTxQueue() {
   Protocol *popped = this->tx_pkt_queue[0];
 
   // Shift the elements in the array up
-  for (int i = 0; i < (this->tx_queue_cnt - 2); i++){
+  for (int i = 0; i < (this->tx_queue_cnt - 1); i++){
+    // Account for corner case of full queue
+    if (i >= PACKET_QUEUE_TX_LEN) break;
+
     this->tx_pkt_queue[i] = this->tx_pkt_queue[i + 1];
   }
   this->tx_pkt_queue[this->tx_queue_cnt - 1] = nullptr;
