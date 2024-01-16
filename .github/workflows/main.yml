@@ -2,7 +2,8 @@ name: Compile Test
 
 on:
   - pull_request
-  - push
+  - push:
+    - "main"
 jobs:
   compile_project:
     runs-on: ubuntu-latest
