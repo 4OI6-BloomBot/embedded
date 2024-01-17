@@ -8,7 +8,7 @@
 // ===============================
 // Const definitions
 // ===============================
-#define DATA_ARR_SIZE 30
+#define DATA_ARR_SIZE 29
 
 // ===============================
 // Imports
@@ -33,10 +33,11 @@ struct Protocol {
     // Transmitted values
     byte id;
     byte hwID;
+    byte location_id;
     byte data[DATA_ARR_SIZE];
 
     // Constructor
-    Protocol(byte id) : id(id) {};
+    Protocol(byte id);
 
     // ===============================
     // addVal - Add data to the array
@@ -58,6 +59,11 @@ struct Protocol {
   private:
     // Tracks the mem offset of the data byte array
     byte data_offset = 0;
+
+    // =======================================================
+    // setLocationID() - Sets the location_id parameter.
+    // =======================================================
+    void setLocationID();
 
 };
 

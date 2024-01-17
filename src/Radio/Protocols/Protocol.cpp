@@ -8,6 +8,16 @@
 // Includes
 #include "Protocol.h"
 
+// ========================================
+// Constructor.
+// Set the location at time of creation.
+// ========================================
+Protocol::Protocol(byte id) {
+  this->id = id;
+  this->setLocationID();
+}
+
+
 // ====================================================
 // addVal() - Add a given value to the packets data 
 // TODO: Float declaration is probably not the best
@@ -47,6 +57,10 @@ byte* Protocol::toPayload() {
   memcpy(payload + offset, (byte *) (&this->hwID), sizeof(this->hwID));
   offset += sizeof(this->hwID);
 
+  // Add the location ID
+  memcpy(payload + offset, (byte *) (&this->location_id), sizeof(this->location_id));
+  offset += sizeof(this->location_id);
+
   // Add the data
   memcpy(payload + offset, (byte *) (&this->data), this->data_offset);
   offset += this->data_offset;
@@ -59,7 +73,17 @@ byte* Protocol::toPayload() {
 // Returns the total size of the packet
 // ====================================================
 int Protocol::getPayloadSize() {
-  return sizeof(this->id) + sizeof(this->hwID) + this->data_offset;
+  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->location_id) + this->data_offset;
+}
+
+
+// =======================================================
+// setLocationID() - Sets the location_id parameter.
+// TODO: Should have a staic location method to check
+//       if the location is still valid (time period).
+// =======================================================
+void Protocol::setLocationID() {
+  this->location_id = Location::location_id;
 }
 
 #endif
