@@ -75,6 +75,18 @@ struct Location : Protocol {
     //               struct
     // ======================================================
     bool setLocation(coord *location);
+
+    // ======================================================
+    // Iterable ID to allow for other data types to reference
+    // locations when sending data.
+    // ======================================================
+    static int location_id;
+
+    // ======================================================
+    // setID - Attempt to add the location ID to the packet.
+    // ======================================================
+    static bool addLocationID(Protocol *pkt);
+
 };
 
 #endif

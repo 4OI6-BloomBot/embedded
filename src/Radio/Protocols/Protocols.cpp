@@ -9,7 +9,9 @@
 #include "Protocols.h"
 
 // ====================================================
-// Protocol 
+// addVal() - Add a given value to the packets data 
+// TODO: Float declaration is probably not the best
+//       in terms of space. Maybe char array?
 // ====================================================
 bool Protocol::addVal(float val) {
   // Calc the size of the data
@@ -58,18 +60,6 @@ byte* Protocol::toPayload() {
 // ====================================================
 int Protocol::getPayloadSize() {
   return sizeof(this->id) + sizeof(this->hwID) + this->data_offset;
-}
-
-
-// ====================================================
-// Add the values from the coord struct to the Location
-// packet
-// ====================================================
-bool Location::setLocation(coord *location) {
-  if (addVal(location->lat) && addVal(location->lng)) 
-    return true;
-  
-  return false;
 }
 
 #endif
