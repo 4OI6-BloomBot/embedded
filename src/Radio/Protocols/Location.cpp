@@ -6,7 +6,7 @@
 #define LOCATION_PROTOCOL_CPP
 
 // Includes
-#include "Protocols.h"
+#include "Protocol.h"
 
 // ==============================
 // Initialize static variable
@@ -23,15 +23,6 @@ bool Location::setLocation(coord *location) {
     return true;
   
   return false;
-}
-
-// ======================================================
-// addLocationID - Attempt to add the location ID to the 
-//                 packet.
-// ======================================================
-bool addLocationID(Protocol *pkt) {
-  pkt->addVal(Location::location_id);
-  return true;
 }
 
 #endif

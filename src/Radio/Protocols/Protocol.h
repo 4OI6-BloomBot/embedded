@@ -82,11 +82,6 @@ struct Location : Protocol {
     // ======================================================
     static int location_id;
 
-    // ======================================================
-    // setID - Attempt to add the location ID to the packet.
-    // ======================================================
-    static bool addLocationID(Protocol *pkt);
-
 };
 
 #endif

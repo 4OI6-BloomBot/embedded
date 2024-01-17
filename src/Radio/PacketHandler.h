@@ -13,7 +13,7 @@
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
 #include "Radio.h"
-#include "Protocols/Protocols.h"
+#include "Protocols/Protocol.h"
 
 
 // ====================
