@@ -31,6 +31,7 @@ class TURB : public TimedLoop {
     byte PIN_OUT;
 
     float turb;
+    float turb_out;
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class
@@ -47,12 +48,16 @@ class TURB : public TimedLoop {
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
+    // TURB(byte PIN_OUT);
+    TURB();
     TURB(byte PIN_OUT);
 
     // ===============================
     // getDistance: Accessor method
     // ===============================
     float getTurb();
+    float getTurbOut();
+    void setPIN(byte PIN_OUT);
 };
 
 #endif
