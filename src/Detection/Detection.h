@@ -41,7 +41,7 @@ class Detection : public TimedLoop {
     int detect_count;
     bool is_detected;
 
-    // TURB turb(byte);
+    TURB _turb;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -53,6 +53,8 @@ class Detection : public TimedLoop {
     // setup() - Handles hardware setup after object creation
     // =======================================================
     void setup();
+
+    void displayData();
 
 
   public:

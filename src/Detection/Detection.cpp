@@ -15,10 +15,9 @@
 // ====================================================
 Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
   // Call sensor constructors
-  // this->turb(A0);
+  // this->_turb.TURB(A0);
   // TEMP temp(<insert pins>);
-  // Serial.println("from constructor");
-  // Serial.println(temp);
+  this->_turb.setPIN(A0);
 
   // After assigning the pins run setup
   setup();
@@ -44,10 +43,7 @@ void Detection::setup() {
   this->delta_temp = -1;
   #endif
   
-  this->detect_count = 0;
-    
-  // Serial.println("from setup");
-    
+  this->detect_count = 0; 
 
 }
 
@@ -55,35 +51,37 @@ void Detection::setup() {
 // loop() - Keeps sensor variables up to date
 // =========================================================================
 void Detection::loop() {
-  Serial.println("from loop");
-  // this->curr_turb = this->turb.getTurb();
+  this->curr_turb = this->_turb.getTurbOut();
   // this->curr_temp = temp.getTemp();
+
   this->is_detected = monitorDetection();
   Serial.println(this->is_detected);
 
 
-  // this->prev_temp = this->curr_temp;
-  // this->prev_turb = this->curr_temp;
+  this->prev_temp = this->curr_temp;
+  this->prev_turb = this->curr_temp;
 }
 
 bool Detection::monitorDetection() {
   this->delta_turb = this->curr_turb - this->prev_turb;
   this->delta_temp = this->curr_temp - this->prev_temp;
 
+  displayData();
+
   // =========================================================================
   // Check all sensor conditions for bloom detection
   // Increment detect_count if condition is met
   // =========================================================================
   if (this->delta_turb > DELTA_TURB_THRESHOLD) {
-      Serial.println("Delta turb threshold exceeded");
+      // Serial.println("Delta turb threshold exceeded");
       this->detect_count += 1;
   }
   if (this->curr_temp > TEMP_THRESHOLD) {
-      Serial.println("Temp threshold exceeded");
+      // Serial.println("Temp threshold exceeded");
       this->detect_count += 1;
   }
   if (this->delta_temp > DELTA_TEMP_THRESHOLD) {
-      Serial.println("Delta temp threshold exceeded");
+      // Serial.println("Delta temp threshold exceeded");
       this->detect_count += 1;
   }
 
@@ -101,6 +99,16 @@ bool Detection::monitorDetection() {
       return false;
   }
 
+
+}
+
+void Detection::displayData() {
+  Serial.print("Current Turb: ");
+  Serial.println(curr_turb);
+  Serial.print("Previous Turb: ");
+  Serial.println(prev_turb);
+  Serial.print("Delta Turb: ");
+  Serial.println(delta_turb);
 
 }
 
