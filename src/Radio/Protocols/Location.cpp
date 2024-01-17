@@ -11,7 +11,17 @@
 // ==============================
 // Initialize static variable
 // ==============================
-int Location::location_id = 0;
+int Location::currentID = 0;
+
+
+// ====================================================
+// Constructor - Update the static ID and apply it to 
+//               the pkt.
+// ====================================================
+Location::Location() : Protocol(1) {
+  Location::currentID++;
+  this->setLocationID();
+}
 
 
 // ====================================================

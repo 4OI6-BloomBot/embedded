@@ -22,18 +22,19 @@ struct coord;
 // Protocol base structure. The size of the
 // structure cannot exceed 32-bytes (Tx 
 // module constraint).
-//  id:   Byte (8-bits), 0 --> 255
-//  hwID: Byte, unique ID associated w/ the HW
-//  data: Byte array,
-//        Array of values associated with the
-//        protocol
+//  id:         Byte (8-bits), 0 --> 255
+//  hwID:       Byte, unique ID associated w/ the HW
+//  locationID: Byte
+//  data:       Byte array,
+//              Array of values associated with the
+//              protocol
 // ============================================
 struct Protocol {
   public:
     // Transmitted values
     byte id;
     byte hwID;
-    byte location_id;
+    byte locationID;
     byte data[DATA_ARR_SIZE];
 
     // Constructor
@@ -60,6 +61,7 @@ struct Protocol {
     // Tracks the mem offset of the data byte array
     byte data_offset = 0;
 
+  protected:
     // =======================================================
     // setLocationID() - Sets the location_id parameter.
     // =======================================================
@@ -74,7 +76,7 @@ struct Protocol {
 struct Location : Protocol {
   
   public: 
-    Location() : Protocol(1) {};
+    Location();
 
     // ======================================================
     // setLocation - Attempt to add the location data to the 
@@ -86,7 +88,7 @@ struct Location : Protocol {
     // Iterable ID to allow for other data types to reference
     // locations when sending data.
     // ======================================================
-    static int location_id;
+    static int currentID;
 
 };
 

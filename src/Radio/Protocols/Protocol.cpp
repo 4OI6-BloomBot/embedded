@@ -58,8 +58,8 @@ byte* Protocol::toPayload() {
   offset += sizeof(this->hwID);
 
   // Add the location ID
-  memcpy(payload + offset, (byte *) (&this->location_id), sizeof(this->location_id));
-  offset += sizeof(this->location_id);
+  memcpy(payload + offset, (byte *) (&this->locationID), sizeof(this->locationID));
+  offset += sizeof(this->locationID);
 
   // Add the data
   memcpy(payload + offset, (byte *) (&this->data), this->data_offset);
@@ -73,7 +73,7 @@ byte* Protocol::toPayload() {
 // Returns the total size of the packet
 // ====================================================
 int Protocol::getPayloadSize() {
-  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->location_id) + this->data_offset;
+  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->locationID) + this->data_offset;
 }
 
 
@@ -83,7 +83,7 @@ int Protocol::getPayloadSize() {
 //       if the location is still valid (time period).
 // =======================================================
 void Protocol::setLocationID() {
-  this->location_id = Location::location_id;
+  this->locationID = Location::currentID;
 }
 
 #endif
