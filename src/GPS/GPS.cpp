@@ -99,8 +99,7 @@ bool GPS::sendLocation() {
   // Stop if the GPS data doesn't exist
   if (!data) return false;
 
-
-  // Create and add data
+  // Create a new packet and add data
   Location *packet = new Location();
   if (!packet->setLocation(data)) return false;
 

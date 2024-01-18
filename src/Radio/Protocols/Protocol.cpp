@@ -6,10 +6,22 @@
 #define PROTOCOLS_CPP
 
 // Includes
-#include "Protocols.h"
+#include "Protocol.h"
+
+// ========================================
+// Constructor.
+// Set the location at time of creation.
+// ========================================
+Protocol::Protocol(byte id) {
+  this->id = id;
+  this->setLocationID();
+}
+
 
 // ====================================================
-// Protocol 
+// addVal() - Add a given value to the packets data 
+// TODO: Float declaration is probably not the best
+//       in terms of space. Maybe char array?
 // ====================================================
 bool Protocol::addVal(float val) {
   // Calc the size of the data
@@ -45,6 +57,10 @@ byte* Protocol::toPayload() {
   memcpy(payload + offset, (byte *) (&this->hwID), sizeof(this->hwID));
   offset += sizeof(this->hwID);
 
+  // Add the location ID
+  memcpy(payload + offset, (byte *) (&this->locationID), sizeof(this->locationID));
+  offset += sizeof(this->locationID);
+
   // Add the data
   memcpy(payload + offset, (byte *) (&this->data), this->data_offset);
   offset += this->data_offset;
@@ -57,19 +73,17 @@ byte* Protocol::toPayload() {
 // Returns the total size of the packet
 // ====================================================
 int Protocol::getPayloadSize() {
-  return sizeof(this->id) + sizeof(this->hwID) + this->data_offset;
+  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->locationID) + this->data_offset;
 }
 
 
-// ====================================================
-// Add the values from the coord struct to the Location
-// packet
-// ====================================================
-bool Location::setLocation(coord *location) {
-  if (addVal(location->lat) && addVal(location->lng)) 
-    return true;
-  
-  return false;
+// =======================================================
+// setLocationID() - Sets the location_id parameter.
+// TODO: Should have a staic location method to check
+//       if the location is still valid (time period).
+// =======================================================
+void Protocol::setLocationID() {
+  this->locationID = Location::currentID;
 }
 
 #endif
