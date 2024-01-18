@@ -15,6 +15,7 @@
 // ==================================================================
 #include <Arduino.h>
 #include <TinyGPS++.h>
+#include <TimeLib.h>
 #include <SoftwareSerial.h>
 #include "Coord.h"
 #include "../TimedLoop/TimedLoop.h"
@@ -72,6 +73,11 @@ class GPS : public TimedLoop {
     // getLocation: Accessor method
     // ===============================
     coord* getLocation();
+
+    // ===============================
+    // getTime: Accessor method
+    // ===============================
+    time_t* getTime();
 
     // =======================================================
     // sendLocation: Add packet with location to Tx queue
