@@ -92,4 +92,15 @@ struct Location : Protocol {
 
 };
 
+
+// ===================================
+// Temperature protocol (id = 2)
+// ===================================
+struct Temperature : Protocol {
+  
+  public: 
+    Temperature() : Protocol(2) {};
+    
+};
+
 #endif
