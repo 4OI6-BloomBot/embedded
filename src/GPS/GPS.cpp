@@ -41,8 +41,28 @@ void GPS::setup() {
 }
 
 
-time_t* GPS::getTime() {
-  
+// ======================================================
+// getTime - Pulls the time from the RTC and returns a
+//           time_t obj.
+// ======================================================
+time_t GPS::getTime() {
+
+  // TODO: isValid won't necessarily tell us if the data is 
+  //       correct only that we got something from the module.
+  //       Seems like we might need to wait a bit after the first
+  //       data since the time/date is wrong.
+  if (gps->time.isValid() && gps->date.isValid()) {
+    TinyGPSDate d = gps->date;
+    TinyGPSTime t = gps->time;
+
+    setTime(t.hour(), t.minute(), t.second(), d.day(), d.month(), d.year());
+    adjustTime(GPS_TIME_OFFSET * SECS_PER_HOUR);
+  }
+
+  // Return null if the time hasn't been set.
+  if (timeStatus() == timeNotSet) return NULL;
+
+  return now();
 }
 
 

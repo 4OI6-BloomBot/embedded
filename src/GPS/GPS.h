@@ -30,7 +30,7 @@
 #define GPS_LOOP_DELAY      5000   // The wait period between main loop runs/polling for a new location
 #define GPS_POLLING_TIME_MS 1000   // The period that will wait for a response from the GPS module
 
-
+#define GPS_TIME_OFFSET     -5     // EST is -5 hours from UTC
 
 class GPS : public TimedLoop {
   
@@ -77,7 +77,7 @@ class GPS : public TimedLoop {
     // ===============================
     // getTime: Accessor method
     // ===============================
-    time_t* getTime();
+    time_t getTime();
 
     // =======================================================
     // sendLocation: Add packet with location to Tx queue
