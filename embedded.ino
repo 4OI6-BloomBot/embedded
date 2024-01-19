@@ -10,11 +10,12 @@
 // =====================================================
 #include "src/MotorController/MotorController.h"
 #include "src/GPS/GPS.h"
+#include "src/GPS/LocationSender.h"
 #include "src/SonicSensor/SonicSensor.h"
 #include "src/Turb/Turb.h"
 #include "src/Radio/Radio.h"
 #include "src/Radio/PacketHandler.h"
-
+#include "src/Radio/Protocols/Protocol.h"
 
 // =====================================================
 // Defines
@@ -33,10 +34,11 @@
 // MotorController test(7, 8, 9);
 // SONIC sonic(11,12);
 // TURB turb(A0);
-Radio         rf(10, 9);
-PacketHandler packet_handler(&rf);
+Radio          rf(10, 9);
+GPS            gps(6, 7);
+PacketHandler  packet_handler(&rf, &gps);
 
-GPS gps(6, 7, &packet_handler);
+LocationSender location_sender(&gps, &packet_handler);
 
 
 // =====================================================

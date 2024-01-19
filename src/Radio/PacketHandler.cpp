@@ -12,9 +12,11 @@
 // ========================================================
 // PacketHandler - Constructor
 // ========================================================
-PacketHandler::PacketHandler(Radio *r) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
+PacketHandler::PacketHandler(Radio *r, GPS *g) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
   this->radio = r;
-  
+  this->gps   = g;
+
+  // Set initial value
   this->tx_queue_cnt = 0;
 }
 

@@ -19,7 +19,6 @@
 #include <SoftwareSerial.h>
 #include "Coord.h"
 #include "../TimedLoop/TimedLoop.h"
-#include "../Radio/PacketHandler.h"
 
 
 // ==================
@@ -46,8 +45,6 @@ class GPS : public TimedLoop {
     TinyGPSPlus    * gps;
     SoftwareSerial * serial;
 
-    PacketHandler * packet_handler;
-
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -67,7 +64,6 @@ class GPS : public TimedLoop {
     //              and optional pointer to packet handler
     // =======================================================
     GPS(byte PIN_TX, byte PIN_RX);
-    GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler);
 
     // ===============================
     // getLocation: Accessor method
@@ -79,10 +75,7 @@ class GPS : public TimedLoop {
     // ===============================
     time_t getTime();
 
-    // =======================================================
-    // sendLocation: Add packet with location to Tx queue
-    // =======================================================
-    bool sendLocation();
+
 
 };
 

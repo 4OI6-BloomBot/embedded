@@ -22,10 +22,6 @@ GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
   setup();
 }
 
-GPS::GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler) : GPS(PIN_TX, PIN_RX) {
-  this->packet_handler = p_handler;
-}
-
 // =======================================
 // setup() - Configure the pin directions
 // =======================================
@@ -79,11 +75,7 @@ void GPS::loop() {
     delay(5);
     
     if (gps->encode(serial->read())) {
-      last_update_time = millis();
-        
-      // TODO: Should we send every update, or just to correlate w/ other data?
-      this->sendLocation();
-      
+      last_update_time = millis();      
       return;
     }
   }
@@ -111,27 +103,6 @@ coord* GPS::getLocation() {
   }
 
   return nullptr;
-}
-
-
-// =========================================================================
-// sendLocation - Add a packet with the current location data to the Tx
-//                queue.
-// =========================================================================
-bool GPS::sendLocation() {
-  coord *data = getLocation();
-
-  // Stop if the GPS data doesn't exist
-  if (!data) return false;
-
-  // Create a new packet and add data
-  Location *packet = new Location();
-  if (!packet->setLocation(data)) return false;
-
-  // Garbage collection
-  delete data;
-
-  return this->packet_handler->queuePacket(packet);
 }
 
 #endif

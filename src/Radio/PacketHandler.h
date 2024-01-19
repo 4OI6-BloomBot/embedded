@@ -64,7 +64,7 @@ class PacketHandler : TimedLoop {
     // Constructor:
     // Requires a pointer to a Radio object
     // ======================================
-    PacketHandler(Radio *radio);
+    PacketHandler(Radio *radio, GPS *gps);
 
 
     // =======================================================
