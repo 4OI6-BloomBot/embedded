@@ -52,10 +52,7 @@ void TURB::loop() {
 // =======================================================
 float TURB::getTurb() {
   int sensorValue = analogRead(this->PIN_OUT);// read the input on analog pin A0:
-  turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
-
-  // Serial.print(turb);
-  // Serial.println(" V");
+  this->turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
 
   return turb;
 }
