@@ -9,6 +9,9 @@ This repository is for the software run on the BloomBot buoy hardware.
  1. Install the required libraries:
     - TinyGPSPlus
     - RF24 (TMRh20)
+    - DHT Sensor library
+    - OneWire
+    - DallasTemperature
 
 ## Changes
 The main branch is protected from direct writes, ideally create a new branch to work in then merge it in with a pull request when ready.
