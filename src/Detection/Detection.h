@@ -1,40 +1,49 @@
 /*
-  Header for the temp sensor
+  Header for the Detection class
 */
 
-#ifndef TEMP_H
-#define TEMP_H
+#ifndef DETECTION_H
+#define DETECTION_H
 
 // ==================================================================
 // Includes
 //  - TimeLoop:       Allows for scheduling periodic polling of
-//                    the temp module
+//                    the detection module
 // ==================================================================
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include "../Turb/Turb.h"
+#include "../TemperatureSensor/TempSensor.h"
+
 
 // ==================
 // Parameter defines
 // ==================
-#define TEMP_BAUD_RATE       115200
-#define TEMP_LOOP_DELAY      2000
+#define DETECTION_BAUD_RATE         115200
+#define DETECTION_LOOP_DELAY        3000
+#define DELTA_TURB_THRESHOLD        1
+#define TEMP_THRESHOLD              25
+#define DELTA_TEMP_THRESHOLD        5
+#define IS_DETECTED_THRESHOLD       3
 
 
-class TEMP : public TimedLoop {
-  
+class Detection : public TimedLoop {
+
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-    byte PIN_ONE_WIRE;
-    
-    float temp;
-    float temp_out;
+    float curr_turb;
+    float prev_turb;
+    float delta_turb;
+    float curr_temp;
+    float prev_temp;
+    float delta_temp;
+    int detect_count;
+    bool is_detected;
 
-    DallasTemperature tempSensor;
-
+    TURB _turb;
+    TEMP _temp;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -47,20 +56,20 @@ class TEMP : public TimedLoop {
     // =======================================================
     void setup();
 
+    void displayData();
+
 
   public:
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
-    TEMP();
-    TEMP(byte PIN);
+    Detection();
 
     // ===============================
-    // Accessor methods
+    // monitorDetection: monitor method
     // ===============================
-    float getTemp();
-    float getTempOut();
-    void setPIN(byte PIN);
+    bool monitorDetection();
+
 };
 
 #endif
