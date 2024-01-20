@@ -37,7 +37,7 @@
 // TURB turb(A0);
 // TEMP temp(6);
 // Radio rf(10, 9);
-Detection detect;
+// Detection detect;
 
 
 // =====================================================
@@ -46,9 +46,9 @@ Detection detect;
 void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
+    Serial.println("=====================================================");
   #endif
 
-  Serial.println("=====================================================");
 
 }
 
