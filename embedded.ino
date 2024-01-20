@@ -14,6 +14,7 @@
 #include "src/Turb/Turb.h"
 #include "src/Radio/Radio.h"
 #include "src/Detection/Detection.h"
+#include "src/TemperatureSensor/TempSensor.h"
 
 
 // =====================================================
@@ -34,6 +35,7 @@
 // GPS gps(6, 7);
 // SONIC sonic(11,12);
 // TURB turb(A0);
+// TEMP temp(6);
 // Radio rf(10, 9);
 Detection detect;
 

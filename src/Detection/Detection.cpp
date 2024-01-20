@@ -5,7 +5,7 @@
 #ifndef DETECTION_CPP
 #define DETECTION_CPP
 
-#define TEST
+// #define TEST
 
 // Includes
 #include "Detection.h"
@@ -18,6 +18,7 @@ Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
   // this->_turb.TURB(A0);
   // TEMP temp(<insert pins>);
   this->_turb.setPIN(A0);
+  this->_temp.setPIN(6);
 
   // After assigning the pins run setup
   setup();
@@ -51,15 +52,17 @@ void Detection::setup() {
 // loop() - Keeps sensor variables up to date
 // =========================================================================
 void Detection::loop() {
+  // this->curr_turb = this->_turb.getTurb();
+  // this->curr_turb = this->_turb.getTurb();
   this->curr_turb = this->_turb.getTurbOut();
-  // this->curr_temp = temp.getTemp();
+  this->curr_temp = this->_temp.getTempOut();
 
   this->is_detected = monitorDetection();
   Serial.println(this->is_detected);
 
 
   this->prev_temp = this->curr_temp;
-  this->prev_turb = this->curr_temp;
+  this->prev_turb = this->curr_turb;
 }
 
 bool Detection::monitorDetection() {
@@ -104,11 +107,17 @@ bool Detection::monitorDetection() {
 
 void Detection::displayData() {
   Serial.print("Current Turb: ");
-  Serial.println(curr_turb);
+  Serial.println(this->curr_turb);
   Serial.print("Previous Turb: ");
-  Serial.println(prev_turb);
+  Serial.println(this->prev_turb);
   Serial.print("Delta Turb: ");
-  Serial.println(delta_turb);
+  Serial.println(this->delta_turb);
+  Serial.print("Current Temp: ");
+  Serial.println(this->curr_temp);
+  Serial.print("Previous Temp: ");
+  Serial.println(this->prev_temp);
+  Serial.print("Delta Temp: ");
+  Serial.println(this->delta_temp);
 
 }
 

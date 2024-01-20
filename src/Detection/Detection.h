@@ -13,13 +13,14 @@
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
 #include "../Turb/Turb.h"
+#include "../TemperatureSensor/TempSensor.h"
 
 
 // ==================
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        2000
+#define DETECTION_LOOP_DELAY        3000
 #define DELTA_TURB_THRESHOLD        1
 #define TEMP_THRESHOLD              25
 #define DELTA_TEMP_THRESHOLD        5
@@ -42,6 +43,7 @@ class Detection : public TimedLoop {
     bool is_detected;
 
     TURB _turb;
+    TEMP _temp;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
