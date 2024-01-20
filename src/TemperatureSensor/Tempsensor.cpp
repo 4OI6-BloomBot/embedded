@@ -1,32 +1,64 @@
-#include <OneWire.h>
-#include <DallasTemperature.h>
+/*
+  The Temp wrapper class.
+*/
 
-const int SENSOR_PIN = 6; // Arduino pin connected to DS18B20 sensor's DQ pin
+#ifndef TEMP_CPP
+#define TEMP_CPP
 
-OneWire oneWire(SENSOR_PIN);         // setup a oneWire instance
-DallasTemperature tempSensor(&oneWire); // pass oneWire to DallasTemperature library
+// Includes
+#include "TempSensor.h"
 
-float tempCelsius;    // temperature in Celsius
-float tempFahrenheit; // temperature in Fahrenheit
+// ====================================================
+// TEMP - Constructor for the turb wrapper class
+// ====================================================
+TEMP::TEMP() : TimedLoop(TEMP_LOOP_DELAY) {
+  // After assigning the pins run setup
+  setup();
+}
 
-// void setup()
-// {
-//   Serial.begin(9600); // initialize serial
-//   tempSensor.begin();    // initialize the sensor
-// }
+TEMP::TEMP(byte PIN) : TimedLoop(TEMP_LOOP_DELAY) {
+  // Assign class variables 
+  setPIN(PIN);
 
-// void loop()
-// {
-//   tempSensor.requestTemperatures();             // send the command to get temperatures
-//   tempCelsius = tempSensor.getTempCByIndex(0);  // read temperature in Celsius
-//   tempFahrenheit = tempCelsius * 9 / 5 + 32; // convert Celsius to Fahrenheit
+  // After assigning the pins run setup
+  setup();
+}
 
-//   Serial.print("Temperature: ");
-//   Serial.print(tempCelsius);    // print the temperature in Celsius
-//   Serial.print("°C");
-//   Serial.print("  ~  ");        // separator between Celsius and Fahrenheit
-//   Serial.print(tempFahrenheit); // print the temperature in Fahrenheit
-//   Serial.println("°F");
+// =======================================
+// setup() - Initial setup
+// =======================================
+void TEMP::setup() {
+    OneWire oneWire(this->PIN_ONE_WIRE);
+    DallasTemperature tempSensor(&oneWire);
+    this->tempSensor = tempSensor;
 
-//   delay(500);
-// }
+    this->tempSensor.begin();
+}
+
+// =========================================================================
+// loop() - Keeps turb variable up to date
+// =========================================================================
+void TEMP::loop() {
+    this->temp_out = getTemp();
+}
+
+
+// =======================================================
+// getTemp() - 
+// =======================================================
+float TEMP::getTemp() {
+  this->tempSensor.requestTemperatures();
+  this->temp = this->tempSensor.getTempCByIndex(0);
+
+  return this->temp;
+}
+
+void TEMP::setPIN(byte PIN) {
+  this->PIN_ONE_WIRE = PIN;
+}
+
+float TEMP::getTempOut() {
+  return this->temp_out;
+}
+
+#endif
