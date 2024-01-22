@@ -43,20 +43,29 @@ void GPS::setup() {
 // ======================================================
 time_t GPS::getTime() {
 
-  // TODO: isValid won't necessarily tell us if the data is 
-  //       correct only that we got something from the module.
-  //       Seems like we might need to wait a bit after the first
-  //       data since the time/date is wrong.
-  if (gps->time.isValid() && gps->date.isValid()) {
-    TinyGPSDate d = gps->date;
-    TinyGPSTime t = gps->time;
+  // Make sure we have valid GPS data
+  if (!gps->time.isValid() || !gps->date.isValid()) 
+    return 0;
+  
+  TinyGPSDate d = gps->date;
+  TinyGPSTime t = gps->time;
+  
+  // isValid won't necessarily tell us if the data is 
+  // correct only that we got something from the module.
+  // The GPS will happily report an invalid date. This 
+  // guards against using something that is obviously 
+  // invalid
+  // This isn't ideal, but typically the dates reported
+  // are way off (2000, 2008, 2088, etc) so this should be 
+  // a decent fix for now.
+  // TODO: Not a long term soln.
+  if (d.year() >= 2023 && d.year() <= 2030); 
+    return 0;
+  
+  // Update the time and account for the timezone
+  setTime(t.hour(), t.minute(), t.second(), d.day(), d.month(), d.year());
+  adjustTime(GPS_TIME_OFFSET * SECS_PER_HOUR);
 
-    setTime(t.hour(), t.minute(), t.second(), d.day(), d.month(), d.year());
-    adjustTime(GPS_TIME_OFFSET * SECS_PER_HOUR);
-  }
-
-  // Return null if the time hasn't been set.
-  if (timeStatus() == timeNotSet) return NULL;
 
   return now();
 }

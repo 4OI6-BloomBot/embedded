@@ -88,6 +88,10 @@ bool PacketHandler::queuePacket(Protocol *packet) {
   if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN)
     return false;
 
+  // Add the current time to the packet
+  // Corresponds to approx when the value was grabbed
+  packet->time = gps->getTime();
+
   this->tx_pkt_queue[this->tx_queue_cnt] = packet;
   this->tx_queue_cnt++;
   
