@@ -58,7 +58,7 @@ time_t GPS::getTime() {
   // This isn't ideal, but typically the dates reported
   // are way off (2000, 2008, 2088, etc) so this should be 
   // a decent fix for now.
-  // TODO: Not a long term soln.
+  // TODO: Not a long term soln. Implement Sam's idea --> wait for position to be valid too.
   if (d.year() >= 2023 && d.year() <= 2030); 
     return 0;
   

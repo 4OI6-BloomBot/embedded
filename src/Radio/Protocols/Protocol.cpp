@@ -61,6 +61,10 @@ byte* Protocol::toPayload() {
   memcpy(payload + offset, (byte *) (&this->locationID), sizeof(this->locationID));
   offset += sizeof(this->locationID);
 
+  // Add the epoch (time)
+  memcpy(payload + offset, (byte *) (&this->time), sizeof(this->time));
+  offset += sizeof(this->time);
+
   // Add the data
   memcpy(payload + offset, (byte *) (&this->data), this->data_offset);
   offset += this->data_offset;
@@ -73,7 +77,7 @@ byte* Protocol::toPayload() {
 // Returns the total size of the packet
 // ====================================================
 int Protocol::getPayloadSize() {
-  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->locationID) + this->data_offset;
+  return sizeof(this->id) + sizeof(this->hwID) + sizeof(this->locationID) + sizeof(this->time) + this->data_offset;
 }
 
 
