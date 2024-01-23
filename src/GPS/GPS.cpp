@@ -64,7 +64,11 @@ time_t GPS::getTime() {
   
   // Update the time and account for the timezone
   setTime(t.hour(), t.minute(), t.second(), d.day(), d.month(), d.year());
-  adjustTime(GPS_TIME_OFFSET * SECS_PER_HOUR);
+  
+  // The time is being sent as UTC for now. 
+  // TODO: Update the server to display the time correctly (per the timezone).
+  // TODO: Clean this up once the timezone work has settled down a bit
+  // adjustTime(GPS_TIME_OFFSET * SECS_PER_HOUR);
 
 
   return now();
