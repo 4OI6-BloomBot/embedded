@@ -11,10 +11,22 @@
 // ====================================================
 // TURB - Constructor for the turb wrapper class
 // ====================================================
+// TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
+TURB::TURB() : TimedLoop(TURB_LOOP_DELAY) {
+
+  // Assign class variables 
+  // this->PIN_OUT = PIN_OUT;
+  // setPIN(PIN_OUT);
+
+  // After assigning the pins run setup
+  setup();
+}
+
 TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
 
   // Assign class variables 
-  this->PIN_OUT = PIN_OUT;
+  // this->PIN_OUT = PIN_OUT;
+  setPIN(PIN_OUT);
 
   // After assigning the pins run setup
   setup();
@@ -31,7 +43,7 @@ void TURB::setup() {
 // loop() - Keeps turb variable up to date
 // =========================================================================
 void TURB::loop() {
-    getTurb();
+    turb_out = getTurb();
 }
 
 
@@ -39,13 +51,18 @@ void TURB::loop() {
 // getTurb() - Returns voltage for turb (lower is darker)
 // =======================================================
 float TURB::getTurb() {
-  int sensorValue = analogRead(PIN_OUT);// read the input on analog pin A0:
-  turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
-
-  Serial.print(turb);
-  Serial.println(" V");
+  int sensorValue = analogRead(this->PIN_OUT);// read the input on analog pin A0:
+  this->turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
 
   return turb;
+}
+
+void TURB::setPIN(byte PIN_OUT) {
+  this->PIN_OUT = PIN_OUT;
+}
+
+float TURB::getTurbOut() {
+  return this->turb_out;
 }
 
 #endif

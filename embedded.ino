@@ -14,6 +14,8 @@
 #include "src/SonicSensor/SonicSensor.h"
 #include "src/Turb/Turb.h"
 #include "src/Radio/Radio.h"
+#include "src/Detection/Detection.h"
+#include "src/TemperatureSensor/TempSensor.h"
 #include "src/Radio/PacketHandler.h"
 #include "src/Radio/Protocols/Protocol.h"
 
@@ -26,14 +28,16 @@
 
 // =====================================================
 // Variable Declaration
-// Note: For any classes that extend TimedLoop the 
+// Note: For any classes that extend TimedLoop the
 //       NUM_TIMEDLOOP_OBJECTS macro needs to be
-//       updated to properly reflect the number of 
+//       updated to properly reflect the number of
 //       children.
 // =====================================================
 // MotorController test(7, 8, 9);
 // SONIC sonic(11,12);
 // TURB turb(A0);
+// TEMP temp(6);
+// Detection detect;
 Radio          rf(10, 9);
 GPS            gps(6, 7);
 PacketHandler  packet_handler(&rf, &gps);
@@ -50,10 +54,7 @@ void setup() {
     Serial.println("%%%%% [RESET] %%%%%");
   #endif
 
-  // =========================
-  // Configure the RF module 
-  // =========================
-  rf.setup();
+
 }
 
 
@@ -62,17 +63,16 @@ void setup() {
 //          after setup()
 // =====================================================
 void loop() {
-
   // =====================================================
   // Check each of the timed objects and run their loops
   // if it is time.
   // =====================================================
   TimedLoop::tryEvents();
-  
+
   // =====================================================
   // Wait for the next scheduled event
   // =====================================================
   // TODO: Change to low power mode/sleep
   delay(TimedLoop::getTimeToNextEvent());
-  
+
 }
