@@ -12,6 +12,7 @@ This repository is for the software run on the BloomBot buoy hardware.
     - DHT Sensor library
     - OneWire
     - DallasTemperature
+    - Time
 
 ## Changes
 The main branch is protected from direct writes, ideally create a new branch to work in then merge it in with a pull request when ready.

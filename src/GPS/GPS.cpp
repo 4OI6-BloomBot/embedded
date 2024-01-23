@@ -22,10 +22,6 @@ GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
   setup();
 }
 
-GPS::GPS(byte PIN_TX, byte PIN_RX, PacketHandler *p_handler) : GPS(PIN_TX, PIN_RX) {
-  this->packet_handler = p_handler;
-}
-
 // =======================================
 // setup() - Configure the pin directions
 // =======================================
@@ -38,6 +34,44 @@ void GPS::setup() {
   // Initialize the serial connection
   serial->begin(GPS_BAUD_RATE);
 
+}
+
+
+// ======================================================
+// getTime - Pulls the time from the RTC and returns a
+//           time_t obj.
+// ======================================================
+time_t GPS::getTime() {
+
+  // Make sure we have valid GPS data
+  if (!gps->time.isValid() || !gps->date.isValid()) 
+    return 0;
+  
+  TinyGPSDate d = gps->date;
+  TinyGPSTime t = gps->time;
+  
+  // isValid won't necessarily tell us if the data is 
+  // correct only that we got something from the module.
+  // The GPS will happily report an invalid date. This 
+  // guards against using something that is obviously 
+  // invalid
+  // This isn't ideal, but typically the dates reported
+  // are way off (2000, 2008, 2088, etc) so this should be 
+  // a decent fix for now.
+  // TODO: Not a long term soln. Implement Sam's idea --> wait for position to be valid too.
+  if (d.year() <= 2023 || d.year() >= 2030)
+    return 0;
+  
+  // Update the time and account for the timezone
+  setTime(t.hour(), t.minute(), t.second(), d.day(), d.month(), d.year());
+  
+  // The time is being sent as UTC for now. 
+  // TODO: Update the server to display the time correctly (per the timezone).
+  // TODO: Clean this up once the timezone work has settled down a bit
+  // adjustTime(GPS_TIME_OFFSET * SECS_PER_HOUR);
+
+
+  return now();
 }
 
 
@@ -54,11 +88,7 @@ void GPS::loop() {
     delay(5);
     
     if (gps->encode(serial->read())) {
-      last_update_time = millis();
-        
-      // TODO: Should we send every update, or just to correlate w/ other data?
-      this->sendLocation();
-      
+      last_update_time = millis();      
       return;
     }
   }
@@ -86,27 +116,6 @@ coord* GPS::getLocation() {
   }
 
   return nullptr;
-}
-
-
-// =========================================================================
-// sendLocation - Add a packet with the current location data to the Tx
-//                queue.
-// =========================================================================
-bool GPS::sendLocation() {
-  coord *data = getLocation();
-
-  // Stop if the GPS data doesn't exist
-  if (!data) return false;
-
-  // Create a new packet and add data
-  Location *packet = new Location();
-  if (!packet->setLocation(data)) return false;
-
-  // Garbage collection
-  delete data;
-
-  return this->packet_handler->queuePacket(packet);
 }
 
 #endif

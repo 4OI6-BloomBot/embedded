@@ -25,3 +25,4 @@ jobs:
             - name: DHT sensor library
             - name: OneWire
             - name: DallasTemperature
+            - name: Time

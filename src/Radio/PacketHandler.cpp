@@ -12,9 +12,11 @@
 // ========================================================
 // PacketHandler - Constructor
 // ========================================================
-PacketHandler::PacketHandler(Radio *r) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
+PacketHandler::PacketHandler(Radio *r, GPS *g) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
   this->radio = r;
-  
+  this->gps   = g;
+
+  // Set initial value
   this->tx_queue_cnt = 0;
 }
 
@@ -85,6 +87,10 @@ Protocol* PacketHandler::popTxQueue() {
 bool PacketHandler::queuePacket(Protocol *packet) {
   if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN)
     return false;
+
+  // Add the current time to the packet
+  // Corresponds to approx when the value was grabbed
+  packet->time = gps->getTime();
 
   this->tx_pkt_queue[this->tx_queue_cnt] = packet;
   this->tx_queue_cnt++;
