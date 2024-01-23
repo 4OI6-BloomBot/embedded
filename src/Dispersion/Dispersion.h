@@ -1,9 +1,9 @@
 /*
-  Header for the Detection class
+  Header for the Dispersion class
 */
 
-#ifndef DETECTION_H
-#define DETECTION_H
+#ifndef DISPERSION_H
+#define DISPERSION_H
 
 // ==================================================================
 // Includes
@@ -11,40 +11,22 @@
 //                    the detection module
 // ==================================================================
 #include <Arduino.h>
-#include "../TimedLoop/TimedLoop.h"
-#include "../Turb/Turb.h"
-#include "../TemperatureSensor/TempSensor.h"
-#include "../Dispersion/Dispersion.h"
-
+#include "../MotorController/MotorController.h"
 
 // ==================
 // Parameter defines
 // ==================
-#define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        3000
-#define DELTA_TURB_THRESHOLD        1
-#define TEMP_THRESHOLD              25
-#define DELTA_TEMP_THRESHOLD        5
-#define IS_DETECTED_THRESHOLD       3
+#define DISPERSION_BAUD_RATE         115200
+#define DISPERSION_LOOP_DELAY        3000
 
 
-class Detection : public TimedLoop {
+class Dispersion : public TimedLoop {
 
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-    float curr_turb;
-    float prev_turb;
-    float delta_turb;
-    float curr_temp;
-    float prev_temp;
-    float delta_temp;
-    int detect_count;
-    bool is_detected;
 
-    TURB _turb;
-    TEMP _temp;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -57,19 +39,15 @@ class Detection : public TimedLoop {
     // =======================================================
     void setup();
 
-    void displayData();
 
 
   public:
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
-    Detection();
+    Dispersion();
 
-    // ===============================
-    // monitorDetection: monitor method
-    // ===============================
-    bool monitorDetection();
+ 
 
 };
 
