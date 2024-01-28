@@ -15,7 +15,9 @@
 // ====================================================
 Dispersion::Dispersion() : TimedLoop(DISPERSION_LOOP_DELAY) {
   // Call sensor constructors
-
+  // PINS are D8, D9, D10
+  // TODO: figure out correct pins
+  this->_MC.setPIN(8, 9, 10) // <--- guessing
 
   // After assigning the pins run setup
   setup();
@@ -25,16 +27,20 @@ Dispersion::Dispersion() : TimedLoop(DISPERSION_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void Dispersion::setup() {
-  
-
+  this->_MC.setDirection(FORWARD);
 }
 
 // =========================================================================
-// loop() - Keeps sensor variables up to date
+// loop() 
 // =========================================================================
 void Dispersion::loop() {
-
 }
 
+void Dispersion::enablePump() {
+  this->_MC.setPower(1.0);
+}
+void Dispersion::disablePump() {
+  this->_MC.setPower(0.0);
+}
 
 #endif

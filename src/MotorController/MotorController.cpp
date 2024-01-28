@@ -14,11 +14,13 @@
 MotorController::MotorController(byte PIN_EN_1, byte PIN_EN_2, byte PIN_PWM) {
 
   // Assign class variables 
-  this->PIN_EN_1 = PIN_EN_1;
-  this->PIN_EN_2 = PIN_EN_2;
-  this->PIN_PWM  = PIN_PWM;
+  setPIN(PIN_EN_1, PIN_EN_2, PIN_PWM);
 
   // After assigning the pins run setup
+  setup();
+}
+
+MotorController::MotorController() {
   setup();
 }
 
@@ -100,6 +102,15 @@ void MotorController::setVoltageLimit(byte voltage) {
 
     setPower(this->power); // Update the output power when the limit changes
   }
+}
+
+// ===============================================================
+// setPIN - Takes pins and sets class pins
+// ===============================================================
+void MotorController::setPIN(byte PIN_EN_1, byte PIN_EN_2, byte PIN_PWM) {
+  this->PIN_EN_1 = PIN_EN_1;
+  this->PIN_EN_2 = PIN_EN_2;
+  this->PIN_PWM  = PIN_PWM;
 }
 
 #endif

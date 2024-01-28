@@ -59,6 +59,9 @@ void Detection::loop() {
 
   this->is_detected = monitorDetection();
   Serial.println(this->is_detected);
+  this->_disp.enablePump();
+  delay(10);
+  this->_disp.disablePump();
 
 
   this->prev_temp = this->curr_temp;

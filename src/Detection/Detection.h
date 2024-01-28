@@ -45,6 +45,7 @@ class Detection : public TimedLoop {
 
     TURB _turb;
     TEMP _temp;
+    Dispersion _disp;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 

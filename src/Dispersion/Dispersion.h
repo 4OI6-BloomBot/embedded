@@ -27,6 +27,7 @@ class Dispersion : public TimedLoop {
   // ==================================================================
   private:
 
+    MotorController _MC;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -46,6 +47,9 @@ class Dispersion : public TimedLoop {
     // Constructor: Take analog pin out
     // ======================================
     Dispersion();
+
+    void enablePump();
+    void disablePump();
 
  
 
