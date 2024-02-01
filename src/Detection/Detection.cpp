@@ -52,8 +52,6 @@ void Detection::setup() {
 // loop() - Keeps sensor variables up to date
 // =========================================================================
 void Detection::loop() {
-  // this->curr_turb = this->_turb.getTurb();
-  // this->curr_turb = this->_turb.getTurb();
   this->curr_turb = this->_turb.getTurbOut();
   this->curr_temp = this->_temp.getTempOut();
 

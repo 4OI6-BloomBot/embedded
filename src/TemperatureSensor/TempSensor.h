@@ -33,9 +33,6 @@ class TEMP : public TimedLoop {
     float temp;
     float temp_out;
 
-    DallasTemperature tempSensor;
-
-
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class

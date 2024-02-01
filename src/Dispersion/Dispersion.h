@@ -11,6 +11,7 @@
 //                    the detection module
 // ==================================================================
 #include <Arduino.h>
+#include "../TimedLoop/TimedLoop.h"
 #include "../MotorController/MotorController.h"
 
 // ==================

@@ -36,13 +36,13 @@
 // MotorController test(7, 8, 9);
 // SONIC sonic(11,12);
 // TURB turb(A0);
-// TEMP temp(6);
-// Detection detect;
-Radio          rf(10, 9);
-GPS            gps(6, 7);
-PacketHandler  packet_handler(&rf, &gps);
+// TEMP temp;
+Detection detect;
+// Radio          rf(10, 9);
+// GPS            gps(6, 7);
+// PacketHandler  packet_handler(&rf, &gps);
 
-LocationSender location_sender(&gps, &packet_handler);
+// LocationSender location_sender(&gps, &packet_handler);
 
 
 // =====================================================
@@ -53,7 +53,6 @@ void setup() {
     Serial.begin(115200);
     Serial.println("%%%%% [RESET] %%%%%");
   #endif
-
 
 }
 
