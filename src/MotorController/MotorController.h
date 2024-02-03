@@ -54,6 +54,7 @@ class MotorController {
     // Constructor: Takes enable and PWM pins as inputs
     // =================================================
     MotorController(byte PIN_EN_1, byte PIN_EN_2, byte PIN_PWM);
+    MotorController();
 
 
     // ========================================================
@@ -74,6 +75,11 @@ class MotorController {
     //                  the controller.
     // ========================================================
     void setVoltageLimit(byte voltage);
+
+    // ========================================================
+    // setPin: Configures enable and PWM pins
+    // ========================================================
+    void setPIN(byte PIN_EN_1, byte PIN_EN_2, byte PIN_PWM);
 
 };
 

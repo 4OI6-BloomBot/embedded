@@ -19,7 +19,6 @@ TEMP::TEMP() : TimedLoop(TEMP_LOOP_DELAY) {
 TEMP::TEMP(byte PIN) : TimedLoop(TEMP_LOOP_DELAY) {
   // Assign class variables 
   setPIN(PIN);
-
   // After assigning the pins run setup
   setup();
 }
@@ -28,11 +27,7 @@ TEMP::TEMP(byte PIN) : TimedLoop(TEMP_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void TEMP::setup() {
-    OneWire oneWire(this->PIN_ONE_WIRE);
-    DallasTemperature tempSensor(&oneWire);
-    this->tempSensor = tempSensor;
-
-    this->tempSensor.begin();
+  temp = -1;
 }
 
 // =========================================================================
@@ -47,8 +42,12 @@ void TEMP::loop() {
 // getTemp() - 
 // =======================================================
 float TEMP::getTemp() {
-  this->tempSensor.requestTemperatures();
-  this->temp = this->tempSensor.getTempCByIndex(0);
+  OneWire oneWire(this->PIN_ONE_WIRE);
+  DallasTemperature tempSensor(&oneWire);
+
+  tempSensor.begin();
+  tempSensor.requestTemperatures();
+  this->temp = tempSensor.getTempCByIndex(0);
 
   return this->temp;
 }

@@ -1,37 +1,34 @@
 /*
-  Header for the temp sensor
+  Header for the Dispersion class
 */
 
-#ifndef TEMP_H
-#define TEMP_H
+#ifndef DISPERSION_H
+#define DISPERSION_H
 
 // ==================================================================
 // Includes
 //  - TimeLoop:       Allows for scheduling periodic polling of
-//                    the temp module
+//                    the detection module
 // ==================================================================
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include "../MotorController/MotorController.h"
 
 // ==================
 // Parameter defines
 // ==================
-#define TEMP_BAUD_RATE       115200
-#define TEMP_LOOP_DELAY      2000
+#define DISPERSION_BAUD_RATE         115200
+#define DISPERSION_LOOP_DELAY        3000
 
 
-class TEMP : public TimedLoop {
-  
+class Dispersion : public TimedLoop {
+
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-    byte PIN_ONE_WIRE;
-    
-    float temp;
-    float temp_out;
+
+    MotorController _MC;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
@@ -45,19 +42,18 @@ class TEMP : public TimedLoop {
     void setup();
 
 
+
   public:
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
-    TEMP();
-    TEMP(byte PIN);
+    Dispersion();
 
-    // ===============================
-    // Accessor methods
-    // ===============================
-    float getTemp();
-    float getTempOut();
-    void setPIN(byte PIN);
+    void enablePump();
+    void disablePump();
+
+ 
+
 };
 
 #endif

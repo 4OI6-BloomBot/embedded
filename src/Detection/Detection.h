@@ -14,18 +14,26 @@
 #include "../TimedLoop/TimedLoop.h"
 #include "../Turb/Turb.h"
 #include "../TemperatureSensor/TempSensor.h"
+#include "../Dispersion/Dispersion.h"
 
+#define THRESHOLD_TEST
 
 // ==================
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
 #define DETECTION_LOOP_DELAY        3000
-#define DELTA_TURB_THRESHOLD        1
-#define TEMP_THRESHOLD              25
-#define DELTA_TEMP_THRESHOLD        5
 #define IS_DETECTED_THRESHOLD       3
 
+#ifndef THRESHOLD_TEST
+  #define DELTA_TURB_THRESHOLD        1
+  #define TEMP_THRESHOLD              25
+  #define DELTA_TEMP_THRESHOLD        5
+#else
+  #define DELTA_TURB_THRESHOLD        0
+  #define TEMP_THRESHOLD              25
+  #define DELTA_TEMP_THRESHOLD        0.5
+#endif
 
 class Detection : public TimedLoop {
 
@@ -44,6 +52,7 @@ class Detection : public TimedLoop {
 
     TURB _turb;
     TEMP _temp;
+    Dispersion _disp;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
