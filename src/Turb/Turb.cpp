@@ -54,7 +54,9 @@ float TURB::getTurb() {
   int sensorValue = analogRead(this->PIN_OUT);// read the input on analog pin A0:
   this->turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
 
-  return turb;
+  this->turb = -1120.4*pow(this->turb, 2) + 5742.3*this->turb - 4352.9;
+
+  return this->turb;
 }
 
 void TURB::setPIN(byte PIN_OUT) {

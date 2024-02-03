@@ -6,6 +6,7 @@
 #define DETECTION_CPP
 
 // #define TEST
+// #define BYPASS_DETECT
 
 // Includes
 #include "Detection.h"
@@ -56,10 +57,16 @@ void Detection::loop() {
   this->curr_temp = this->_temp.getTempOut();
 
   this->is_detected = monitorDetection();
+  #ifdef BYPASS_DETECT
+    this->is_detected = 1;
+  #endif
   Serial.println(this->is_detected);
-  this->_disp.enablePump();
-  delay(10);
-  this->_disp.disablePump();
+  if (this->is_detected) {
+    this->_disp.enablePump();
+    delay(10000); // 10 sec
+    this->_disp.disablePump();
+  }
+  
 
 
   this->prev_temp = this->curr_temp;
@@ -67,8 +74,10 @@ void Detection::loop() {
 }
 
 bool Detection::monitorDetection() {
-  this->delta_turb = this->curr_turb - this->prev_turb;
-  this->delta_temp = this->curr_temp - this->prev_temp;
+  if (this->prev_turb != -1 && this->prev_temp != -1) {
+    this->delta_turb = this->curr_turb - this->prev_turb;
+    this->delta_temp = this->curr_temp - this->prev_temp;
+  }
 
   displayData();
 
@@ -76,15 +85,15 @@ bool Detection::monitorDetection() {
   // Check all sensor conditions for bloom detection
   // Increment detect_count if condition is met
   // =========================================================================
-  if (this->delta_turb > DELTA_TURB_THRESHOLD) {
+  if (this->delta_turb >= DELTA_TURB_THRESHOLD) {
       // Serial.println("Delta turb threshold exceeded");
       this->detect_count += 1;
   }
-  if (this->curr_temp > TEMP_THRESHOLD) {
+  if (this->curr_temp >= TEMP_THRESHOLD) {
       // Serial.println("Temp threshold exceeded");
       this->detect_count += 1;
   }
-  if (this->delta_temp > DELTA_TEMP_THRESHOLD) {
+  if (this->delta_temp >= DELTA_TEMP_THRESHOLD) {
       // Serial.println("Delta temp threshold exceeded");
       this->detect_count += 1;
   }
@@ -108,18 +117,24 @@ bool Detection::monitorDetection() {
 
 void Detection::displayData() {
   Serial.print("Current Turb: ");
-  Serial.println(this->curr_turb);
+  Serial.print(this->curr_turb);
+  Serial.println(" mg/L");
   Serial.print("Previous Turb: ");
-  Serial.println(this->prev_turb);
+  Serial.print(this->prev_turb);
+  Serial.println(" mg/L");
   Serial.print("Delta Turb: ");
-  Serial.println(this->delta_turb);
+  Serial.print(this->delta_turb);
+  Serial.println(" mg/L");
+  
   Serial.print("Current Temp: ");
-  Serial.println(this->curr_temp);
+  Serial.print(this->curr_temp);
+  Serial.println(" °C");
   Serial.print("Previous Temp: ");
-  Serial.println(this->prev_temp);
+  Serial.print(this->prev_temp);
+  Serial.println(" °C");
   Serial.print("Delta Temp: ");
-  Serial.println(this->delta_temp);
-
+  Serial.print(this->delta_temp);
+  Serial.println(" °C");
 }
 
 #endif
