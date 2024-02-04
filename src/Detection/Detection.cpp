@@ -16,10 +16,9 @@
 // ====================================================
 Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
   // Call sensor constructors
-  // this->_turb.TURB(A0);
-  // TEMP temp(<insert pins>);
-  this->_turb.setPIN(A0);
-  this->_temp.setPIN(6);
+  this->_turb.setPIN(TURB_PIN_OUT);
+  this->_temp.setPIN(TEMP_PIN_OUT);
+  this->_fluoro.setPIN(FLUORO_PIN_OUT);
 
   // After assigning the pins run setup
   setup();
@@ -30,31 +29,40 @@ Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
 // =======================================
 void Detection::setup() {
   #ifndef TEST
-  this->curr_turb  = -1;
-  this->prev_turb  = -1;
-  this->delta_turb = -1;
-  this->curr_temp  = -1;
-  this->prev_temp  = -1;
-  this->delta_temp = -1;
+  this->curr_turb     = -1;
+  this->prev_turb     = -1;
+  this->delta_turb    = -1;
+  this->curr_temp     = -1;
+  this->prev_temp     = -1;
+  this->delta_temp    = -1;
+  this->curr_fluoro   = -1;
+  this->prev_fluoro   = -1;
+  this->delta_fluoro  = -1;
   #else
-  this->curr_turb  = 7;
-  this->prev_turb  = 5;
-  this->delta_turb = -1;
-  this->curr_temp  = 35;
-  this->prev_temp  = 26;
-  this->delta_temp = -1;
+  this->curr_turb     = 7;
+  this->prev_turb     = 5;
+  this->delta_turb    = -1;
+  this->curr_temp     = 35;
+  this->prev_temp     = 26;
+  this->delta_temp    = -1;
+  this->curr_fluoro   = 5;
+  this->prev_fluoro   = 3;
+  this->delta_fluoro  = -1;
   #endif
   
   this->detect_count = 0; 
 
+  // Turn LED on for fluorometer
+  this->_fluoro.enableLED();
 }
 
 // =========================================================================
 // loop() - Keeps sensor variables up to date
 // =========================================================================
 void Detection::loop() {
-  this->curr_turb = this->_turb.getTurbOut();
-  this->curr_temp = this->_temp.getTempOut();
+  this->curr_turb   = this->_turb.getTurbOut();
+  this->curr_temp   = this->_temp.getTempOut();
+  this->curr_fluoro = this->_fluoro.getFluoroOut();
 
   this->is_detected = monitorDetection();
   #ifdef BYPASS_DETECT
@@ -66,17 +74,16 @@ void Detection::loop() {
     delay(10000); // 10 sec
     this->_disp.disablePump();
   }
-  
-
-
-  this->prev_temp = this->curr_temp;
-  this->prev_turb = this->curr_turb;
+  this->prev_temp   = this->curr_temp;
+  this->prev_turb   = this->curr_turb;
+  this->prev_fluoro = this->curr_fluoro;
 }
 
 bool Detection::monitorDetection() {
-  if (this->prev_turb != -1 && this->prev_temp != -1) {
-    this->delta_turb = this->curr_turb - this->prev_turb;
-    this->delta_temp = this->curr_temp - this->prev_temp;
+  if (this->prev_turb != -1 && this->prev_temp != -1 && this->prev_fluoro != -1) {
+    this->delta_turb    = this->curr_turb   - this->prev_turb;
+    this->delta_temp    = this->curr_temp   - this->prev_temp;
+    this->delta_fluoro  = this->curr_fluoro - this->prev_fluoro;
   }
 
   displayData();
@@ -86,15 +93,15 @@ bool Detection::monitorDetection() {
   // Increment detect_count if condition is met
   // =========================================================================
   if (this->delta_turb >= DELTA_TURB_THRESHOLD) {
-      // Serial.println("Delta turb threshold exceeded");
       this->detect_count += 1;
   }
   if (this->curr_temp >= TEMP_THRESHOLD) {
-      // Serial.println("Temp threshold exceeded");
       this->detect_count += 1;
   }
   if (this->delta_temp >= DELTA_TEMP_THRESHOLD) {
-      // Serial.println("Delta temp threshold exceeded");
+      this->detect_count += 1;
+  }
+  if (this->curr_fluoro >= FLUORO_THRESHOLD) {
       this->detect_count += 1;
   }
 
@@ -135,6 +142,16 @@ void Detection::displayData() {
   Serial.print("Delta Temp: ");
   Serial.print(this->delta_temp);
   Serial.println(" °C");
+
+  Serial.print("Current Fluoro: ");
+  Serial.print(this->curr_fluoro);
+  Serial.println(" V");
+  Serial.print("Previous Fluoro: ");
+  Serial.print(this->prev_fluoro);
+  Serial.println(" V");
+  Serial.print("Delta Fluoro: ");
+  Serial.print(this->delta_fluoro);
+  Serial.println(" V");
 }
 
 #endif

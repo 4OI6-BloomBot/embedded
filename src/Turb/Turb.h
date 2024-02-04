@@ -18,9 +18,10 @@
 // ==================
 // Parameter defines
 // ==================
-#define TURB_BAUD_RATE       115200
-#define TURB_LOOP_DELAY      2000 // How often are we probing turb? (2 seconds)
+#define TURB_BAUD_RATE        115200
+#define TURB_LOOP_DELAY       2000 // How often are we probing turb? (2 seconds)
 
+#define TURB_PIN_OUT          A0
 
 class TURB : public TimedLoop {
   

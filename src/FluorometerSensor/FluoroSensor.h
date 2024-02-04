@@ -1,40 +1,38 @@
 /*
-  Header for the temp sensor
+  Header for the fluoro sensor
 */
 
-#ifndef TEMP_H
-#define TEMP_H
+#ifndef FLUORO_H
+#define FLUORO_H
 
 // ==================================================================
 // Includes
 //  - TimeLoop:       Allows for scheduling periodic polling of
-//                    the temp module
+//                    the fluoro module
 // ==================================================================
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
-#include <OneWire.h>
-#include <DallasTemperature.h>
 
 // ==================
 // Parameter defines
 // ==================
-#define TEMP_BAUD_RATE        115200
-#define TEMP_LOOP_DELAY       2000
+#define FLUORO_BAUD_RATE        115200
+#define FLUORO_LOOP_DELAY       2000 
 
-#define TEMP_PIN_OUT          6
+#define LED_PIN                 12
+#define FLUORO_PIN_OUT          A1
 
 
-class TEMP : public TimedLoop {
+class FLUORO : public TimedLoop {
   
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-    byte PIN_ONE_WIRE;
-    
-    float temp;
-    float temp_out;
+    byte PIN_OUT;
 
+    float fluoro;
+    float fluoro_out;
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class
@@ -51,15 +49,21 @@ class TEMP : public TimedLoop {
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
-    TEMP();
-    TEMP(byte PIN);
+    FLUORO();
+    FLUORO(byte PIN_OUT);
 
     // ===============================
-    // Accessor methods
+    // Fluorometer Functions
     // ===============================
-    float getTemp();
-    float getTempOut();
-    void setPIN(byte PIN);
+    float getFluoro();
+    float getFluoroOut();
+    void setPIN(byte PIN_OUT);
+
+    // ===============================
+    // LED Functions
+    // ===============================
+    void enableLED();
+    void disableLED();
 };
 
 #endif

@@ -44,7 +44,6 @@ PacketHandler  packet_handler(&rf, &gps);
 
 LocationSender location_sender(&gps, &packet_handler);
 
-
 // =====================================================
 // setup() - Runs once during power-up
 // =====================================================
@@ -53,9 +52,7 @@ void setup() {
     Serial.begin(115200);
     Serial.println("%%%%% [RESET] %%%%%");
   #endif
-
 }
-
 
 // =====================================================
 // loop() - Main program loop, runs continuously
