@@ -1,5 +1,5 @@
 /*
-  Wrapper class for the NEO-6M GPS.
+  Wrapper class for the RF24 radio
 */
 
 #ifndef RADIO_CPP
@@ -16,11 +16,12 @@ byte rx_addr[6] = "2SNSR";
 // ====================================================
 // Radio - Constructor for the radio module wrapper
 // ====================================================
-Radio::Radio(byte PIN_CE, byte PIN_CSN) {
+Radio::Radio(byte PIN_CE, byte PIN_CSN, byte PIN_IRQ) {
 
   // Assign class variables 
   this->PIN_CE  = PIN_CE;
   this->PIN_CSN = PIN_CSN;
+  this->PIN_IRQ = PIN_IRQ;
 
   // Create new RF24 object
   this->rf24 = new RF24(PIN_CE, PIN_CSN);

@@ -41,6 +41,7 @@ class Radio {
   private:
     byte PIN_CSN;
     byte PIN_CE;
+    byte PIN_IRQ;
 
     RF24 *rf24;
 
@@ -54,12 +55,18 @@ class Radio {
     } rxpayload;
 
 
+    // ================================================================
+    // handleRxInterrupt() - Function to run when an handleRxInterrupt
+    //                       is sent by the radio module.
+    // ================================================================
+    void handleRxInterrupt();
+
 
   public:  
     // ======================================
     // Constructor: Takes RF24 pins
     // ======================================
-    Radio(byte PIN_CE, byte PIN_CSN);
+    Radio(byte PIN_CE, byte PIN_CSN, byte PIN_IRQ);
 
     // =======================================================
     // setup() - Handles hardware setup after object creation

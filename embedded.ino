@@ -38,7 +38,7 @@
 // TURB turb(A0);
 // TEMP temp;
 Detection detect;
-Radio          rf(10, 9);
+Radio          rf(10, 9, 11);
 GPS            gps(6, 7);
 PacketHandler  packet_handler(&rf, &gps);
 
