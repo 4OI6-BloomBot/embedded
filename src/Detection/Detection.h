@@ -14,6 +14,7 @@
 #include "../TimedLoop/TimedLoop.h"
 #include "../Turb/Turb.h"
 #include "../TemperatureSensor/TempSensor.h"
+#include "../FluorometerSensor/FluoroSensor.h"
 #include "../Dispersion/Dispersion.h"
 
 #define THRESHOLD_TEST
@@ -23,16 +24,18 @@
 // ==================
 #define DETECTION_BAUD_RATE         115200
 #define DETECTION_LOOP_DELAY        3000
-#define IS_DETECTED_THRESHOLD       3
+#define IS_DETECTED_THRESHOLD       4
 
 #ifndef THRESHOLD_TEST
   #define DELTA_TURB_THRESHOLD        1
   #define TEMP_THRESHOLD              25
   #define DELTA_TEMP_THRESHOLD        5
+  #define FLUORO_THRESHOLD            3
 #else
   #define DELTA_TURB_THRESHOLD        0
   #define TEMP_THRESHOLD              25
   #define DELTA_TEMP_THRESHOLD        0.5
+  #define FLUORO_THRESHOLD            3
 #endif
 
 class Detection : public TimedLoop {
@@ -47,11 +50,15 @@ class Detection : public TimedLoop {
     float curr_temp;
     float prev_temp;
     float delta_temp;
+    float curr_fluoro;
+    float prev_fluoro;
+    float delta_fluoro;
     int detect_count;
     bool is_detected;
 
     TURB _turb;
     TEMP _temp;
+    FLUORO _fluoro;
     Dispersion _disp;
 
     // =======================================================

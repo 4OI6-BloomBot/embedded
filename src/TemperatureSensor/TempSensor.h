@@ -18,8 +18,10 @@
 // ==================
 // Parameter defines
 // ==================
-#define TEMP_BAUD_RATE       115200
-#define TEMP_LOOP_DELAY      2000
+#define TEMP_BAUD_RATE        115200
+#define TEMP_LOOP_DELAY       2000
+
+#define TEMP_PIN_OUT          6
 
 
 class TEMP : public TimedLoop {
