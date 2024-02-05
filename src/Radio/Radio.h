@@ -47,13 +47,18 @@ class Radio {
 
     byte payload[32];
 
+    static Radio * rxStaticObj;
+
 
     struct {
-      byte id;
+      byte  id;
       float temperature;
       float humidity;
     } rxpayload;
 
+
+
+    static void handleInterruptTrigger();
 
     // ================================================================
     // handleRxInterrupt() - Function to run when an handleRxInterrupt
