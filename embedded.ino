@@ -37,12 +37,12 @@
 // SONIC sonic(11,12);
 // TURB turb(A0);
 // TEMP temp;
-Detection detect;
-Radio          rf(10, 9, 11);
+Detection      detect;
+Radio          rf(10, 9, 4);
 GPS            gps(6, 7);
 PacketHandler  packet_handler(&rf, &gps);
 
-LocationSender location_sender(&gps, &packet_handler);
+// LocationSender location_sender(&gps, &packet_handler);
 
 // =====================================================
 // setup() - Runs once during power-up
@@ -52,6 +52,11 @@ void setup() {
     Serial.begin(115200);
     Serial.println("%%%%% [RESET] %%%%%");
   #endif
+
+  // =========================
+  // Configure the RF module
+  // =========================
+  rf.setup();
 }
 
 // =====================================================

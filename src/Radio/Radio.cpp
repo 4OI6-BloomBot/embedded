@@ -13,6 +13,9 @@
 byte tx_addr[6] = "1SNSR";
 byte rx_addr[6] = "2SNSR";
 
+// Initialize static variable
+Radio * Radio::rxStaticObj = nullptr;
+
 // ====================================================
 // Radio - Constructor for the radio module wrapper
 // ====================================================
