@@ -49,11 +49,11 @@ class Radio {
 
     static Radio * rxStaticObj;
 
-
+    // General structure for all data received
     struct {
       byte  id;
-      float temperature;
-      float humidity;
+      byte  hwID;
+      byte *data[30];
     } rxpayload;
 
 

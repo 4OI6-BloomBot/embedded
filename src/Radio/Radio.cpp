@@ -63,6 +63,12 @@ void Radio::setup() {
   // Assign this object as the Rx handler
   Radio::rxStaticObj = this;
 
+  // Interrupt pin must be 2 or 3 for Arduino UNO
+  if (this->PIN_IRQ < 2 || this->PIN_IRQ > 3)
+    Serial.println("[ERROR] Arduino UNO must use pin 2 or 3 for interrupts.");
+  
+  // This won't work if the wrong pin is set, but it doesn't break anything either.
+  // Therefore, not guarding (in case used HW is different from UNO)
   pinMode(this->PIN_IRQ, INPUT);
   attachInterrupt(digitalPinToInterrupt(this->PIN_IRQ), handleInterruptTrigger, FALLING);
 
@@ -89,6 +95,7 @@ bool Radio::tx(byte* payload, int offset) {
 // an object method.
 // ==========================================================
 void Radio::handleInterruptTrigger() {
+  Serial.println("INTERRUPT");
   Radio::rxStaticObj->handleRxInterrupt();
 }
 
@@ -105,8 +112,8 @@ void Radio::testReceive() {
   if(rf24->available()) {
     rf24->read(&rxpayload, sizeof(rxpayload));
     Serial.println(rxpayload.id);
-    Serial.println(rxpayload.temperature);
-    Serial.println(rxpayload.humidity);
+    Serial.println(rxpayload.hwID);
+    Serial.println(*rxpayload.data[0]);
   }
 }
 
