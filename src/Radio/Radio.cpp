@@ -136,12 +136,10 @@ genericPacket* Radio::getRxData() {
 
   if(rf24->available()) {
     rf24->read(packet, sizeof(*packet));
-    Serial.println(packet->id);
-    Serial.println(packet->hwID);
-    Serial.println(*packet->data[0]);
+    return packet;
   }
 
-  return packet;
+  return nullptr;
 }
 
 
