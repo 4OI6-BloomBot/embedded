@@ -14,6 +14,7 @@
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
 #include <RF24.h>
+#include "genericPacket.h"
 
 
 // ==================
@@ -49,16 +50,14 @@ class Radio {
 
     static Radio * rxStaticObj;
 
-    // General structure for all data received
-    struct {
-      byte  id;
-      byte  hwID;
-      byte *data[30];
-    } rxpayload;
 
-
-
+    // ================================================================
+    // handleInterruptTrigger() - Static method that calls the
+    //                            handleRxInterrupt method on the static
+    //                            radio object.
+    // ================================================================
     static void handleInterruptTrigger();
+
 
     // ================================================================
     // handleRxInterrupt() - Function to run when an handleRxInterrupt
@@ -66,6 +65,14 @@ class Radio {
     // ================================================================
     void handleRxInterrupt();
 
+
+    // ======================================================
+    // Testing method for Radio.
+    // TODO: Going to need to think through how to structure
+    // this considering the struct. of the sensor classes 
+    // and such.
+    // ======================================================
+    genericPacket* getRxData();
 
   public:  
     // ======================================
@@ -84,15 +91,6 @@ class Radio {
     // Transmit a passed byte array
     // =======================================================
     bool tx(byte* payload, int offset);
-
-
-    // ======================================================
-    // Testing method for Radio.
-    // TODO: Going to need to think through how to structure
-    // this considering the struct. of the sensor classes 
-    // and such.
-    // ======================================================
-    void testReceive();
 
 };
 

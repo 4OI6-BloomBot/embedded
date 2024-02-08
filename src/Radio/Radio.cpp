@@ -95,7 +95,6 @@ bool Radio::tx(byte* payload, int offset) {
 // an object method.
 // ==========================================================
 void Radio::handleInterruptTrigger() {
-  Serial.println("INTERRUPT");
   Radio::rxStaticObj->handleRxInterrupt();
 }
 
@@ -104,17 +103,46 @@ void Radio::handleInterruptTrigger() {
 // Handle an interrupt from the radio module
 // ==========================================================
 void Radio::handleRxInterrupt() {
-  Serial.println("TODO: Handle interrupt");
+  // Temp:
+  genericPacket* tmp;
+
+  // Tx data sent
+  // Tx data fail
+  // Rx data ready
+  bool tx_ds, tx_df, rx_dr;
+  Serial.println("[INFO] Packet Received");
+
+  // Clear interrupt and find out what triggered it
+  rf24->whatHappened(tx_ds, tx_df, rx_dr);
+
+  // Only case we are expecting to handle is when
+  // there is new Rx data to process
+  if (rx_dr) 
+    tmp = this->getRxData();
+
+
+  // Temp: should be handled in packet parser
+  delete tmp;
+
+  // TODO: Throw error when tx_ds or tx_df trigger?
 }
 
 
-void Radio::testReceive() {
+// ======================================================
+// getRxData - Get the data from the radio and return an
+//             address to the created struct.
+// ======================================================
+genericPacket* Radio::getRxData() {
+  genericPacket *packet = new genericPacket;
+
   if(rf24->available()) {
-    rf24->read(&rxpayload, sizeof(rxpayload));
-    Serial.println(rxpayload.id);
-    Serial.println(rxpayload.hwID);
-    Serial.println(*rxpayload.data[0]);
+    rf24->read(packet, sizeof(*packet));
+    Serial.println(packet->id);
+    Serial.println(packet->hwID);
+    Serial.println(*packet->data[0]);
   }
+
+  return packet;
 }
 
 #endif
