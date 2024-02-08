@@ -25,11 +25,29 @@ PacketHandler::PacketHandler(Radio *r, GPS *g) : TimedLoop(PACKET_HANDLER_LOOP_D
 // loop() - Monitor the queues and take action when ready 
 // =========================================================
 void PacketHandler::loop() {
+  genericPacket *pkt;
+
   // If there are enough packets in the queue, Tx them.
   if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LOW_WATER) {
     int pkt_cnt = this->tx_queue_cnt;
     for (int i = 0; i < pkt_cnt; i++) 
       this->sendPkt();
+  }
+
+
+  // Check if there are packets available in the radio Rx queue
+  if (this->radio->getRxQueueCnt() >= PACKET_QUEUE_RX_LOW_WATER) {
+    do {
+      pkt = this->radio->popRxQueue();
+      
+      // TODO: Should check for hwID here and discard if mismatches
+
+      this->parseRxData(pkt);
+
+      // Garbage collection
+      delete pkt;
+
+    } while(this->radio->getRxQueueCnt() > 0);
   }
 }
 
@@ -78,6 +96,32 @@ Protocol* PacketHandler::popTxQueue() {
   this->tx_queue_cnt--;
 
   return popped;
+}
+
+
+// ==================================================
+// parseRxData - Fetch the data from an Rx packet
+//               depending on the datatype.
+// ==================================================
+void PacketHandler::parseRxData(genericPacket *pkt) {
+  Serial.println(pkt->id);
+  Serial.println(pkt->hwID);
+
+  // Seems like the best way to handle it right now.
+  // There's not going to be too many cases coming from the
+  // server, unlike the datatypes coming from the buoy.
+  switch (pkt->id) {
+    // Testing --> location
+    case 1:
+      float lat, lng;
+      Serial.println("Location pkt!");
+      memcpy(&lat, pkt->data,     4);
+      memcpy(&lng, pkt->data + 4, 4);
+            
+      Serial.println(lat);
+      Serial.println(lng);
+      break;
+  }
 }
 
 
