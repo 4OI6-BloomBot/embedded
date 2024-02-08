@@ -29,6 +29,9 @@ Radio::Radio(byte PIN_CE, byte PIN_CSN, byte PIN_IRQ) {
   // Create new RF24 object
   this->rf24 = new RF24(PIN_CE, PIN_CSN);
 
+  // Set initial values
+  this->rx_queue_cnt = 0;
+
 }
 
 
@@ -103,9 +106,6 @@ void Radio::handleInterruptTrigger() {
 // Handle an interrupt from the radio module
 // ==========================================================
 void Radio::handleRxInterrupt() {
-  // Temp:
-  genericPacket* tmp;
-
   // Tx data sent
   // Tx data fail
   // Rx data ready
@@ -116,13 +116,12 @@ void Radio::handleRxInterrupt() {
   rf24->whatHappened(tx_ds, tx_df, rx_dr);
 
   // Only case we are expecting to handle is when
-  // there is new Rx data to process
-  if (rx_dr) 
-    tmp = this->getRxData();
-
-
-  // Temp: should be handled in packet parser
-  delete tmp;
+  // there is new Rx data to process and there is space
+  // to store it.
+  if (rx_dr && this->rx_queue_cnt < (PACKET_QUEUE_RX_LEN - 1)) {
+    this->rx_pkt_queue[this->rx_queue_cnt] = this->getRxData();
+    this->rx_queue_cnt++;
+  }
 
   // TODO: Throw error when tx_ds or tx_df trigger?
 }
@@ -143,6 +142,37 @@ genericPacket* Radio::getRxData() {
   }
 
   return packet;
+}
+
+
+// =======================================================
+// Accessor method for packet count of Rx queue
+// =======================================================
+int Radio::getRxQueueCnt() {
+  return this->rx_queue_cnt;
+}
+
+// =======================================================
+// popRxQueue - Accessor method for packets in Rx queue
+// =======================================================
+genericPacket* Radio::popRxQueue() {
+    // Check that there are elements in the queue
+  if (this->rx_queue_cnt == 0) return nullptr;
+
+  genericPacket *popped = this->rx_pkt_queue[0];
+
+  // Shift the elements in the array up
+  for (int i = 0; i < (this->rx_queue_cnt - 1); i++){
+    // Account for corner case of full queue
+    if (i >= PACKET_QUEUE_RX_LEN) break;
+
+    this->rx_pkt_queue[i] = this->rx_pkt_queue[i + 1];
+  }
+  this->rx_pkt_queue[this->rx_queue_cnt - 1] = nullptr;
+
+  this->rx_queue_cnt--;
+
+  return popped;
 }
 
 #endif

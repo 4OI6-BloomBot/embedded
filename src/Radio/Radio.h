@@ -20,6 +20,7 @@
 // ==================
 // Parameter defines
 // ==================
+#define PACKET_QUEUE_RX_LEN 5
 
 // TODO: Review these params
 #define NRF24_CHANNEL         100          // 0 ... 125
@@ -47,6 +48,9 @@ class Radio {
     RF24 *rf24;
 
     byte payload[32];
+
+    int            rx_queue_cnt;
+    genericPacket *rx_pkt_queue[PACKET_QUEUE_RX_LEN]; 
 
     static Radio * rxStaticObj;
 
@@ -80,6 +84,7 @@ class Radio {
     // ======================================
     Radio(byte PIN_CE, byte PIN_CSN, byte PIN_IRQ);
 
+
     // =======================================================
     // setup() - Handles hardware setup after object creation
     //           Note: Has to happen in the embedded.ino
@@ -87,10 +92,22 @@ class Radio {
     // =======================================================
     void setup();
 
+
     // =======================================================
     // Transmit a passed byte array
     // =======================================================
     bool tx(byte* payload, int offset);
+
+
+    // =======================================================
+    // Accessor method for packets in Rx queue
+    // =======================================================
+    genericPacket* popRxQueue();
+    
+    // =======================================================
+    // Accessor method for packet count of Rx queue
+    // =======================================================
+    int getRxQueueCnt();
 
 };
 
