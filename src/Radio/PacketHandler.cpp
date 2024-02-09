@@ -104,9 +104,6 @@ Protocol* PacketHandler::popTxQueue() {
 //               depending on the datatype.
 // ==================================================
 void PacketHandler::parseRxData(genericPacket *pkt) {
-  Serial.println(pkt->id);
-  Serial.println(pkt->hwID);
-
   // Seems like the best way to handle it right now.
   // There's not going to be too many cases coming from the
   // server, unlike the datatypes coming from the buoy.

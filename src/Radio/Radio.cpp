@@ -84,11 +84,16 @@ void Radio::setup() {
 
 
 // ==========================================================
-// Transmit a passed payload
-// TODO: Should probably add some checks and logic here
+// tx - Transmit a passed payload. Disables and re-enables Rx
 // ==========================================================
 bool Radio::tx(byte* payload, int offset) {
-  return rf24->write(payload, offset);
+  bool result;
+
+  rf24->stopListening();
+  result = rf24->write(payload, offset);
+  rf24->startListening();
+
+  return result;
 }
 
 
