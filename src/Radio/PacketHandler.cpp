@@ -108,8 +108,21 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
   // There's not going to be too many cases coming from the
   // server, unlike the datatypes coming from the buoy.
   switch (pkt->id) {
-    // Testing --> location
+    // Config Packet
     case 1:
+      int   configID;
+      float tempThresh;
+      Serial.println("Config pkt!");
+      memcpy(&configID,   pkt->data,               sizeof(int));
+      memcpy(&tempThresh, pkt->data + sizeof(int), sizeof(float));
+
+      Serial.println(configID);
+      Serial.println(tempThresh);
+
+      break;
+    
+    // Testing --> location
+    case 2:
       float lat, lng;
       Serial.println("Location pkt!");
       memcpy(&lat, pkt->data,     4);
