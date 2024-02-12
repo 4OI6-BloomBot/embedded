@@ -2,36 +2,43 @@
   Header for the AJ-SR04M wrapper header class.
 */
 
-#ifndef SONIC_H
-#define SONIC_H
+#ifndef PATHING_H
+#define PATHING_H
 
 // ==================================================================
 // Includes
 //  - TimeLoop:       Allows for scheduling periodic polling of
-//                    the sonic module
-//  - SoftwareSerial: Required to interface with the sonic sensor
+//                    the PATHING module
+//  - SoftwareSerial: Required to interface with the PATHING sensor
 // ==================================================================
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
 #include <SoftwareSerial.h>
+#include "../SonicSensor/SonicSensor.h"
+#include "../MotorController/MotorController.h"
 
 // ==================
 // Parameter defines
 // ==================
-#define SONIC_BAUD_RATE       115200
-#define SONIC_LOOP_DELAY      2000 // How often are we probing distance? (2 seconds)
+#define PATHING_BAUD_RATE       115200
+#define PATHING_LOOP_DELAY      2000 // How often are we probing distance? (2 seconds)
+#define SATURATION_LIMIT        3
+#define TOO_CLOSE               35
+#define TURN_TIME               2000
 
 
-class SONIC : public TimedLoop {
+class PATHING : public TimedLoop {
   
   // ==================================================================
   // Private fields. 
   // ==================================================================
   private:
-    byte PIN_ECHO;
-    byte PIN_TRIG;
-    int distance;
-
+    int en;
+    int dist;
+    int sat_cnt;
+    SONIC _SS;
+    MotorController _MCL;
+    MotorController _MCR;
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class
@@ -48,18 +55,19 @@ class SONIC : public TimedLoop {
     // ======================================
     // Constructor: Takes Echo and trig pins for module
     // ======================================
-    SONIC();
+    PATHING();
 
 
 
     // ===============================
-    // getDistance: Polls distance
+    // getDistance: Accessor method
     // ===============================
-    int getDistance();
-
-    
-    int peekDistance();
-    void setPIN(byte PIN_ECHO,byte PIN_TRIG);
+    void enable();
+    void disable();
+    void turn_right();
+    void turn_left();
+    void forward();
+    void stop();
 };
 
 #endif
