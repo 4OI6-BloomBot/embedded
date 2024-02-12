@@ -11,11 +11,11 @@
 // ====================================================
 // SONIC - Constructor for the  AJ-SR04M wrapper class
 // ====================================================
-SONIC::SONIC(byte PIN_ECHO, byte PIN_TRIG) : TimedLoop(SONIC_LOOP_DELAY) {
+SONIC::SONIC() : TimedLoop(SONIC_LOOP_DELAY) {
 
   // Assign class variables 
-  this->PIN_ECHO = PIN_ECHO;
-  this->PIN_TRIG = PIN_TRIG;
+  //this->PIN_ECHO = PIN_ECHO;
+  //this->PIN_TRIG = PIN_TRIG;
 
   // After assigning the pins run setup
   setup();
@@ -58,10 +58,26 @@ int SONIC::getDistance() {
     distance=(int)distance_calc;
   }
 
-Serial.print(distance);
-Serial.println(" cm");
+//Serial.print(distance);
+//Serial.println(" cm");
 
 return distance;
 }
+
+void SONIC::setPIN(byte PIN_ECHO, byte PIN_TRIG){
+  // Assign class variables 
+  this->PIN_ECHO = PIN_ECHO;
+  this->PIN_TRIG = PIN_TRIG;
+
+  // After assigning the pins run setup
+  pinMode( this->PIN_TRIG, OUTPUT); // Sets the trigPin as an Output
+  pinMode( this->PIN_ECHO, INPUT); // Sets the echoPin as an Input
+}
+
+int SONIC::peekDistance() {
+return distance;
+}
+
+
 
 #endif
