@@ -103,7 +103,7 @@ struct Location : Protocol {
 struct Temperature : Protocol {
   
   public: 
-    Temperature() : Protocol(2) {};
+    Temperature() : Protocol(3) {};
 
 };
 
