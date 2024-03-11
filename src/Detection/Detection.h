@@ -26,17 +26,6 @@
 #define DETECTION_LOOP_DELAY        1000
 #define IS_DETECTED_THRESHOLD       4
 
-#ifndef THRESHOLD_TEST
-  #define DELTA_TURB_THRESHOLD        1
-  #define TEMP_THRESHOLD              25
-  #define DELTA_TEMP_THRESHOLD        5
-  #define FLUORO_THRESHOLD            3
-#else
-  #define DELTA_TURB_THRESHOLD        0
-  #define TEMP_THRESHOLD              25
-  #define DELTA_TEMP_THRESHOLD        0.5
-  #define FLUORO_THRESHOLD            3
-#endif
 
 class Detection : public TimedLoop {
 
@@ -79,6 +68,20 @@ class Detection : public TimedLoop {
 
 
   public:
+    // Thresholds can be modified through configuration packets
+    // TODO: Could also make these private w/ getter+setter methods
+    #ifndef THRESHOLD_TEST
+      float delta_turb_threshold = 1;
+      float temp_threshold       = 25;
+      float delta_temp_threshold = 5;
+      float fluoro_threshold     = 3;
+    #else
+      float delta_turb_threshold  = 0;
+      float temp_threshold        = 25;
+      float delta_temp_threshold  = 0.5;
+      float fluoro_threshold      = 3;
+    #endif
+
     // ======================================
     // Constructor: Take analog pin out
     // ======================================

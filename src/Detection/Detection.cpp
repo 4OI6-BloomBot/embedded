@@ -119,16 +119,16 @@ bool Detection::monitorDetection() {
   // Check all sensor conditions for bloom detection
   // Increment detect_count if condition is met
   // =========================================================================
-  if (this->delta_turb >= DELTA_TURB_THRESHOLD) {
+  if (this->delta_turb >= this->delta_turb_threshold) {
       this->detect_count += 1;
   }
-  if (this->curr_temp >= TEMP_THRESHOLD) {
+  if (this->curr_temp >= this->temp_threshold) {
       this->detect_count += 1;
   }
-  if (this->delta_temp >= DELTA_TEMP_THRESHOLD) {
+  if (this->delta_temp >= this->delta_temp_threshold) {
       this->detect_count += 1;
   }
-  if (this->curr_fluoro >= FLUORO_THRESHOLD) {
+  if (this->curr_fluoro >= this->fluoro_threshold) {
       this->detect_count += 1;
   }
 
