@@ -19,6 +19,7 @@
 #include "Radio.h"
 #include "../GPS/GPS.h"
 #include "genericPacket.h"
+#include "../Detection/Detection.h"
 
 
 // ====================
@@ -38,8 +39,9 @@ class PacketHandler : TimedLoop {
   // Private fields. 
   // ==================================================================
   private:
-    Radio *radio;
-    GPS   *gps;
+    Radio     *radio;
+    GPS       *gps;
+    Detection *detection;
 
     Protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
     uint16_t tx_queue_cnt;
@@ -73,11 +75,11 @@ class PacketHandler : TimedLoop {
 
 
   public:  
-    // ======================================
+    // ====================================================
     // Constructor:
-    // Requires a pointer to a Radio object
-    // ======================================
-    PacketHandler(Radio *radio, GPS *gps);
+    // Requires a pointer to a Radio and detection object
+    // ====================================================
+    PacketHandler(Radio *radio, GPS *gps, Detection *detection);
 
 
     // =======================================================
