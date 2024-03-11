@@ -34,17 +34,17 @@
 //       updated to properly reflect the number of
 //       children.
 // =====================================================
- //MotorController test(7, 8, 9);
- //SONIC sonic(11,12);
-// TURB turb(A0);
-// TEMP temp;
+//MotorController test(7, 8, 9);
+//SONIC sonic(11,12);
+//TURB turb(A0);
+//TEMP temp;
 
 //Detection      detect;
-//Radio          rf(10, 9, 2);
-//GPS            gps(6, 7);
-//PacketHandler  packet_handler(&rf, &gps);
+Radio          rf(10, 9, 2);
+GPS            gps(6, 7);
+PacketHandler  packet_handler(&rf, &gps);
 
-//LocationSender location_sender(&gps, &packet_handler);
+LocationSender location_sender(&gps, &packet_handler);
 
 PATHING pathing;
 
