@@ -18,6 +18,7 @@
 #include "src/TemperatureSensor/TempSensor.h"
 #include "src/Radio/PacketHandler.h"
 #include "src/Radio/Protocols/Protocol.h"
+#include "src/Pathing/Pathing.h"
 
 // =====================================================
 // Defines
@@ -33,16 +34,20 @@
 //       updated to properly reflect the number of
 //       children.
 // =====================================================
-// MotorController test(7, 8, 9);
-// SONIC sonic(11,12);
+ //MotorController test(7, 8, 9);
+ //SONIC sonic(11,12);
 // TURB turb(A0);
 // TEMP temp;
-Detection      detect;
-Radio          rf(10, 9, 2);
-GPS            gps(6, 7);
-PacketHandler  packet_handler(&rf, &gps);
 
-// LocationSender location_sender(&gps, &packet_handler);
+//Detection      detect;
+//Radio          rf(10, 9, 2);
+//GPS            gps(6, 7);
+//PacketHandler  packet_handler(&rf, &gps);
+
+//LocationSender location_sender(&gps, &packet_handler);
+
+PATHING pathing;
+
 
 // =====================================================
 // setup() - Runs once during power-up
