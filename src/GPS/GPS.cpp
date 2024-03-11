@@ -104,18 +104,25 @@ void GPS::loop() {
 coord* GPS::getLocation() {
   coord *current_pos = new coord();
 
-  if (millis() > (last_update_time + GPS_VALID_PERIOD))
-    return nullptr;
+  #ifndef GPS_SPOOF_DATA
+    if (millis() > (last_update_time + GPS_VALID_PERIOD))
+      return nullptr;
 
-  // Check that the data in the GPS parser is valid
-  if (gps->location.isValid()) {
-    current_pos->lat = gps->location.lat();
-    current_pos->lng = gps->location.lng();
+    // Check that the data in the GPS parser is valid
+    if (gps->location.isValid()) {
+      current_pos->lat = gps->location.lat();
+      current_pos->lng = gps->location.lng();
+
+      return current_pos;
+    }
+
+    return nullptr;
+  #else
+    current_pos->lat = 43.262382;
+    current_pos->lng = -79.919193;
 
     return current_pos;
-  }
-
-  return nullptr;
+  #endif
 }
 
 #endif
