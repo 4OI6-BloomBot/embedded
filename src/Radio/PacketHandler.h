@@ -18,6 +18,7 @@
 #include "Protocols/Protocol.h"
 #include "Radio.h"
 #include "../GPS/GPS.h"
+#include "genericPacket.h"
 
 
 // ====================
@@ -27,6 +28,8 @@
 
 #define PACKET_QUEUE_TX_LEN       10
 #define PACKET_QUEUE_TX_LOW_WATER 3
+
+#define PACKET_QUEUE_RX_LOW_WATER 1
 
 
 class PacketHandler : TimedLoop {
@@ -47,17 +50,27 @@ class PacketHandler : TimedLoop {
     // ==================================================
     void loop() override;
 
+
     // ==================================================
     // popTxQueue() - Get a pointer to the first packet
     //                in the queue.
     // ==================================================
     Protocol* popTxQueue();
 
+
     // ==================================================
     // sendPkt - Send a packet from the front of the 
     //           Tx queue
     // ==================================================
     void sendPkt();
+
+
+    // ==================================================
+    // parseRxData - Fetch the data from an Rx packet
+    //               depending on the datatype.
+    // ==================================================
+    void parseRxData(genericPacket*);
+
 
   public:  
     // ======================================

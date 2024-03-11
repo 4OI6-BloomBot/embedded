@@ -14,11 +14,13 @@
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
 #include <RF24.h>
+#include "genericPacket.h"
 
 
 // ==================
 // Parameter defines
 // ==================
+#define PACKET_QUEUE_RX_LEN 5
 
 // TODO: Review these params
 #define NRF24_CHANNEL         100          // 0 ... 125
@@ -41,37 +43,31 @@ class Radio {
   private:
     byte PIN_CSN;
     byte PIN_CE;
+    byte PIN_IRQ;
 
     RF24 *rf24;
 
     byte payload[32];
 
+    int            rx_queue_cnt;
+    genericPacket *rx_pkt_queue[PACKET_QUEUE_RX_LEN]; 
 
-    struct {
-      byte id;
-      float temperature;
-      float humidity;
-    } rxpayload;
+    static Radio * rxStaticObj;
 
 
+    // ================================================================
+    // handleInterruptTrigger() - Static method that calls the
+    //                            handleRxInterrupt method on the static
+    //                            radio object.
+    // ================================================================
+    static void handleInterruptTrigger();
 
-  public:  
-    // ======================================
-    // Constructor: Takes RF24 pins
-    // ======================================
-    Radio(byte PIN_CE, byte PIN_CSN);
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    //           Note: Has to happen in the embedded.ino
-    //                 setup function or else system hangs.
-    // =======================================================
-    void setup();
-
-    // =======================================================
-    // Transmit a passed byte array
-    // =======================================================
-    bool tx(byte* payload, int offset);
+    // ================================================================
+    // handleRxInterrupt() - Function to run when an handleRxInterrupt
+    //                       is sent by the radio module.
+    // ================================================================
+    void handleRxInterrupt();
 
 
     // ======================================================
@@ -80,7 +76,38 @@ class Radio {
     // this considering the struct. of the sensor classes 
     // and such.
     // ======================================================
-    void testReceive();
+    genericPacket* getRxData();
+
+  public:  
+    // ======================================
+    // Constructor: Takes RF24 pins
+    // ======================================
+    Radio(byte PIN_CE, byte PIN_CSN, byte PIN_IRQ);
+
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    //           Note: Has to happen in the embedded.ino
+    //                 setup function or else system hangs.
+    // =======================================================
+    void setup();
+
+
+    // =======================================================
+    // Transmit a passed byte array
+    // =======================================================
+    bool tx(byte* payload, int offset);
+
+
+    // =======================================================
+    // Accessor method for packets in Rx queue
+    // =======================================================
+    genericPacket* popRxQueue();
+    
+    // =======================================================
+    // Accessor method for packet count of Rx queue
+    // =======================================================
+    int getRxQueueCnt();
 
 };
 
