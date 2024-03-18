@@ -7,6 +7,7 @@
 
 // #define TEST
 // #define BYPASS_DETECT
+// #define DISABLE_LED
 
 // Includes
 #include "Detection.h"
@@ -52,8 +53,13 @@ void Detection::setup() {
   
   this->detect_count = 0; 
 
+  this->fluoro_count = 0;
+
   // Turn LED on for fluorometer
-  this->_fluoro.enableLED();
+  #ifndef DISABLE_LED
+    this->_fluoro.enableLED();
+  #endif
+
 }
 
 // =========================================================================
@@ -64,11 +70,32 @@ void Detection::loop() {
   this->curr_temp   = this->_temp.getTempOut();
   this->curr_fluoro = this->_fluoro.getFluoroOut();
 
+  // Serial.println(this->fluoro_count);
+  // Serial.println(this->curr_fluoro);
+  if (this->fluoro_count < 10) {
+    this->fluoro_arr[this->fluoro_count] = this->curr_fluoro;
+  }
+  else {
+    this->fluoro_count = 0;
+    float fluoro_avg = 0.0;
+    for (int i = 0; i < 10; i++) {
+      fluoro_avg += this->fluoro_arr[i];
+    }
+    fluoro_avg = fluoro_avg/10;
+    // Serial.print("Fluoro Avg: ");
+    // Serial.println(fluoro_avg);
+  }
+
+  this->fluoro_count += 1;
+
   this->is_detected = monitorDetection();
   #ifdef BYPASS_DETECT
     this->is_detected = 1;
   #endif
+  Serial.print("is_detected: ");
   Serial.println(this->is_detected);
+  Serial.println("=========================================================================");
+
   if (this->is_detected) {
     this->_disp.enablePump();
     delay(10000); // 10 sec
@@ -145,13 +172,15 @@ void Detection::displayData() {
 
   Serial.print("Current Fluoro: ");
   Serial.print(this->curr_fluoro);
-  Serial.println(" V");
+  Serial.println(" ");
   Serial.print("Previous Fluoro: ");
   Serial.print(this->prev_fluoro);
-  Serial.println(" V");
+  Serial.println(" ");
   Serial.print("Delta Fluoro: ");
   Serial.print(this->delta_fluoro);
-  Serial.println(" V");
+  Serial.println(" ");
+
+  Serial.println("=========================================================================");
 }
 
 #endif

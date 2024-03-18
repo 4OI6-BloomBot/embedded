@@ -23,7 +23,7 @@
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        3000
+#define DETECTION_LOOP_DELAY        1000
 #define IS_DETECTED_THRESHOLD       4
 
 #ifndef THRESHOLD_TEST
@@ -55,6 +55,9 @@ class Detection : public TimedLoop {
     float delta_fluoro;
     int detect_count;
     bool is_detected;
+
+    float fluoro_arr[10];
+    int fluoro_count;
 
     TURB _turb;
     TEMP _temp;
