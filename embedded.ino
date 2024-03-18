@@ -39,14 +39,14 @@
 //TURB turb(A0);
 //TEMP temp;
 
-//Detection      detect;
-Radio          rf(10, 9, 2);
-GPS            gps(6, 7);
-PacketHandler  packet_handler(&rf, &gps);
+Detection      detect;
+// Radio          rf(10, 9, 2);
+// GPS            gps(6, 7);
+// PacketHandler  packet_handler(&rf, &gps);
 
-LocationSender location_sender(&gps, &packet_handler);
+// LocationSender location_sender(&gps, &packet_handler);
 
-PATHING pathing;
+// PATHING pathing;
 
 
 // =====================================================
@@ -61,7 +61,7 @@ void setup() {
   // =========================
   // Configure the RF module
   // =========================
-  rf.setup();
+  // rf.setup();
 }
 
 // =====================================================

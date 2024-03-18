@@ -17,7 +17,7 @@
 // Parameter defines
 // ==================
 #define FLUORO_BAUD_RATE        115200
-#define FLUORO_LOOP_DELAY       2000 
+#define FLUORO_LOOP_DELAY       1000 
 
 #define LED_PIN                 12
 #define FLUORO_PIN_OUT          A1

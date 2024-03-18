@@ -51,6 +51,7 @@ void TURB::loop() {
 // getTurb() - Returns voltage for turb (lower is darker)
 // =======================================================
 float TURB::getTurb() {
+  analogReference(EXTERNAL); // 5V
   int sensorValue = analogRead(this->PIN_OUT);// read the input on analog pin A0:
   this->turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
 
