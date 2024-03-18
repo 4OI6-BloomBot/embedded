@@ -47,7 +47,7 @@ void FLUORO::loop() {
 // getFluoro() - Returns voltage for fluoro (lower is darker)
 // =======================================================
 float FLUORO::getFluoro() {
-  analogReference(INTERNAL1V1); // 1.1V, INTERNAL == 0.55V
+  analogReference(INTERNAL); // INTERNAL == 0.55V
   int ana_value = analogRead(this->PIN_OUT);  // read the input on analog pin A1:
   // Serial.print("src: ");
   // Serial.println(ana_value);

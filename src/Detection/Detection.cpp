@@ -60,8 +60,6 @@ void Detection::setup() {
     this->_fluoro.enableLED();
   #endif
 
-  // analogReference(INTERNAL1V1); // 1.1V, INTERNAL == 0.55V
-  // analogReference(INTERNAL); // 1.1V, INTERNAL == 0.55V
 }
 
 // =========================================================================
