@@ -17,13 +17,14 @@
 #include "../FluorometerSensor/FluoroSensor.h"
 #include "../Dispersion/Dispersion.h"
 
-#define THRESHOLD_TEST
+// #define THRESHOLD_TEST
 
 // ==================
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
 #define DETECTION_LOOP_DELAY        1000
+
 #define IS_DETECTED_THRESHOLD       4
 
 #ifndef THRESHOLD_TEST
@@ -55,6 +56,9 @@ class Detection : public TimedLoop {
     float delta_fluoro;
     int detect_count;
     bool is_detected;
+
+    uint8_t en_pump;
+    uint8_t en_sensor;
 
     float fluoro_arr[10];
     int fluoro_count;
@@ -88,6 +92,9 @@ class Detection : public TimedLoop {
     // monitorDetection: monitor method
     // ===============================
     bool monitorDetection();
+
+    void disablePump();
+    void disableAllSensors();
 
 };
 

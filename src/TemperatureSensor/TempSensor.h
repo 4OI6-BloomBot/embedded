@@ -32,6 +32,8 @@ class TEMP : public TimedLoop {
   private:
     byte PIN_ONE_WIRE;
     
+    uint8_t en;
+    
     float temp;
     float temp_out;
 
@@ -60,6 +62,7 @@ class TEMP : public TimedLoop {
     float getTemp();
     float getTempOut();
     void setPIN(byte PIN);
+    void disableSensor();
 };
 
 #endif

@@ -51,9 +51,10 @@ void Detection::setup() {
   this->delta_fluoro  = -1;
   #endif
   
-  this->detect_count = 0; 
-
-  this->fluoro_count = 0;
+  this->detect_count  = 0; 
+  this->fluoro_count  = 0;
+  this->en_pump       = 1;
+  this->en_sensor     = 1;
 
   // Turn LED on for fluorometer
   #ifndef DISABLE_LED
@@ -85,7 +86,6 @@ void Detection::loop() {
     // Serial.print("Fluoro Avg: ");
     // Serial.println(fluoro_avg);
   }
-
   this->fluoro_count += 1;
 
   this->is_detected = monitorDetection();
@@ -96,10 +96,12 @@ void Detection::loop() {
   Serial.println(this->is_detected);
   Serial.println("=========================================================================");
 
-  if (this->is_detected) {
-    this->_disp.enablePump();
-    delay(10000); // 10 sec
-    this->_disp.disablePump();
+  if (this->en_pump == 1) {
+    if (this->is_detected) {
+      this->_disp.enablePump();
+      delay(10000); // 10 sec
+      this->_disp.disablePump();
+    }
   }
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;
@@ -181,6 +183,18 @@ void Detection::displayData() {
   Serial.println(" ");
 
   Serial.println("=========================================================================");
+}
+
+void Detection::disablePump() {
+  this->en_pump = 0;
+  this->_disp.disablePump();
+}
+
+void Detection::disableAllSensors() {
+  this->en_sensor = 0;
+  this->_temp.disableSensor();
+  this->_turb.disableSensor();
+  this->_fluoro.disableSensor();
 }
 
 #endif
