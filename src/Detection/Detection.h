@@ -57,8 +57,8 @@ class Detection : public TimedLoop {
     int detect_count;
     bool is_detected;
 
-    uint8_t en_pump;
-    uint8_t en_sensor;
+    bool en_pump;
+    bool en_sensor;
 
     float fluoro_arr[10];
     int fluoro_count;
