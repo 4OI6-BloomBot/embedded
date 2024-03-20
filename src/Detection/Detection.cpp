@@ -5,7 +5,7 @@
 #ifndef DETECTION_CPP
 #define DETECTION_CPP
 
-#define BYPASS_DETECT
+// #define BYPASS_DETECT
 // #define DISABLE_LED
 
 // Includes
@@ -96,7 +96,7 @@ void Detection::loop() {
 }
 
 bool Detection::monitorDetection() {
-  if (this->prev_turb != -1 && this->prev_temp != -1 && this->prev_fluoro != -1) {
+  if ((this->prev_turb != -1 && this->prev_temp != -1 && this->prev_fluoro != -1) && (this->prev_turb != 0 && this->prev_temp != 0 && this->prev_fluoro != 0)) {
     this->delta_turb    = this->curr_turb   - this->prev_turb;
     this->delta_temp    = this->curr_temp   - this->prev_temp;
     this->delta_fluoro  = this->curr_fluoro - this->prev_fluoro;
@@ -108,7 +108,10 @@ bool Detection::monitorDetection() {
   // Check all sensor conditions for bloom detection
   // Increment detect_count if condition is met
   // =========================================================================
-  if (this->delta_turb >= DELTA_TURB_THRESHOLD) {
+  if (this->curr_turb <= TURB_THRESHOLD) {
+      this->detect_count += 1;
+  }
+  if (this->delta_turb <= (-1.0)*DELTA_TURB_THRESHOLD) {
       this->detect_count += 1;
   }
   if (this->curr_temp >= TEMP_THRESHOLD) {
@@ -143,13 +146,13 @@ void Detection::displayData() {
   // Turbidity Data
   Serial.print("Current Turb: ");
   Serial.print(this->curr_turb);
-  Serial.println(" mg/L");
+  Serial.println(" V");
   Serial.print("Previous Turb: ");
   Serial.print(this->prev_turb);
-  Serial.println(" mg/L");
+  Serial.println(" V");
   Serial.print("Delta Turb: ");
   Serial.print(this->delta_turb);
-  Serial.println(" mg/L");
+  Serial.println(" V");
   
   // Temperature Data
   Serial.print("Current Temp: ");
@@ -188,6 +191,10 @@ void Detection::disableAllSensors() {
   this->_temp.disableSensor();
   this->_turb.disableSensor();
   this->_fluoro.disableSensor();
+}
+
+bool Detection::bloomDetect() {
+  return this->is_detected;
 }
 
 #endif

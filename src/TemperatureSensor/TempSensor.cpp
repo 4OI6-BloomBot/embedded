@@ -39,7 +39,7 @@ void TEMP::loop() {
     this->temp_out = getTemp();
   }
   else {
-    this->temp_out = 0;
+    this->temp_out = -1;
   }
 }
 

@@ -17,7 +17,6 @@
 #include "../FluorometerSensor/FluoroSensor.h"
 #include "../Dispersion/Dispersion.h"
 
-// #define THRESHOLD_TEST
 
 // ==================
 // Parameter defines
@@ -25,19 +24,17 @@
 #define DETECTION_BAUD_RATE         115200
 #define DETECTION_LOOP_DELAY        1000
 
-#define IS_DETECTED_THRESHOLD       4
+// ====================================
+// Thresholds for detection algo
+// ====================================
+#define IS_DETECTED_THRESHOLD       5
 
-#ifndef THRESHOLD_TEST
-  #define DELTA_TURB_THRESHOLD        1
-  #define TEMP_THRESHOLD              25
-  #define DELTA_TEMP_THRESHOLD        5
-  #define FLUORO_THRESHOLD            3
-#else
-  #define DELTA_TURB_THRESHOLD        0
-  #define TEMP_THRESHOLD              25
-  #define DELTA_TEMP_THRESHOLD        0.5
-  #define FLUORO_THRESHOLD            3
-#endif
+#define TURB_THRESHOLD              3.5     // 3.5V ~= 5-100, anything bellow can be considered 
+#define DELTA_TURB_THRESHOLD        0.3     // Change of 0.3 V ~= +- 100-1000 NTU 
+#define TEMP_THRESHOLD              25      // Blooms happen > 25 deg C
+#define DELTA_TEMP_THRESHOLD        0       // Temperature theoretically should increase, hard to detect in nature
+#define FLUORO_THRESHOLD            0       // TODO: unknown RN
+
 
 class Detection : public TimedLoop {
 
@@ -95,6 +92,8 @@ class Detection : public TimedLoop {
 
     void disablePump();
     void disableAllSensors();
+
+    bool bloomDetect();
 
 };
 
