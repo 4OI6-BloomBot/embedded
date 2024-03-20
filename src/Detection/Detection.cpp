@@ -6,6 +6,7 @@
 #define DETECTION_CPP
 
 // #define BYPASS_DETECT
+// #define DISABLE_DETECT
 // #define DISABLE_LED
 
 #define NO_LOGS
@@ -101,10 +102,11 @@ void Detection::loop() {
     Serial.println(this->is_detected);
     Serial.println("=========================================================================");
   #endif
-
-  if (this->en_pump == 1) {
-    this->_disp.dispersionAlgo(is_detected);
-  }
+  #ifndef DISABLE_DETECT
+    if (this->en_pump == 1) {
+      this->_disp.dispersionAlgo(is_detected);
+    }
+  #endif
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;
   this->prev_fluoro = this->curr_fluoro;
@@ -138,6 +140,9 @@ bool Detection::monitorDetection() {
       this->detect_count += 1;
   }
   if (this->curr_fluoro >= this->fluoro_threshold) {
+      this->detect_count += 1;
+  }
+  if (this->delta_fluoro >= this->delta_fluoro_threshold) {
       this->detect_count += 1;
   }
 
