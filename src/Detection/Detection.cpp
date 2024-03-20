@@ -125,7 +125,7 @@ bool Detection::monitorDetection() {
   if (this->curr_turb <= TURB_THRESHOLD) {
       this->detect_count += 1;
   }
-  if (this->delta_turb <= (-1.0)*DELTA_TURB_THRESHOLD) {
+  if (this->delta_turb <= (-1.0)*this->delta_turb_threshold) {
       this->detect_count += 1;
   }
   if (this->curr_temp >= this->temp_threshold) {

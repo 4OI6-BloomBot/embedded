@@ -115,7 +115,7 @@ void Radio::handleRxInterrupt() {
   // Tx data fail
   // Rx data ready
   bool tx_ds, tx_df, rx_dr;
-  Serial.println("[INFO] Packet Received");
+  Serial.println("[INFO] Packet received. Adding to Rx queue.");
 
   // Clear interrupt and find out what triggered it
   rf24->whatHappened(tx_ds, tx_df, rx_dr);

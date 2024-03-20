@@ -79,17 +79,11 @@ class Detection : public TimedLoop {
   public:
     // Thresholds can be modified through configuration packets
     // TODO: Could also make these private w/ getter+setter methods
-    #ifndef THRESHOLD_TEST
-      float delta_turb_threshold = 1;
-      float temp_threshold       = 25;
-      float delta_temp_threshold = 5;
-      float fluoro_threshold     = 3;
-    #else
-      float delta_turb_threshold  = 0;
-      float temp_threshold        = 25;
-      float delta_temp_threshold  = 0.5;
-      float fluoro_threshold      = 3;
-    #endif
+    float turb_threshold       = TURB_THRESHOLD;
+    float delta_turb_threshold = DELTA_TURB_THRESHOLD;
+    float temp_threshold       = TEMP_THRESHOLD;
+    float delta_temp_threshold = DELTA_TEMP_THRESHOLD;
+    float fluoro_threshold     = TURB_THRESHOLD;
 
     // ======================================
     // Constructor: Take analog pin out
