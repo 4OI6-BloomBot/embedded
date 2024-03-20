@@ -22,7 +22,7 @@
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        30000
+#define DETECTION_LOOP_DELAY        3000
 
 // ====================================
 // Thresholds for detection algo

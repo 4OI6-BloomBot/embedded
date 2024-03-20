@@ -37,9 +37,12 @@ void Detection::setup() {
 
   // Call dispersion setup
   this->_disp.setup();
-
-  // Call flurometer setup
+  // Call turbidity setup
+  this->_turb.setup();
+  // Call fluorometer setup
   this->_fluoro.setup();
+  // Call temperature setup
+  this->_temp.setup();
 
   this->curr_turb     = -1;
   this->prev_turb     = -1;
@@ -122,7 +125,7 @@ bool Detection::monitorDetection() {
   // Check all sensor conditions for bloom detection
   // Increment detect_count if condition is met
   // =========================================================================
-  if (this->curr_turb <= TURB_THRESHOLD) {
+  if (this->curr_turb <= this->turb_threshold) {
       this->detect_count += 1;
   }
   if (this->delta_turb <= (-1.0)*this->delta_turb_threshold) {
