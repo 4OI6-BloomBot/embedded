@@ -26,6 +26,8 @@
 // =====================================================
 #define DEBUG
 
+// #define NO_RADIO_GPS
+#define NO_PATHING
 
 // =====================================================
 // Variable Declaration
@@ -34,19 +36,23 @@
 //       updated to properly reflect the number of
 //       children.
 // =====================================================
-//MotorController test(7, 8, 9);
-//SONIC sonic(11,12);
-//TURB turb(A0);
-//TEMP temp;
 
-Detection      detect;
-// Radio          rf(10, 9, 2);
-// GPS            gps(6, 7);
-// PacketHandler  packet_handler(&rf, &gps);
+#ifndef NO_PATHING
+  MotorController test(7, 8, 9);
+  SONIC           sonic(11, 12);
+  PATHING         pathing;
+#endif
 
-// LocationSender location_sender(&gps, &packet_handler);
+TURB      turb(A0);
+TEMP      temp;
+Detection detect;
 
-// PATHING pathing;
+#ifndef NO_RADIO_GPS
+  Radio          rf(10, 9, 2);
+  GPS            gps(6, 7);
+  PacketHandler  packet_handler(&rf, &gps, &detect);
+  LocationSender location_sender(&gps, &packet_handler);
+#endif
 
 
 // =====================================================
@@ -58,10 +64,23 @@ void setup() {
     Serial.println("%%%%% [RESET] %%%%%");
   #endif
 
-  // =========================
-  // Configure the RF module
-  // =========================
-  // rf.setup();
+  // ====================================
+  // Configure the individual modules
+  // ====================================
+  temp.setup();
+  detect.setup();
+
+  #ifndef NO_PATHING
+    sonic.setup();
+    pathing.setup();
+  #endif
+
+  #ifndef NO_RADIO_GPS
+    gps.setup();
+    packet_handler.setup();
+    location_sender.setup();
+    rf.setup();
+  #endif
 }
 
 // =====================================================
@@ -69,6 +88,7 @@ void setup() {
 //          after setup()
 // =====================================================
 void loop() {
+
   // =====================================================
   // Check each of the timed objects and run their loops
   // if it is time.

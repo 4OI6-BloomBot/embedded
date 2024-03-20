@@ -18,8 +18,6 @@ GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
   this->PIN_TX = PIN_TX;
   this->PIN_RX = PIN_RX;
 
-  // After assigning the pins run setup
-  setup();
 }
 
 // =======================================
@@ -27,6 +25,9 @@ GPS::GPS(byte PIN_TX, byte PIN_RX) : TimedLoop(GPS_LOOP_DELAY) {
 // =======================================
 void GPS::setup() {
   
+  // Call TimedLoop setup
+  TimedLoop::setup();
+
   // Create new objects and add to pointers
   this->gps    = new TinyGPSPlus();
   this->serial = new SoftwareSerial(PIN_RX, PIN_TX);

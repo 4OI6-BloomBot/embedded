@@ -30,17 +30,23 @@
 // Static variable initialization
 // ====================================================
 TimedLoop* TimedLoop::timedObjects[NUM_TIMEDLOOP_OBJECTS] = {nullptr};
-
+int        TimedLoop::objectCount                         = 0;
 
 // ====================================================
 // TimedLoop - Constructor.
 // ====================================================
 TimedLoop::TimedLoop(unsigned long int delay) {
-
   // Assign class variables 
   this->loop_delay    = delay;
   this->last_run_time = 0;
+}
 
+
+// ====================================================
+// setup() - Configures the initial runtime and adds
+//           the object to the static TimedLoop list
+// ====================================================
+void TimedLoop::setup() {
   setNextRuntime();
 
   // Add object to list
@@ -96,16 +102,17 @@ unsigned long int TimedLoop::getLastRuntime() {
 //               TimedLoop objects.
 // ========================================================
 void TimedLoop::addObject(TimedLoop *obj) {
-  // ======================================================================
-  // Iterate over all of the objects and add the given pointer to the next
-  // free slot
-  // ======================================================================
-  for (int i = 0; i < NUM_TIMEDLOOP_OBJECTS; i++) {
-    if (TimedLoop::timedObjects[i] == nullptr) {
-      TimedLoop::timedObjects[i] = obj;
-      return;
-    }
+
+  // Check if there is room for another object to be registerd
+  // return if not.
+  if (TimedLoop::objectCount == NUM_TIMEDLOOP_OBJECTS) {
+    Serial.println("[ERROR] Too many TimedLoop objects are already registerd. Can not register another!");
+    return;
   }
+
+  TimedLoop::timedObjects[TimedLoop::objectCount] = obj;
+  TimedLoop::objectCount++;
+
 }
 
 // ======================================================================

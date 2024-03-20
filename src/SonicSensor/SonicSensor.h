@@ -38,11 +38,6 @@ class SONIC : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
 
   public:
     // ======================================
@@ -50,7 +45,10 @@ class SONIC : public TimedLoop {
     // ======================================
     SONIC();
 
-
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     // ===============================
     // getDistance: Polls distance

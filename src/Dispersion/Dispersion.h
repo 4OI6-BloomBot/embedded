@@ -36,18 +36,17 @@ class Dispersion : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
-
 
   public:
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
     Dispersion();
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     void enablePump();
     void disablePump();
