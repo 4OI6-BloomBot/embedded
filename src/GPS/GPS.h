@@ -54,11 +54,6 @@ class GPS : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
 
   public:
     // =======================================================
@@ -71,6 +66,11 @@ class GPS : public TimedLoop {
     // getLocation: Accessor method
     // ===============================
     coord* getLocation();
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     // ===============================
     // getTime: Accessor method

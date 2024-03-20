@@ -38,6 +38,8 @@ TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
 void TURB::setup() {
   turb      = -1;
   this->en  = 1;
+
+  TimedLoop::setup();
 }
 
 // =========================================================================

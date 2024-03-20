@@ -14,7 +14,7 @@
 // ==================================================================
 // Params
 // ==================================================================
-#define NUM_TIMEDLOOP_OBJECTS 4
+#define NUM_TIMEDLOOP_OBJECTS 6
 
 
 class TimedLoop {
@@ -27,8 +27,10 @@ class TimedLoop {
     // =============================================================
     // Static list of TimedLoop objects that is filled at startup
     // Used to determine/handle next event times.
+    // Counting int keeps track of how many objects are assigned
     // =============================================================
     static TimedLoop* timedObjects[NUM_TIMEDLOOP_OBJECTS];
+    static int        objectCount;
 
 
     // ============================================================= 
@@ -66,6 +68,9 @@ class TimedLoop {
     // passed
     // ====================================================
     void tryLoop();
+
+
+    void setup();
 
 
     // ====================================================

@@ -43,11 +43,6 @@ class TEMP : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
 
   public:
     // ======================================
@@ -55,6 +50,11 @@ class TEMP : public TimedLoop {
     // ======================================
     TEMP();
     TEMP(byte PIN);
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     // ===============================
     // Accessor methods

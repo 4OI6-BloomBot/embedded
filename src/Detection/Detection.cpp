@@ -8,6 +8,8 @@
 // #define BYPASS_DETECT
 // #define DISABLE_LED
 
+#define NO_LOGS
+
 // Includes
 #include "Detection.h"
 
@@ -24,14 +26,21 @@ Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
   this->_temp.setPIN(TEMP_PIN_OUT);
   this->_fluoro.setPIN(FLUORO_PIN_OUT);
 
-  // After assigning the pins run setup
-  setup();
 }
 
 // =======================================
 // setup() - Initial setup
 // =======================================
 void Detection::setup() {
+  // Call TimedLoop setup
+  TimedLoop::setup();
+
+  // Call dispersion setup
+  this->_disp.setup();
+
+  // Call flurometer setup
+  this->_fluoro.setup();
+
   this->curr_turb     = -1;
   this->prev_turb     = -1;
   this->delta_turb    = -1;
@@ -83,9 +92,12 @@ void Detection::loop() {
   #ifdef BYPASS_DETECT
     this->is_detected = 1;
   #endif
-  Serial.print("is_detected: ");
-  Serial.println(this->is_detected);
-  delimeter();
+
+  #ifndef NO_LOGS
+    Serial.print("is_detected: ");
+    Serial.println(this->is_detected);
+    Serial.println("=========================================================================");
+  #endif
 
   if (this->en_pump == 1) {
     this->_disp.dispersionAlgo(is_detected);
@@ -102,7 +114,9 @@ bool Detection::monitorDetection() {
     this->delta_fluoro  = this->curr_fluoro - this->prev_fluoro;
   }
 
-  displayData();
+  #ifndef NO_LOGS
+    displayData();
+  #endif
 
   // =========================================================================
   // Check all sensor conditions for bloom detection
@@ -114,13 +128,13 @@ bool Detection::monitorDetection() {
   if (this->delta_turb <= (-1.0)*DELTA_TURB_THRESHOLD) {
       this->detect_count += 1;
   }
-  if (this->curr_temp >= TEMP_THRESHOLD) {
+  if (this->curr_temp >= this->temp_threshold) {
       this->detect_count += 1;
   }
-  if (this->delta_temp >= DELTA_TEMP_THRESHOLD) {
+  if (this->delta_temp >= this->delta_temp_threshold) {
       this->detect_count += 1;
   }
-  if (this->curr_fluoro >= FLUORO_THRESHOLD) {
+  if (this->curr_fluoro >= this->fluoro_threshold) {
       this->detect_count += 1;
   }
 
@@ -128,12 +142,16 @@ bool Detection::monitorDetection() {
   // Identify if all conditions met for bloom detection
   // =========================================================================
   if (this->detect_count == IS_DETECTED_THRESHOLD) {
-      Serial.println("BLOOM DETECTED!!!");
+      #ifndef NO_LOGS
+        Serial.println("BLOOM DETECTED!!!");
+      #endif
       this->detect_count = 0;
       return true;
   } else {
-      Serial.print("Number of conditions detected: ");
-      Serial.println(this->detect_count);
+      #ifndef NO_LOGS
+        Serial.print("Number of conditions detected: ");
+        Serial.println(this->detect_count);
+      #endif
       this->detect_count = 0;
       return false;
   }

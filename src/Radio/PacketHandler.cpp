@@ -12,12 +12,21 @@
 // ========================================================
 // PacketHandler - Constructor
 // ========================================================
-PacketHandler::PacketHandler(Radio *r, GPS *g) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
-  this->radio = r;
-  this->gps   = g;
+PacketHandler::PacketHandler(Radio *r, GPS *g, Detection *d) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
+  this->radio     = r;
+  this->gps       = g;
+  this->detection = d;
 
   // Set initial value
   this->tx_queue_cnt = 0;
+}
+
+
+// =======================================================
+// setup() - Handles hardware setup after object creation
+// =======================================================
+void PacketHandler::setup() {
+  TimedLoop::setup();
 }
 
 
@@ -104,6 +113,8 @@ Protocol* PacketHandler::popTxQueue() {
 //               depending on the datatype.
 // ==================================================
 void PacketHandler::parseRxData(genericPacket *pkt) {
+  int sizeCnt = 0;
+
   // Seems like the best way to handle it right now.
   // There's not going to be too many cases coming from the
   // server, unlike the datatypes coming from the buoy.
@@ -111,13 +122,39 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
     // Config Packet
     case 1:
       int   configID;
+      float turbThresh;
       float tempThresh;
-      Serial.println("Config pkt!");
-      memcpy(&configID,   pkt->data,               sizeof(int));
-      memcpy(&tempThresh, pkt->data + sizeof(int), sizeof(float));
+      float deltaTempThresh;
+      float fluoroThresh;
 
+      memcpy(&configID,        pkt->data,           sizeof(int));
+      sizeCnt += sizeof(int);
+
+      memcpy(&turbThresh,      pkt->data + sizeCnt, sizeof(float));
+      sizeCnt += sizeof(float);
+      
+      memcpy(&tempThresh,      pkt->data + sizeCnt, sizeof(float));
+      sizeCnt += sizeof(float);
+      
+      memcpy(&deltaTempThresh, pkt->data + sizeCnt, sizeof(float));
+      sizeCnt += sizeof(float);
+
+      memcpy(&fluoroThresh,    pkt->data + sizeCnt, sizeof(float));
+      
+
+      Serial.println("Config pkt!");      
       Serial.println(configID);
+      Serial.println(fluoroThresh);
       Serial.println(tempThresh);
+      Serial.println(deltaTempThresh);
+      Serial.println(fluoroThresh);
+
+
+      // Assign to detection object
+      this->detection->delta_turb_threshold = turbThresh;
+      this->detection->temp_threshold       = tempThresh;
+      this->detection->delta_temp_threshold = deltaTempThresh;
+      this->detection->fluoro_threshold     = fluoroThresh;
 
       break;
     
