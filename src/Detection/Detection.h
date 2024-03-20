@@ -17,14 +17,25 @@
 #include "../FluorometerSensor/FluoroSensor.h"
 #include "../Dispersion/Dispersion.h"
 
-#define THRESHOLD_TEST
 
 // ==================
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
 #define DETECTION_LOOP_DELAY        30000
-#define IS_DETECTED_THRESHOLD       4
+
+// ====================================
+// Thresholds for detection algo
+// ====================================
+#define IS_DETECTED_THRESHOLD       5
+
+#define TURB_THRESHOLD              3.5     // 3.5V ~= 5-100, anything bellow can be considered 
+#define DELTA_TURB_THRESHOLD        0.3     // Change of 0.3 V ~= +- 100-1000 NTU 
+#define TEMP_THRESHOLD              25      // Blooms happen > 25 deg C
+#define DELTA_TEMP_THRESHOLD        0       // Temperature theoretically should increase, hard to detect in nature
+#define FLUORO_THRESHOLD            0       // TODO: unknown RN
+
+
 
 
 class Detection : public TimedLoop {
@@ -44,6 +55,9 @@ class Detection : public TimedLoop {
     float delta_fluoro;
     int detect_count;
     bool is_detected;
+
+    bool en_pump;
+    bool en_sensor;
 
     float fluoro_arr[10];
     int fluoro_count;
@@ -65,17 +79,11 @@ class Detection : public TimedLoop {
   public:
     // Thresholds can be modified through configuration packets
     // TODO: Could also make these private w/ getter+setter methods
-    #ifndef THRESHOLD_TEST
-      float delta_turb_threshold = 1;
-      float temp_threshold       = 25;
-      float delta_temp_threshold = 5;
-      float fluoro_threshold     = 3;
-    #else
-      float delta_turb_threshold  = 0;
-      float temp_threshold        = 25;
-      float delta_temp_threshold  = 0.5;
-      float fluoro_threshold      = 3;
-    #endif
+    float turb_threshold       = TURB_THRESHOLD;
+    float delta_turb_threshold = DELTA_TURB_THRESHOLD;
+    float temp_threshold       = TEMP_THRESHOLD;
+    float delta_temp_threshold = DELTA_TEMP_THRESHOLD;
+    float fluoro_threshold     = TURB_THRESHOLD;
 
     // ======================================
     // Constructor: Take analog pin out
@@ -91,6 +99,11 @@ class Detection : public TimedLoop {
     // monitorDetection: monitor method
     // ===============================
     bool monitorDetection();
+
+    void disablePump();
+    void disableAllSensors();
+
+    bool bloomDetect();
 
 };
 
