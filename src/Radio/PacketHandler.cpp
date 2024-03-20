@@ -22,6 +22,14 @@ PacketHandler::PacketHandler(Radio *r, GPS *g, Detection *d) : TimedLoop(PACKET_
 }
 
 
+// =======================================================
+// setup() - Handles hardware setup after object creation
+// =======================================================
+void PacketHandler::setup() {
+  TimedLoop::setup();
+}
+
+
 // =========================================================
 // loop() - Monitor the queues and take action when ready 
 // =========================================================

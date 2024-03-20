@@ -83,6 +83,12 @@ class PacketHandler : TimedLoop {
 
 
     // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
+
+
+    // =======================================================
     // queuePacket - Adds a packet to the Tx queue
     // =======================================================
     bool queuePacket(Protocol *packet);
