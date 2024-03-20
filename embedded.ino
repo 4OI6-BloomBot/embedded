@@ -68,6 +68,7 @@ void setup() {
   // Configure the individual modules
   // ====================================
   temp.setup();
+  turb.setup();
   detect.setup();
 
   #ifndef NO_PATHING
