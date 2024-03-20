@@ -125,7 +125,7 @@ bool Detection::monitorDetection() {
   if (this->curr_turb <= TURB_THRESHOLD) {
       this->detect_count += 1;
   }
-  if (this->delta_turb <= (-1.0)*DELTA_TURB_THRESHOLD) {
+  if (this->delta_turb <= (-1.0)*this->delta_turb_threshold) {
       this->detect_count += 1;
   }
   if (this->curr_temp >= this->temp_threshold) {
@@ -213,18 +213,6 @@ void Detection::disableAllSensors() {
 
 bool Detection::bloomDetect() {
   return this->is_detected;
-}
-
-void Detection::disablePump() {
-  this->en_pump = 0;
-  this->_disp.disablePump();
-}
-
-void Detection::disableAllSensors() {
-  this->en_sensor = 0;
-  this->_temp.disableSensor();
-  this->_turb.disableSensor();
-  this->_fluoro.disableSensor();
 }
 
 #endif
