@@ -39,11 +39,6 @@ class TURB : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
 
   public:
     // ======================================
@@ -52,6 +47,11 @@ class TURB : public TimedLoop {
     // TURB(byte PIN_OUT);
     TURB();
     TURB(byte PIN_OUT);
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     // ===============================
     // getDistance: Accessor method
