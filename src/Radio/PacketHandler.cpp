@@ -19,6 +19,10 @@ PacketHandler::PacketHandler(Radio *r, GPS *g, Detection *d) : TimedLoop(PACKET_
 
   // Set initial value
   this->tx_queue_cnt = 0;
+  this->configID     = (uint16_t) - 1;
+
+  // Set per-device
+  this->hwID = 0;
 }
 
 
@@ -49,9 +53,10 @@ void PacketHandler::loop() {
     do {
       pkt = this->radio->popRxQueue();
       
-      // TODO: Should check for hwID here and discard if mismatches
-
-      this->parseRxData(pkt);
+      // Check if the hwID matches the device.
+      if (pkt->hwID == this->hwID) {
+        this->parseRxData(pkt);
+      }
 
       // Garbage collection
       delete pkt;
@@ -122,14 +127,17 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
     // Config Packet
     case 1:
       int   configID;
-      float turbThresh;
-      float tempThresh;
-      float deltaTempThresh;
-      float fluoroThresh;
+      float turbThresh, tempThresh, deltaTempThresh, fluoroThresh;
+
 
       memcpy(&configID,        pkt->data,           sizeof(int));
       sizeCnt += sizeof(int);
 
+      // If the currrent configuration has already been applied, skip it.
+      if (configID == this->configID) return;
+      this->configID = configID;
+
+      // Copy the values to the local variables
       memcpy(&turbThresh,      pkt->data + sizeCnt, sizeof(float));
       sizeCnt += sizeof(float);
       
@@ -142,31 +150,26 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
       memcpy(&fluoroThresh,    pkt->data + sizeCnt, sizeof(float));
       
 
-      Serial.println("Config pkt!");      
-      Serial.println(configID);
-      Serial.println(fluoroThresh);
-      Serial.println(tempThresh);
-      Serial.println(deltaTempThresh);
-      Serial.println(fluoroThresh);
+      // Print info to the console
+      Serial.println("[INFO] Received a new configuration!");      
+      Serial.print("Config ID: ");
+      Serial.print(configID);
+      Serial.print(" | Temperature Threshold: ");
+      Serial.print(tempThresh);
+      Serial.print(" | Flurometer Threshold: ");
+      Serial.print(fluoroThresh);
+      Serial.print(" | Delta Temperature Threshold: ");
+      Serial.print(deltaTempThresh);
+      Serial.print(" | Turbididty Threshold: ");
+      Serial.println(turbThresh);
 
 
-      // Assign to detection object
+      // Assign values to the detection object
       this->detection->delta_turb_threshold = turbThresh;
       this->detection->temp_threshold       = tempThresh;
       this->detection->delta_temp_threshold = deltaTempThresh;
       this->detection->fluoro_threshold     = fluoroThresh;
 
-      break;
-    
-    // Testing --> location
-    case 2:
-      float lat, lng;
-      Serial.println("Location pkt!");
-      memcpy(&lat, pkt->data,     4);
-      memcpy(&lng, pkt->data + 4, 4);
-            
-      Serial.println(lat);
-      Serial.println(lng);
       break;
   }
 }

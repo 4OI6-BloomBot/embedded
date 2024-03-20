@@ -45,6 +45,8 @@ class PacketHandler : TimedLoop {
 
     Protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
     uint16_t tx_queue_cnt;
+    uint16_t configID;
+    byte     hwID;
     
     // ==================================================
     // loop() - Override loop fn from TimedLoop class.
