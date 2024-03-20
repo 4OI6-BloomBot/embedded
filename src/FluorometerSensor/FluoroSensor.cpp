@@ -25,10 +25,10 @@ FLUORO::FLUORO(byte PIN_OUT) : TimedLoop(FLUORO_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void FLUORO::setup() {
-  TimedLoop::setup();
-
   this->fluoro  = -1;
   this->en      = 1;
+
+  TimedLoop::setup();
 
   pinMode(LED_PIN, OUTPUT);
 }
@@ -41,7 +41,7 @@ void FLUORO::loop() {
     this->fluoro_out = getFluoro();
   } 
   else {
-    this->fluoro_out = 0;
+    this->fluoro_out = -1;
   }
 }
 
@@ -50,11 +50,9 @@ void FLUORO::loop() {
 // getFluoro() - Returns voltage for fluoro (lower is darker)
 // =======================================================
 float FLUORO::getFluoro() {
-  analogReference(INTERNAL); // INTERNAL == 0.55V
+  analogReference(EXTERNAL); // EXTERNAL == 5V
   int ana_value = analogRead(this->PIN_OUT);  // read the input on analog pin A1:
-  // Serial.print("src: ");
-  // Serial.println(ana_value);
-  this->fluoro = ana_value; //* (1.1 / 1024.0);    // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  this->fluoro = ana_value; 
   return ana_value;
 }
 

@@ -32,7 +32,7 @@ class TEMP : public TimedLoop {
   private:
     byte PIN_ONE_WIRE;
     
-    uint8_t en;
+    bool en;
     
     float temp;
     float temp_out;

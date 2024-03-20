@@ -31,7 +31,7 @@ class FLUORO : public TimedLoop {
   private:
     byte PIN_OUT;
     
-    uint8_t en;
+    bool en;
 
     float fluoro;
     float fluoro_out;

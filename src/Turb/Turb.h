@@ -30,8 +30,8 @@ class TURB : public TimedLoop {
   // ==================================================================
   private:
     byte PIN_OUT;
-
-    uint8_t en;
+  
+    bool en;
 
     float turb;
     float turb_out;

@@ -5,7 +5,6 @@
 #ifndef DETECTION_CPP
 #define DETECTION_CPP
 
-// #define TEST
 // #define BYPASS_DETECT
 // #define DISABLE_LED
 
@@ -13,6 +12,10 @@
 
 // Includes
 #include "Detection.h"
+
+void delimeter() {
+  Serial.println("====================================");
+}
 
 // ====================================================
 // DETECTION - Constructor for the Detection wrapper class
@@ -29,7 +32,6 @@ Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void Detection::setup() {
-
   // Call TimedLoop setup
   TimedLoop::setup();
 
@@ -38,9 +40,7 @@ void Detection::setup() {
 
   // Call flurometer setup
   this->_fluoro.setup();
-  
 
-  #ifndef TEST
   this->curr_turb     = -1;
   this->prev_turb     = -1;
   this->delta_turb    = -1;
@@ -50,17 +50,6 @@ void Detection::setup() {
   this->curr_fluoro   = -1;
   this->prev_fluoro   = -1;
   this->delta_fluoro  = -1;
-  #else
-  this->curr_turb     = 7;
-  this->prev_turb     = 5;
-  this->delta_turb    = -1;
-  this->curr_temp     = 35;
-  this->prev_temp     = 26;
-  this->delta_temp    = -1;
-  this->curr_fluoro   = 5;
-  this->prev_fluoro   = 3;
-  this->delta_fluoro  = -1;
-  #endif
   
   this->detect_count  = 0; 
   this->fluoro_count  = 0;
@@ -103,6 +92,7 @@ void Detection::loop() {
   #ifdef BYPASS_DETECT
     this->is_detected = 1;
   #endif
+
   #ifndef NO_LOGS
     Serial.print("is_detected: ");
     Serial.println(this->is_detected);
@@ -110,11 +100,7 @@ void Detection::loop() {
   #endif
 
   if (this->en_pump == 1) {
-    if (this->is_detected) {
-      this->_disp.enablePump();
-      delay(10000); // 10 sec
-      this->_disp.disablePump();
-    }
+    this->_disp.dispersionAlgo(is_detected);
   }
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;
@@ -122,7 +108,7 @@ void Detection::loop() {
 }
 
 bool Detection::monitorDetection() {
-  if (this->prev_turb != -1 && this->prev_temp != -1 && this->prev_fluoro != -1) {
+  if ((this->prev_turb != -1 && this->prev_temp != -1 && this->prev_fluoro != -1) && (this->prev_turb != 0 && this->prev_temp != 0 && this->prev_fluoro != 0)) {
     this->delta_turb    = this->curr_turb   - this->prev_turb;
     this->delta_temp    = this->curr_temp   - this->prev_temp;
     this->delta_fluoro  = this->curr_fluoro - this->prev_fluoro;
@@ -136,7 +122,10 @@ bool Detection::monitorDetection() {
   // Check all sensor conditions for bloom detection
   // Increment detect_count if condition is met
   // =========================================================================
-  if (this->delta_turb >= this->delta_turb_threshold) {
+  if (this->curr_turb <= TURB_THRESHOLD) {
+      this->detect_count += 1;
+  }
+  if (this->delta_turb <= (-1.0)*DELTA_TURB_THRESHOLD) {
       this->detect_count += 1;
   }
   if (this->curr_temp >= this->temp_threshold) {
@@ -170,17 +159,20 @@ bool Detection::monitorDetection() {
 
 }
 
+// Displays all sensor data
 void Detection::displayData() {
+  // Turbidity Data
   Serial.print("Current Turb: ");
   Serial.print(this->curr_turb);
-  Serial.println(" mg/L");
+  Serial.println(" V");
   Serial.print("Previous Turb: ");
   Serial.print(this->prev_turb);
-  Serial.println(" mg/L");
+  Serial.println(" V");
   Serial.print("Delta Turb: ");
   Serial.print(this->delta_turb);
-  Serial.println(" mg/L");
+  Serial.println(" V");
   
+  // Temperature Data
   Serial.print("Current Temp: ");
   Serial.print(this->curr_temp);
   Serial.println(" °C");
@@ -191,6 +183,7 @@ void Detection::displayData() {
   Serial.print(this->delta_temp);
   Serial.println(" °C");
 
+  // Fluorometer Data
   Serial.print("Current Fluoro: ");
   Serial.print(this->curr_fluoro);
   Serial.println(" ");
@@ -201,7 +194,25 @@ void Detection::displayData() {
   Serial.print(this->delta_fluoro);
   Serial.println(" ");
 
-  Serial.println("=========================================================================");
+  delimeter();
+}
+
+// Disables dispersion algo and force disables pump
+void Detection::disablePump() {
+  this->en_pump = 0;
+  this->_disp.disablePump();
+}
+
+// Disables all sensors, temp, turb and fluoro
+void Detection::disableAllSensors() {
+  this->en_sensor = 0;
+  this->_temp.disableSensor();
+  this->_turb.disableSensor();
+  this->_fluoro.disableSensor();
+}
+
+bool Detection::bloomDetect() {
+  return this->is_detected;
 }
 
 void Detection::disablePump() {

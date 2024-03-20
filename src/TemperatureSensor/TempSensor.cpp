@@ -23,10 +23,10 @@ TEMP::TEMP(byte PIN) : TimedLoop(TEMP_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void TEMP::setup() {
-  TimedLoop::setup();
-
   temp      = -1;
   this->en  = 1;
+
+  TimedLoop::setup();
 }
 
 // =========================================================================
@@ -37,7 +37,7 @@ void TEMP::loop() {
     this->temp_out = getTemp();
   }
   else {
-    this->temp_out = 0;
+    this->temp_out = -1;
   }
 }
 
