@@ -30,6 +30,8 @@ class FLUORO : public TimedLoop {
   // ==================================================================
   private:
     byte PIN_OUT;
+    
+    bool en;
 
     float fluoro;
     float fluoro_out;
@@ -58,6 +60,7 @@ class FLUORO : public TimedLoop {
     float getFluoro();
     float getFluoroOut();
     void setPIN(byte PIN_OUT);
+    void disableSensor();
 
     // ===============================
     // LED Functions

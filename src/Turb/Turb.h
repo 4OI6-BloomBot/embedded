@@ -31,6 +31,8 @@ class TURB : public TimedLoop {
   private:
     byte PIN_OUT;
 
+    bool en;
+
     float turb;
     float turb_out;
     // =======================================================
@@ -59,6 +61,7 @@ class TURB : public TimedLoop {
     float getTurb();
     float getTurbOut();
     void setPIN(byte PIN_OUT);
+    void disableSensor();
 };
 
 #endif

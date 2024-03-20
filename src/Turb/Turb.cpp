@@ -36,16 +36,22 @@ TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void TURB::setup() {
-  TimedLoop::setup();
+  turb      = -1;
+  this->en  = 1;
 
-  turb=-1;
+  TimedLoop::setup();
 }
 
 // =========================================================================
 // loop() - Keeps turb variable up to date
 // =========================================================================
 void TURB::loop() {
+  if(this->en == 1) {
     turb_out = getTurb();
+  }
+  else {
+    turb_out = -1;
+  }
 }
 
 
@@ -55,9 +61,10 @@ void TURB::loop() {
 float TURB::getTurb() {
   analogReference(EXTERNAL); // 5V
   int sensorValue = analogRead(this->PIN_OUT);// read the input on analog pin A0:
-  this->turb = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float turbVolt = sensorValue * (5.0 / 1024.0); // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
 
-  this->turb = -1120.4*pow(this->turb, 2) + 5742.3*this->turb - 4352.9;
+  this->turb = turbVolt;
+
 
   return this->turb;
 }
@@ -68,6 +75,10 @@ void TURB::setPIN(byte PIN_OUT) {
 
 float TURB::getTurbOut() {
   return this->turb_out;
+}
+
+void TURB::disableSensor() {
+  this->en = 0;
 }
 
 #endif

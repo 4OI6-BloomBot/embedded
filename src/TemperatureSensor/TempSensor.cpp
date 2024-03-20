@@ -23,16 +23,22 @@ TEMP::TEMP(byte PIN) : TimedLoop(TEMP_LOOP_DELAY) {
 // setup() - Initial setup
 // =======================================
 void TEMP::setup() {
-  TimedLoop::setup();
+  temp      = -1;
+  this->en  = 1;
 
-  temp = -1;
+  TimedLoop::setup();
 }
 
 // =========================================================================
 // loop() - Keeps turb variable up to date
 // =========================================================================
 void TEMP::loop() {
+  if (this->en == 1) {
     this->temp_out = getTemp();
+  }
+  else {
+    this->temp_out = -1;
+  }
 }
 
 
@@ -56,6 +62,10 @@ void TEMP::setPIN(byte PIN) {
 
 float TEMP::getTempOut() {
   return this->temp_out;
+}
+
+void TEMP::disableSensor() {
+  this->en = 0;
 }
 
 #endif
