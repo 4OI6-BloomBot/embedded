@@ -11,21 +11,11 @@
 // ====================================================
 // TURB - Constructor for the turb wrapper class
 // ====================================================
-// TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
 TURB::TURB() : TimedLoop(TURB_LOOP_DELAY) {
-
-  // Assign class variables 
-  // this->PIN_OUT = PIN_OUT;
-  // setPIN(PIN_OUT);
-
-  // After assigning the pins run setup
-  setup();
 }
 
 TURB::TURB(byte PIN_OUT) : TimedLoop(TURB_LOOP_DELAY) {
-
   // Assign class variables 
-  // this->PIN_OUT = PIN_OUT;
   setPIN(PIN_OUT);
 
   // After assigning the pins run setup

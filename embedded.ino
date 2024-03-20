@@ -26,8 +26,9 @@
 // =====================================================
 #define DEBUG
 
-// #define NO_RADIO_GPS
+#define NO_RADIO_GPS
 #define NO_PATHING
+#define NO_DETECT
 
 // =====================================================
 // Variable Declaration
@@ -43,9 +44,9 @@
   PATHING         pathing;
 #endif
 
-TURB      turb(A0);
-TEMP      temp;
-Detection detect;
+#ifndef NO_DETECT
+  Detection detect;
+#endif
 
 #ifndef NO_RADIO_GPS
   Radio          rf(10, 9, 2);
@@ -67,9 +68,9 @@ void setup() {
   // ====================================
   // Configure the individual modules
   // ====================================
-  temp.setup();
-  turb.setup();
-  detect.setup();
+  #ifndef NO_DETECT
+    detect.setup();
+  #endif
 
   #ifndef NO_PATHING
     sonic.setup();
