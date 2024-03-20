@@ -23,7 +23,7 @@
 // Parameter defines
 // ==================
 #define DETECTION_BAUD_RATE         115200
-#define DETECTION_LOOP_DELAY        1000
+#define DETECTION_LOOP_DELAY        30000
 #define IS_DETECTED_THRESHOLD       4
 
 
@@ -59,11 +59,6 @@ class Detection : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
     void displayData();
 
 
@@ -86,6 +81,11 @@ class Detection : public TimedLoop {
     // Constructor: Take analog pin out
     // ======================================
     Detection();
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     // ===============================
     // monitorDetection: monitor method

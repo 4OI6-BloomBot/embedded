@@ -39,11 +39,6 @@ class FLUORO : public TimedLoop {
     // =======================================================
     void loop() override;
 
-    // =======================================================
-    // setup() - Handles hardware setup after object creation
-    // =======================================================
-    void setup();
-
 
   public:
     // ======================================
@@ -51,6 +46,11 @@ class FLUORO : public TimedLoop {
     // ======================================
     FLUORO();
     FLUORO(byte PIN_OUT);
+
+    // =======================================================
+    // setup() - Handles hardware setup after object creation
+    // =======================================================
+    void setup();
 
     // ===============================
     // Fluorometer Functions

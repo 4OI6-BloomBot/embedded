@@ -13,24 +13,20 @@
 // ====================================================
 // FLUORO::FLUORO(byte PIN_OUT) : TimedLoop(FLUORO_LOOP_DELAY) {
 FLUORO::FLUORO() : TimedLoop(FLUORO_LOOP_DELAY) {
-  // After assigning the pins run setup
-  setup();
 }
 
 FLUORO::FLUORO(byte PIN_OUT) : TimedLoop(FLUORO_LOOP_DELAY) {
 
   // Assign class variables 
   setPIN(PIN_OUT);
-  
-
-  // After assigning the pins run setup
-  setup();
 }
 
 // =======================================
 // setup() - Initial setup
 // =======================================
 void FLUORO::setup() {
+  TimedLoop::setup();
+
   this->fluoro=-1;
   pinMode(LED_PIN, OUTPUT);
 }

@@ -12,21 +12,19 @@
 // TEMP - Constructor for the turb wrapper class
 // ====================================================
 TEMP::TEMP() : TimedLoop(TEMP_LOOP_DELAY) {
-  // After assigning the pins run setup
-  setup();
 }
 
 TEMP::TEMP(byte PIN) : TimedLoop(TEMP_LOOP_DELAY) {
   // Assign class variables 
   setPIN(PIN);
-  // After assigning the pins run setup
-  setup();
 }
 
 // =======================================
 // setup() - Initial setup
 // =======================================
 void TEMP::setup() {
+  TimedLoop::setup();
+
   temp = -1;
 }
 

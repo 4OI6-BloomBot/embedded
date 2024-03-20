@@ -16,15 +16,15 @@ SONIC::SONIC() : TimedLoop(SONIC_LOOP_DELAY) {
   // Assign class variables 
   //this->PIN_ECHO = PIN_ECHO;
   //this->PIN_TRIG = PIN_TRIG;
-
-  // After assigning the pins run setup
-  setup();
 }
 
 // =======================================
 // setup() - Configure the pin directions
 // =======================================
 void SONIC::setup() {
+  
+  TimedLoop::setup();
+
   // Create new objects and add to pointers
   distance=-1;
 }

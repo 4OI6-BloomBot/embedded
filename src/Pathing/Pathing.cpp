@@ -23,6 +23,8 @@ PATHING::PATHING() : TimedLoop(PATHING_LOOP_DELAY) {
 // setup() - Configure the pin directions
 // =======================================
 void PATHING::setup() {
+  TimedLoop::setup();
+  
   // Create new objects and add to pointers
   en=1;
   sat_cnt=0;
