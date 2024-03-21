@@ -48,10 +48,11 @@ TEMP      temp;
 Detection detect;
 
 #ifndef NO_RADIO_GPS
-  Radio          rf(10, 9, 2);
-  GPS            gps(6, 7);
-  PacketHandler  packet_handler(&rf, &gps, &detect);
-  LocationSender location_sender(&gps, &packet_handler);
+  Radio           rf(10, 9, 2);
+  GPS             gps(6, 7);
+  PacketHandler   packet_handler(&rf, &gps, &detect);
+  DetectionSender detection_sender(&packet_handler);
+  LocationSender  location_sender(&gps, &packet_handler);
 #endif
 
 
