@@ -21,7 +21,7 @@
 #include "../Radio/Protocols/Protocol.h"
 #include "../Radio/PacketHandler.h"
 
-#define DETECTION_SENDER_LOOP_DELAY 5000
+#define DETECTION_SENDER_LOOP_DELAY 10000
 
 
 class DetectionSender : public TimedLoop {
@@ -52,6 +52,11 @@ class DetectionSender : public TimedLoop {
     //          class
     // =======================================================
     void loop() override;
+
+    // Send methods for each sensor
+    void sendTemp();
+    void sentTurb();
+    void sendFluoro();
 
 
     bool DetectionSender::newSensorData(TimedLoop* s, unsigned long int last_run);

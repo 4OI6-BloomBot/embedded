@@ -17,19 +17,18 @@ DetectionSender::DetectionSender(PacketHandler *packet_handler) : TimedLoop(DETE
 
   // Set to defaults
   this->isConfigured       = false;
-  this->turb_last_access   = (unsigned long int) - 1;
-  this->temp_last_access   = (unsigned long int) - 1;
-  this->fluoro_last_access = (unsigned long int) - 1;
+  this->turb_last_access   = 0;
+  this->temp_last_access   = 0;
+  this->fluoro_last_access = 0;
 }
 
 // =========================================================================
 // loop - TimedLoop override
-//        TODO: Need to check if the location has updated before
-//              sending.
 // =========================================================================
 void DetectionSender::loop() {
   if (!this->isConfigured) return;
 
+  this->sendTemp();
 }
 
 
@@ -50,15 +49,18 @@ void DetectionSender::configure(TURB *tb, TEMP *tp, FLUORO *fl) {
 //                queue.
 // =========================================================================
 bool DetectionSender::sendSensorData() {
+}
 
-  // ======================================
-  // Get temperature sensor
-  // ======================================
+
+// ======================================
+// Get temperature sensor
+// ======================================
+void DetectionSender::sendTemp() {
   if (newSensorData(this->temp, this->temp_last_access)) {
     this->temp_last_access = millis();
     
     float temp_val = temp->getTempOut();
-    
+
     // If the data is valid, create the packet
     if (temp_val != -1) {
       Temperature *tempPkt = new Temperature();
