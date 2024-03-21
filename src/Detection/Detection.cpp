@@ -38,8 +38,10 @@ void Detection::setup() {
   // Call dispersion setup
   this->_disp.setup();
 
-  // Call flurometer setup
+  // Call sensor setups
   this->_fluoro.setup();
+  this->_temp.setup();
+  this->_turb.setup();
 
   this->curr_turb     = -1;
   this->prev_turb     = -1;
