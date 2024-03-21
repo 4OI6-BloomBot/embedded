@@ -55,7 +55,7 @@ class DetectionSender : public TimedLoop {
 
     // Send methods for each sensor
     void sendTemp();
-    void sentTurb();
+    void sendTurb();
     void sendFluoro();
 
 
@@ -74,12 +74,6 @@ class DetectionSender : public TimedLoop {
     // configure: Setup the sender with pointers to the sensors
     // =========================================================
     void configure(TURB *tb, TEMP *tp, FLUORO *fl);
-
-
-    // =======================================================
-    // sendLocation: Add packet with location to Tx queue
-    // =======================================================
-    bool sendSensorData();
 
 };
 
