@@ -124,8 +124,12 @@ void Radio::handleRxInterrupt() {
   // there is new Rx data to process and there is space
   // to store it.
   if (rx_dr && this->rx_queue_cnt < (PACKET_QUEUE_RX_LEN - 1)) {
-    this->rx_pkt_queue[this->rx_queue_cnt] = this->getRxData();
-    this->rx_queue_cnt++;
+    genericPacket* pkt = this->getRxData();
+    
+    if (pkt && pkt->hwID) {
+      this->rx_pkt_queue[this->rx_queue_cnt] = pkt;
+      this->rx_queue_cnt++;
+    }
   }
 
   // TODO: Throw error when tx_ds or tx_df trigger?

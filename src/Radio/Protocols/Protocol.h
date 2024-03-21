@@ -98,12 +98,34 @@ struct Location : Protocol {
 
 
 // ===================================
-// Temperature protocol (id = 2)
+// Temperature protocol (id = 3)
 // ===================================
 struct Temperature : Protocol {
   
   public: 
     Temperature() : Protocol(3) {};
+
+};
+
+
+// ===================================
+// Turbidity protocol (id = 4)
+// ===================================
+struct Turbidity : Protocol {
+  
+  public: 
+    Turbidity() : Protocol(4) {};
+
+};
+
+
+// ===================================
+// Fluorometer protocol (id = 5)
+// ===================================
+struct Fluorescence : Protocol {
+  
+  public: 
+    Fluorescence() : Protocol(5) {};
 
 };
 
