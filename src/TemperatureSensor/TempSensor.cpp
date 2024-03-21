@@ -46,13 +46,17 @@ void TEMP::loop() {
 // getTemp() - 
 // =======================================================
 float TEMP::getTemp() {
-  OneWire oneWire(this->PIN_ONE_WIRE);
-  DallasTemperature tempSensor(&oneWire);
+  #ifndef TEMP_SPOOF_DATA
+    OneWire oneWire(this->PIN_ONE_WIRE);
+    DallasTemperature tempSensor(&oneWire);
 
-  tempSensor.begin();
-  tempSensor.requestTemperatures();
-  this->temp = tempSensor.getTempCByIndex(0);
-
+    tempSensor.begin();
+    tempSensor.requestTemperatures();
+    this->temp = tempSensor.getTempCByIndex(0);
+  #else
+    this->temp = 1.23;
+  #endif 
+  
   return this->temp;
 }
 

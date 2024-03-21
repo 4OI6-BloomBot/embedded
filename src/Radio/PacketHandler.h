@@ -66,7 +66,7 @@ class PacketHandler : TimedLoop {
     // sendPkt - Send a packet from the front of the 
     //           Tx queue
     // ==================================================
-    void sendPkt();
+    bool sendPkt();
 
 
     // ==================================================

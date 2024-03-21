@@ -39,12 +39,28 @@ void PacketHandler::setup() {
 // =========================================================
 void PacketHandler::loop() {
   genericPacket *pkt;
+  int failedPkts = 0, successPkts = 0;
 
   // If there are enough packets in the queue, Tx them.
   if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LOW_WATER) {
     int pkt_cnt = this->tx_queue_cnt;
-    for (int i = 0; i < pkt_cnt; i++) 
-      this->sendPkt();
+    for (int i = 0; i < pkt_cnt; i++) { 
+      if (this->sendPkt())  successPkts++;
+      else                  failedPkts++;
+    }
+
+    // Print results
+    if (successPkts > 0) { 
+      Serial.print("[INFO] Successfully transmitted ");
+      Serial.print(successPkts);
+      Serial.println(" packets.");
+    } 
+
+    if (failedPkts > 0) {
+      Serial.print("[ERROR] Failed to transmit ");
+      Serial.print(failedPkts);
+      Serial.println(" packets.");
+    } 
   }
 
 
@@ -70,20 +86,17 @@ void PacketHandler::loop() {
 // transmitQueue - Attempt to transmit each packet in the
 //                 queue.
 // =========================================================
-void PacketHandler::sendPkt() {
+bool PacketHandler::sendPkt() {
   Protocol *pkt     = this->popTxQueue();
   byte*     payload = pkt->toPayload();;
   
   bool success = this->radio->tx(payload, pkt->getPayloadSize());
 
-  // TODO: Should be more verbose.
-  // TODO: Need to handle the error condition (bool result)
-  if (success) Serial.println("Tx success");
-  else         Serial.println("Tx failed"); 
-
   // Garbage collection
   delete[] payload;
   delete   pkt;
+
+  return success;
 }
 
 
@@ -179,8 +192,10 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
 // queuePacket() - Add a packet to the Tx queue
 // ==============================================
 bool PacketHandler::queuePacket(Protocol *packet) {
-  if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN)
+  if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN) {
+    delete packet;
     return false;
+  }
 
   // Add the current time to the packet
   // Corresponds to approx when the value was grabbed

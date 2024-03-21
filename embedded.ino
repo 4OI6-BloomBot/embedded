@@ -18,6 +18,7 @@
 #include "src/TemperatureSensor/TempSensor.h"
 #include "src/Radio/PacketHandler.h"
 #include "src/Radio/Protocols/Protocol.h"
+#include "src/Radio/DetectionSender.h"
 #include "src/Pathing/Pathing.h"
 
 // =====================================================
@@ -49,10 +50,11 @@
 #endif
 
 #ifndef NO_RADIO_GPS
-  Radio          rf(10, 9, 2);
-  GPS            gps(6, 7);
-  PacketHandler  packet_handler(&rf, &gps, &detect);
-  LocationSender location_sender(&gps, &packet_handler);
+  Radio           rf(10, 9, 2);
+  GPS             gps(6, 7);
+  PacketHandler   packet_handler(&rf, &gps, &detect);
+  DetectionSender detection_sender(&packet_handler);
+  LocationSender  location_sender(&gps, &packet_handler);
 #endif
 
 
@@ -81,6 +83,8 @@ void setup() {
     gps.setup();
     packet_handler.setup();
     location_sender.setup();
+    detection_sender.configure(detect.getTurb(), detect.getTemp(), detect.getFluoro());
+    detection_sender.setup();
     rf.setup();
   #endif
 }

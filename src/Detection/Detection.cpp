@@ -37,12 +37,11 @@ void Detection::setup() {
 
   // Call dispersion setup
   this->_disp.setup();
-  // Call turbidity setup
-  this->_turb.setup();
-  // Call fluorometer setup
+
+  // Call sensor setups
   this->_fluoro.setup();
-  // Call temperature setup
   this->_temp.setup();
+  this->_turb.setup();
 
   this->curr_turb     = -1;
   this->prev_turb     = -1;
@@ -216,6 +215,22 @@ void Detection::disableAllSensors() {
 
 bool Detection::bloomDetect() {
   return this->is_detected;
+}
+
+
+// ===============================
+// Access methods for the sensors          
+// ===============================
+TURB* Detection::getTurb() {
+  return &_turb;
+}
+
+TEMP* Detection::getTemp() {
+  return &_temp;
+}
+
+FLUORO* Detection::getFluoro() {
+  return &_fluoro;
 }
 
 #endif
