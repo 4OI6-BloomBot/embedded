@@ -44,8 +44,6 @@
   PATHING         pathing;
 #endif
 
-TURB      turb(A0);
-TEMP      temp;
 Detection detect;
 
 #ifndef NO_RADIO_GPS
@@ -69,8 +67,6 @@ void setup() {
   // ====================================
   // Configure the individual modules
   // ====================================
-  temp.setup();
-  turb.setup();
   detect.setup();
 
   #ifndef NO_PATHING
@@ -83,6 +79,7 @@ void setup() {
     packet_handler.setup();
     location_sender.setup();
     detection_sender.configure(detect.getTurb(), detect.getTemp(), detect.getFluoro());
+    detection_sender.setup();
     rf.setup();
   #endif
 }
