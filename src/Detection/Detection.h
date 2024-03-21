@@ -33,8 +33,8 @@
 #define DELTA_TURB_THRESHOLD        0.3     // Change of 0.3 V ~= +- 100-1000 NTU
 #define TEMP_THRESHOLD              25      // Blooms happen > 25 deg C
 #define DELTA_TEMP_THRESHOLD        0       // Temperature theoretically should increase, hard to detect in nature
-#define FLUORO_THRESHOLD            0       // TODO: unknown
-#define DELTA_FLUORO_THRESHOLD      0       // TODO: unknown
+#define FLUORO_THRESHOLD            0       // Fluorescence theoretically different, hard to detect due to huge impact of external light
+#define DELTA_FLUORO_THRESHOLD      5       // From testing: increase of 5 counts is common when changing from object w/ and w/o chlorophyll 
 
 
 
