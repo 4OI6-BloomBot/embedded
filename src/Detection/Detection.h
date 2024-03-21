@@ -17,7 +17,6 @@
 #include "../FluorometerSensor/FluoroSensor.h"
 #include "../Dispersion/Dispersion.h"
 
-
 // ==================
 // Parameter defines
 // ==================
@@ -102,6 +101,11 @@ class Detection : public TimedLoop {
 
     void disablePump();
     void disableAllSensors();
+
+    // Accessor methods for the sensors
+    TURB*   getTurb();
+    TEMP*   getTemp();
+    FLUORO* getFluoro();
 
     bool bloomDetect();
 

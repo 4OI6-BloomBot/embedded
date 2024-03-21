@@ -2,8 +2,8 @@
   Class to manage packaging and sending location data.
 */
 
-#ifndef LOCATION_SENDER_CPP
-#define LOCATION_SENDER_CPP
+#ifndef DETECTION_SENDER_CPP
+#define DETECTION_SENDER_CPP
 
 // Includes
 #include "DetectionSender.h"
@@ -51,7 +51,12 @@ void DetectionSender::configure(TURB *tb, TEMP *tp, FLUORO *fl) {
 // =========================================================================
 bool DetectionSender::sendSensorData() {
 
+  // ======================================
+  // Get temperature sensor
+  // ======================================
   if (newSensorData(this->temp, this->temp_last_access)) {
+    this->temp_last_access = millis();
+    
     float temp_val = temp->getTempOut();
     
     // If the data is valid, create the packet

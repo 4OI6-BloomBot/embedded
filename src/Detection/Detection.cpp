@@ -215,4 +215,20 @@ bool Detection::bloomDetect() {
   return this->is_detected;
 }
 
+
+// ===============================
+// Access methods for the sensors          
+// ===============================
+TURB* Detection::getTurb() {
+  return &_turb;
+}
+
+TEMP* Detection::getTemp() {
+  return &_temp;
+}
+
+FLUORO* Detection::getFluoro() {
+  return &_fluoro;
+}
+
 #endif
