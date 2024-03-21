@@ -11,12 +11,10 @@
 // ====================================================
 // FLUORO - Constructor for the fluoro wrapper class
 // ====================================================
-// FLUORO::FLUORO(byte PIN_OUT) : TimedLoop(FLUORO_LOOP_DELAY) {
 FLUORO::FLUORO() : TimedLoop(FLUORO_LOOP_DELAY) {
 }
 
 FLUORO::FLUORO(byte PIN_OUT) : TimedLoop(FLUORO_LOOP_DELAY) {
-
   // Assign class variables 
   setPIN(PIN_OUT);
 }
