@@ -192,9 +192,10 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
 // queuePacket() - Add a packet to the Tx queue
 // ==============================================
 bool PacketHandler::queuePacket(Protocol *packet) {
-  if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN)
+  if (this->tx_queue_cnt >= PACKET_QUEUE_TX_LEN) {
     delete packet;
     return false;
+  }
 
   // Add the current time to the packet
   // Corresponds to approx when the value was grabbed
