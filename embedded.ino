@@ -27,9 +27,9 @@
 // =====================================================
 #define DEBUG
 
-#define NO_RADIO_GPS
+// #define NO_RADIO_GPS
 #define NO_PATHING
-#define NO_DETECT
+// #define NO_DETECT
 
 // =====================================================
 // Variable Declaration
