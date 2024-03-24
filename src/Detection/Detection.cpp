@@ -110,7 +110,7 @@ void Detection::loop() {
         Serial.println(" s");
       #endif
     }
-    
+    delimeter();
   }
 
 }
