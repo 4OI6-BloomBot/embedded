@@ -23,6 +23,7 @@ PATHING::PATHING() : TimedLoop(PATHING_LOOP_DELAY) {
 // setup() - Configure the pin directions
 // =======================================
 void PATHING::setup() {
+  _SS.setup();
   TimedLoop::setup();
   
   // Create new objects and add to pointers
@@ -39,10 +40,6 @@ void PATHING::setup() {
 void PATHING::loop() {
 
     dist=_SS.peekDistance();
-    
-
-    Serial.print(dist);
-    Serial.println(" is current distance.");
 
     if(dist<TOO_CLOSE && sat_cnt<SATURATION_LIMIT){
       sat_cnt=sat_cnt+1;
@@ -59,19 +56,31 @@ void PATHING::loop() {
       forward();
       Serial.println("Moving forward");
     } else if (sat_cnt>=SATURATION_LIMIT) {
-     Serial.println("Turning right 90 degrees");
       stop();
       delay(1000);
-      turn_right();
+      r=random(2);
+
+      if(r==0){
+        Serial.println("Turning right 90 degrees");
+        turn_right();
+      } else {
+        Serial.println("Turning left 90 degrees");
+        turn_left();
+      }
+
     }
 }
 
 
 void PATHING::enable() {
+if(en==0){
+Serial.println("Pathing restarting");
+}
 en=1;
 }
 
 void PATHING::disable() {
+Serial.println("Pathing disabled");
 en=0;
 }
 

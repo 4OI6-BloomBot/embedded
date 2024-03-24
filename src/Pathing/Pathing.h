@@ -36,6 +36,7 @@ class PATHING : public TimedLoop {
     int en;
     int dist;
     int sat_cnt;
+    long r;
     SONIC _SS;
     MotorController _MCL;
     MotorController _MCR;

@@ -58,10 +58,9 @@ int SONIC::getDistance() {
     distance=(int)distance_calc;
   }
 
-//Serial.print(distance);
-//Serial.println(" cm");
-
-return distance;
+  Serial.print(distance);
+  Serial.println(" is current distance.");
+  return distance;
 }
 
 void SONIC::setPIN(byte PIN_ECHO, byte PIN_TRIG){
