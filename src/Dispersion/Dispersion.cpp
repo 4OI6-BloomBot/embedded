@@ -5,7 +5,7 @@
 #ifndef DISPERSION_CPP
 #define DISPERSION_CPP
 
-// #define TEST
+#define NO_LOGS
 
 // Includes
 #include "Dispersion.h"
@@ -46,9 +46,11 @@ void Dispersion::dispersionAlgo(bool is_detected) {
         // Length of time pump is enable at once (in factors of 10sec)
         for (int j = 0; j < DISP_TIME; j++) {
           delay(10000); // 10 sec
-          Serial.print("t: ");
-          Serial.print((j+1)*10);
-          Serial.println(" s");
+          #ifndef NO_LOGS
+            Serial.print("PUMP: ");
+            Serial.print((j+1)*10);
+            Serial.println(" s");
+          #endif
         }
         disablePump();
       }

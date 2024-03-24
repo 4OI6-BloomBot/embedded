@@ -34,7 +34,7 @@
 #define DELTA_TEMP_THRESHOLD        0       // Temperature theoretically should increase, hard to detect in nature
 #define FLUORO_THRESHOLD            0       // TODO: unknown RN
 
-
+#define TIMEOUT                     30      // Seconds
 
 
 class Detection : public TimedLoop {
@@ -101,6 +101,7 @@ class Detection : public TimedLoop {
 
     void disablePump();
     void disableAllSensors();
+    void resetSensorData();
 
     // Accessor methods for the sensors
     TURB*   getTurb();
