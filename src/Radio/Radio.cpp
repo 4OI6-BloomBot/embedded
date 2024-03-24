@@ -126,7 +126,7 @@ void Radio::handleRxInterrupt() {
   if (rx_dr && this->rx_queue_cnt < (PACKET_QUEUE_RX_LEN - 1)) {
     genericPacket* pkt = this->getRxData();
     
-    if (pkt && pkt->hwID) {
+    if (pkt) {
       this->rx_pkt_queue[this->rx_queue_cnt] = pkt;
       this->rx_queue_cnt++;
     }

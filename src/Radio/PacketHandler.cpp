@@ -140,27 +140,32 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
     // Config Packet
     case 1:
       int   configID;
-      float turbThresh, tempThresh, deltaTempThresh, fluoroThresh;
+      float turbThresh, deltaTurbThresh, tempThresh, deltaTempThresh, fluoroThresh;
 
 
-      memcpy(&configID,        pkt->data,           sizeof(int));
-      sizeCnt += sizeof(int);
+      // Integer from the basestation is 4 bytes long
+      // TODO: convert to short on basestaion?
+      memcpy(&configID,        pkt->data,           4);
+      sizeCnt += 4;
 
       // If the currrent configuration has already been applied, skip it.
       if (configID == this->configID) return;
       this->configID = configID;
 
       // Copy the values to the local variables
-      memcpy(&turbThresh,      pkt->data + sizeCnt, sizeof(float));
-      sizeCnt += sizeof(float);
-      
       memcpy(&tempThresh,      pkt->data + sizeCnt, sizeof(float));
       sizeCnt += sizeof(float);
-      
+
       memcpy(&deltaTempThresh, pkt->data + sizeCnt, sizeof(float));
       sizeCnt += sizeof(float);
 
-      memcpy(&fluoroThresh,    pkt->data + sizeCnt, sizeof(float));
+      memcpy(&turbThresh,      pkt->data + sizeCnt, sizeof(float));
+      sizeCnt += sizeof(float);
+
+      memcpy(&deltaTurbThresh, pkt->data + sizeCnt, sizeof(float));
+      sizeCnt += sizeof(float);
+
+      memcpy(&fluoroThresh,    pkt->data + sizeCnt, sizeof(float));      
       
 
       // Print info to the console
@@ -169,16 +174,19 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
       Serial.print(configID);
       Serial.print(" | Temperature Threshold: ");
       Serial.print(tempThresh);
-      Serial.print(" | Flurometer Threshold: ");
-      Serial.print(fluoroThresh);
       Serial.print(" | Delta Temperature Threshold: ");
       Serial.print(deltaTempThresh);
       Serial.print(" | Turbididty Threshold: ");
-      Serial.println(turbThresh);
+      Serial.print(turbThresh);
+      Serial.print(" | Delta Turbidity Threshold: ");
+      Serial.print(deltaTurbThresh);
+      Serial.print(" | Flurometer Threshold: ");
+      Serial.println(fluoroThresh);
 
 
       // Assign values to the detection object
-      this->detection->delta_turb_threshold = turbThresh;
+      this->detection->turb_threshold       = turbThresh;
+      this->detection->delta_turb_threshold = deltaTurbThresh;
       this->detection->temp_threshold       = tempThresh;
       this->detection->delta_temp_threshold = deltaTempThresh;
       this->detection->fluoro_threshold     = fluoroThresh;
