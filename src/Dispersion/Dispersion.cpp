@@ -43,9 +43,9 @@ void Dispersion::dispersionAlgo(bool is_detected) {
       // Number of instances pump is activated for slow dispersion
       for (int i = 0; i < NUM_DISP; i++) {
         enablePump();
-        // Length of time pump is enable at once (in factors of 10sec)
+        // Length of time pump is enable at once (in factors of 1sec)
         for (int j = 0; j < DISP_TIME; j++) {
-          delay(10000); // 10 sec
+          delay(1000); // 1 sec
           #ifndef NO_LOGS
             Serial.print("PUMP: ");
             Serial.print((j+1)*10);
