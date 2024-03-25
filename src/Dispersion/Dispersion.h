@@ -21,7 +21,7 @@
 #define DISPERSION_LOOP_DELAY        3000
 
 #define NUM_DISP                     1     // Number of iterations
-#define DISP_TIME                    6      // DISP_TIME*10sec = total time
+#define DISP_TIME                    127   // DISP_TIME*1sec = total time | 0.79 mL/sec --> ~127sec/100mL
 
 
 class Dispersion : public TimedLoop {
