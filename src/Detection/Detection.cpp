@@ -121,7 +121,7 @@ void Detection::updateConfig() {
     this->delta_temp_threshold    = c->delta_temp_threshold;
     this->fluoro_threshold        = c->fluoro_threshold;
     this->delta_fluoro_threshold  = c->delta_fluoro_threshold;
-    this->bypass_detect           = c->bypass_detect;
+    this->bypass_detect           = c->skipDetection;
   }
 }
 
