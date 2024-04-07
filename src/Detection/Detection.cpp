@@ -83,7 +83,9 @@ void Detection::loop() {
   #endif
 
   if (this->en_pump == 1) {
-    this->_disp.dispersionAlgo(this->is_detected);
+    this->_fluoro.disableLED();                     // LED off during dispersion
+    this->_disp.dispersionAlgo(this->is_detected);  // dispersion algo to determine treatment
+    this->_fluoro.enableLED();                      // LED on after dispersion
   }
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;
@@ -99,7 +101,9 @@ void Detection::loop() {
         Serial.println(" s");
       #endif
     }
-    delimeter();
+    #ifndef NO_LOGS
+      delimeter();
+    #endif
   }
 
 }
