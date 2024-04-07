@@ -13,6 +13,7 @@
 #include <Arduino.h>
 #include "../TimedLoop/TimedLoop.h"
 #include "../MotorController/MotorController.h"
+#include "../Radio/PacketHandler.h"
 
 // ==================
 // Parameter defines
@@ -32,12 +33,16 @@ class Dispersion : public TimedLoop {
   private:
 
     MotorController _MC;
+    PacketHandler   *packet_handler;
 
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class
     // =======================================================
     void loop() override;
+
+
+    void sendDisp();
 
 
   public:
@@ -49,7 +54,7 @@ class Dispersion : public TimedLoop {
     // =======================================================
     // setup() - Handles hardware setup after object creation
     // =======================================================
-    void setup();
+    void setup(PacketHandler *p);
 
     void enablePump();
     void disablePump();

@@ -38,7 +38,7 @@ void Detection::setup() {
   TimedLoop::setup();
 
   // Call dispersion setup
-  this->_disp.setup();
+  this->_disp.setup(this->packet_handler);
 
   // Call sensor setups
   this->_fluoro.setup();
