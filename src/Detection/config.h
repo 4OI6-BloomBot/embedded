@@ -12,7 +12,7 @@ struct dispConf {
   float delta_temp_threshold; 
   float fluoro_threshold; 
   float delta_fluoro_threshold; 
-  bool  bypass_detect; 
+  bool  skipDetection;
 };
 
 #endif
