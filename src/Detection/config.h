@@ -11,6 +11,7 @@ struct dispConf {
   float temp_threshold;
   float delta_temp_threshold; 
   float fluoro_threshold; 
+  float delta_fluoro_threshold; 
 };
 
 #endif

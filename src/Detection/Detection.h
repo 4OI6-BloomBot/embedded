@@ -27,13 +27,14 @@
 // ====================================
 // Thresholds for detection algo
 // ====================================
-#define IS_DETECTED_THRESHOLD       5
+#define IS_DETECTED_THRESHOLD       6
 
 #define TURB_THRESHOLD              3.5     // 3.5V ~= 5-100, anything bellow can be considered 
 #define DELTA_TURB_THRESHOLD        0.3     // Change of 0.3 V ~= +- 100-1000 NTU 
 #define TEMP_THRESHOLD              25      // Blooms happen > 25 deg C
 #define DELTA_TEMP_THRESHOLD        0       // Temperature theoretically should increase, hard to detect in nature
-#define FLUORO_THRESHOLD            0       // TODO: unknown RN
+#define FLUORO_THRESHOLD            0       // Unable to determine given noise
+#define DELTA_FLUORO_THRESHOLD      5       // Tested to be approx change of 5 counts
 
 #define TIMEOUT                     30      // Seconds
 
@@ -59,9 +60,6 @@ class Detection : public TimedLoop {
     bool en_pump;
     bool en_sensor;
 
-    float fluoro_arr[10];
-    int fluoro_count;
-
     TURB _turb;
     TEMP _temp;
     FLUORO _fluoro;
@@ -83,11 +81,12 @@ class Detection : public TimedLoop {
   public:
     // Thresholds can be modified through configuration packets
     // TODO: Could also make these private w/ getter+setter methods
-    float turb_threshold       = TURB_THRESHOLD;
-    float delta_turb_threshold = DELTA_TURB_THRESHOLD;
-    float temp_threshold       = TEMP_THRESHOLD;
-    float delta_temp_threshold = DELTA_TEMP_THRESHOLD;
-    float fluoro_threshold     = TURB_THRESHOLD;
+    float turb_threshold          = TURB_THRESHOLD;
+    float delta_turb_threshold    = DELTA_TURB_THRESHOLD;
+    float temp_threshold          = TEMP_THRESHOLD;
+    float delta_temp_threshold    = DELTA_TEMP_THRESHOLD;
+    float fluoro_threshold        = TURB_THRESHOLD;
+    float delta_fluoro_threshold  = DELTA_FLUORO_THRESHOLD;
 
     // ======================================
     // Constructor: Take analog pin out

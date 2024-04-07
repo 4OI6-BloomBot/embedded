@@ -67,23 +67,6 @@ void Detection::loop() {
   this->curr_temp   = this->_temp.getTempOut();
   this->curr_fluoro = this->_fluoro.getFluoroOut();
 
-  // // Serial.println(this->fluoro_count);
-  // // Serial.println(this->curr_fluoro);
-  // if (this->fluoro_count < 10) {
-  //   this->fluoro_arr[this->fluoro_count] = this->curr_fluoro;
-  // }
-  // else {
-  //   this->fluoro_count = 0;
-  //   float fluoro_avg = 0.0;
-  //   for (int i = 0; i < 10; i++) {
-  //     fluoro_avg += this->fluoro_arr[i];
-  //   }
-  //   fluoro_avg = fluoro_avg/10;
-  //   // Serial.print("Fluoro Avg: ");
-  //   // Serial.println(fluoro_avg);
-  // }
-  // this->fluoro_count += 1;
-
   // Update parameters if there is a reference to the packet_handler
   if (this->packet_handler)
     updateConfig(); 
@@ -130,11 +113,12 @@ void Detection::updateConfig() {
 
   // If the response is not a nullpointer, update the config param
   if (c) {
-    this->turb_threshold       = c->turb_threshold; 
-    this->delta_turb_threshold = c->delta_turb_threshold;
-    this->temp_threshold       = c->temp_threshold;
-    this->delta_temp_threshold = c->delta_temp_threshold;
-    this->fluoro_threshold     = c->fluoro_threshold;
+    this->turb_threshold          = c->turb_threshold; 
+    this->delta_turb_threshold    = c->delta_turb_threshold;
+    this->temp_threshold          = c->temp_threshold;
+    this->delta_temp_threshold    = c->delta_temp_threshold;
+    this->fluoro_threshold        = c->fluoro_threshold;
+    this->delta_fluoro_threshold  = c->delta_fluoro_threshold;
   }
 }
 
@@ -167,6 +151,9 @@ bool Detection::monitorDetection() {
       this->detect_count += 1;
   }
   if (this->curr_fluoro >= this->fluoro_threshold) {
+      this->detect_count += 1;
+  }
+  if (this->delta_fluoro >= this->delta_fluoro_threshold) {
       this->detect_count += 1;
   }
 
