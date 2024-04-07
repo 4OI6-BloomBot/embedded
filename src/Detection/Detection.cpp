@@ -5,7 +5,6 @@
 #ifndef DETECTION_CPP
 #define DETECTION_CPP
 
-// #define BYPASS_DETECT
 // #define DISABLE_LED
 
 #define NO_LOGS
@@ -48,7 +47,6 @@ void Detection::setup() {
   resetSensorData();
   
   this->detect_count  = 0; 
-  // this->fluoro_count  = 0;
   this->en_pump       = 1;
   this->en_sensor     = 1;
 
@@ -72,9 +70,9 @@ void Detection::loop() {
     updateConfig(); 
 
   this->is_detected = monitorDetection();
-  #ifdef BYPASS_DETECT
+  if (this->bypass_detect == 1) {
     this->is_detected = 1;
-  #endif
+  }
 
   #ifndef NO_LOGS
     Serial.print("is_detected: ");
@@ -123,6 +121,7 @@ void Detection::updateConfig() {
     this->delta_temp_threshold    = c->delta_temp_threshold;
     this->fluoro_threshold        = c->fluoro_threshold;
     this->delta_fluoro_threshold  = c->delta_fluoro_threshold;
+    this->bypass_detect           = c->bypass_detect;
   }
 }
 
