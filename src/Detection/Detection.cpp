@@ -45,18 +45,10 @@ void Detection::setup() {
   this->_temp.setup();
   this->_turb.setup();
 
-  this->curr_turb     = -1;
-  this->prev_turb     = -1;
-  this->delta_turb    = -1;
-  this->curr_temp     = -1;
-  this->prev_temp     = -1;
-  this->delta_temp    = -1;
-  this->curr_fluoro   = -1;
-  this->prev_fluoro   = -1;
-  this->delta_fluoro  = -1;
+  resetSensorData();
   
   this->detect_count  = 0; 
-  this->fluoro_count  = 0;
+  // this->fluoro_count  = 0;
   this->en_pump       = 1;
   this->en_sensor     = 1;
 
@@ -75,22 +67,22 @@ void Detection::loop() {
   this->curr_temp   = this->_temp.getTempOut();
   this->curr_fluoro = this->_fluoro.getFluoroOut();
 
-  // Serial.println(this->fluoro_count);
-  // Serial.println(this->curr_fluoro);
-  if (this->fluoro_count < 10) {
-    this->fluoro_arr[this->fluoro_count] = this->curr_fluoro;
-  }
-  else {
-    this->fluoro_count = 0;
-    float fluoro_avg = 0.0;
-    for (int i = 0; i < 10; i++) {
-      fluoro_avg += this->fluoro_arr[i];
-    }
-    fluoro_avg = fluoro_avg/10;
-    // Serial.print("Fluoro Avg: ");
-    // Serial.println(fluoro_avg);
-  }
-  this->fluoro_count += 1;
+  // // Serial.println(this->fluoro_count);
+  // // Serial.println(this->curr_fluoro);
+  // if (this->fluoro_count < 10) {
+  //   this->fluoro_arr[this->fluoro_count] = this->curr_fluoro;
+  // }
+  // else {
+  //   this->fluoro_count = 0;
+  //   float fluoro_avg = 0.0;
+  //   for (int i = 0; i < 10; i++) {
+  //     fluoro_avg += this->fluoro_arr[i];
+  //   }
+  //   fluoro_avg = fluoro_avg/10;
+  //   // Serial.print("Fluoro Avg: ");
+  //   // Serial.println(fluoro_avg);
+  // }
+  // this->fluoro_count += 1;
 
   // Update parameters if there is a reference to the packet_handler
   if (this->packet_handler)
@@ -108,11 +100,25 @@ void Detection::loop() {
   #endif
 
   if (this->en_pump == 1) {
-    this->_disp.dispersionAlgo(is_detected);
+    this->_disp.dispersionAlgo(this->is_detected);
   }
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;
   this->prev_fluoro = this->curr_fluoro;
+
+  if (this->is_detected == 1) {
+    resetSensorData();
+    for (int i = 0; i < TIMEOUT/10; i++) {
+      delay(10000); // TIMEOUT in seconds, *1000 converts delay to seconds
+      #ifndef NO_LOGS
+        Serial.print("TIMEOUT: ");
+        Serial.print((i+1)*10);
+        Serial.println(" s");
+      #endif
+    }
+    delimeter();
+  }
+
 }
 
 
@@ -235,6 +241,18 @@ void Detection::disableAllSensors() {
   this->_temp.disableSensor();
   this->_turb.disableSensor();
   this->_fluoro.disableSensor();
+}
+
+void Detection::resetSensorData() {
+  this->curr_turb     = -1;
+  this->prev_turb     = -1;
+  this->delta_turb    = -1;
+  this->curr_temp     = -1;
+  this->prev_temp     = -1;
+  this->delta_temp    = -1;
+  this->curr_fluoro   = -1;
+  this->prev_fluoro   = -1;
+  this->delta_fluoro  = -1;
 }
 
 bool Detection::bloomDetect() {

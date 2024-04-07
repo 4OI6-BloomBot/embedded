@@ -103,6 +103,17 @@ void loop() {
   // Check each of the timed objects and run their loops
   // if it is time.
   // =====================================================
+  #ifndef NO_PATHING
+  #ifndef NO_DETECT
+    if(detect.bloomDetect()){
+      pathing.disable();
+    } else {
+      pathing.enable();
+    }
+  #endif
+  #endif
+
+
   TimedLoop::tryEvents();
 
   // =====================================================
