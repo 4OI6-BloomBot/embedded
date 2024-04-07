@@ -36,6 +36,8 @@
 #define FLUORO_THRESHOLD            0       // Unable to determine given noise
 #define DELTA_FLUORO_THRESHOLD      5       // Tested to be approx change of 5 counts
 
+#define BYPASS_DETECT               0       // bypass detection algo if '1'
+
 #define TIMEOUT                     30      // Seconds
 
 
@@ -87,6 +89,8 @@ class Detection : public TimedLoop {
     float delta_temp_threshold    = DELTA_TEMP_THRESHOLD;
     float fluoro_threshold        = TURB_THRESHOLD;
     float delta_fluoro_threshold  = DELTA_FLUORO_THRESHOLD;
+
+    bool  bypass_detect           = BYPASS_DETECT;
 
     // ======================================
     // Constructor: Take analog pin out
