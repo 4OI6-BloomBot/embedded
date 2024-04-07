@@ -129,4 +129,16 @@ struct Fluorescence : Protocol {
 
 };
 
+
+// ===================================
+// Deposit protocol (id = 5)
+// ===================================
+struct Deposit : Protocol {
+  
+  public: 
+    Deposit() : Protocol(6) {};
+
+};
+
+
 #endif

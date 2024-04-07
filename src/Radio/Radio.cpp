@@ -120,6 +120,11 @@ void Radio::handleRxInterrupt() {
   // Clear interrupt and find out what triggered it
   rf24->whatHappened(tx_ds, tx_df, rx_dr);
 
+  // Flush Tx fifo if there are failed packets
+  if (tx_df)
+    rf24->flush_tx();
+
+
   // Only case we are expecting to handle is when
   // there is new Rx data to process and there is space
   // to store it.
@@ -159,27 +164,20 @@ int Radio::getRxQueueCnt() {
   return this->rx_queue_cnt;
 }
 
-// =======================================================
-// popRxQueue - Accessor method for packets in Rx queue
-// =======================================================
-genericPacket* Radio::popRxQueue() {
-    // Check that there are elements in the queue
-  if (this->rx_queue_cnt == 0) return nullptr;
 
-  genericPacket *popped = this->rx_pkt_queue[0];
+// =======================================
+// Get a pointer from the Rx queue
+// =======================================
+genericPacket* Radio::getRxQueueIndex(int i) {
+  return this->rx_pkt_queue[i];
+}
 
-  // Shift the elements in the array up
-  for (int i = 0; i < (this->rx_queue_cnt - 1); i++){
-    // Account for corner case of full queue
-    if (i >= PACKET_QUEUE_RX_LEN) break;
 
-    this->rx_pkt_queue[i] = this->rx_pkt_queue[i + 1];
-  }
-  this->rx_pkt_queue[this->rx_queue_cnt - 1] = nullptr;
-
-  this->rx_queue_cnt--;
-
-  return popped;
+// =========================================================
+// Reset the queue count, effectively clearing the queue
+// =========================================================
+void Radio::resetRxQueue() {
+  this->rx_queue_cnt = 0;
 }
 
 #endif

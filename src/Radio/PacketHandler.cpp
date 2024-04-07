@@ -12,10 +12,9 @@
 // ========================================================
 // PacketHandler - Constructor
 // ========================================================
-PacketHandler::PacketHandler(Radio *r, GPS *g, Detection *d) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
+PacketHandler::PacketHandler(Radio *r, GPS *g) : TimedLoop(PACKET_HANDLER_LOOP_DELAY) {
   this->radio     = r;
   this->gps       = g;
-  this->detection = d;
 
   // Set initial value
   this->tx_queue_cnt = 0;
@@ -23,6 +22,7 @@ PacketHandler::PacketHandler(Radio *r, GPS *g, Detection *d) : TimedLoop(PACKET_
 
   // Set per-device
   this->hwID = 0;
+  this->config = new dispConf();
 }
 
 
@@ -66,8 +66,11 @@ void PacketHandler::loop() {
 
   // Check if there are packets available in the radio Rx queue
   if (this->radio->getRxQueueCnt() >= PACKET_QUEUE_RX_LOW_WATER) {
-    do {
-      pkt = this->radio->popRxQueue();
+    for (int i = 0; i < this->radio->getRxQueueCnt(); i++) {
+      pkt = this->radio->getRxQueueIndex(i);
+
+      // If the pkt is a nullpointer, break
+      if (!pkt) continue;
       
       // Check if the hwID matches the device.
       if (pkt->hwID == this->hwID) {
@@ -76,8 +79,8 @@ void PacketHandler::loop() {
 
       // Garbage collection
       delete pkt;
-
-    } while(this->radio->getRxQueueCnt() > 0);
+    }
+    this->radio->resetRxQueue();
   }
 }
 
@@ -184,15 +187,25 @@ void PacketHandler::parseRxData(genericPacket *pkt) {
       Serial.println(fluoroThresh);
 
 
-      // Assign values to the detection object
-      this->detection->turb_threshold       = turbThresh;
-      this->detection->delta_turb_threshold = deltaTurbThresh;
-      this->detection->temp_threshold       = tempThresh;
-      this->detection->delta_temp_threshold = deltaTempThresh;
-      this->detection->fluoro_threshold     = fluoroThresh;
+      // Assign values to the config object      
+      this->config->turb_threshold       = turbThresh;
+      this->config->delta_turb_threshold = deltaTurbThresh;
+      this->config->temp_threshold       = tempThresh;
+      this->config->delta_temp_threshold = deltaTempThresh;
+      this->config->fluoro_threshold     = fluoroThresh;
 
       break;
   }
+}
+
+
+// ==========================================================
+// Return a pointer to the config object if it is required
+// ==========================================================
+dispConf* PacketHandler::getConfigParam() {
+  if (this->configID == (uint16_t) - 1) return nullptr;
+
+  return this->config;
 }
 
 

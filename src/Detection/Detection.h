@@ -16,6 +16,7 @@
 #include "../TemperatureSensor/TempSensor.h"
 #include "../FluorometerSensor/FluoroSensor.h"
 #include "../Dispersion/Dispersion.h"
+#include "../Radio/PacketHandler.h"
 
 // ==================
 // Parameter defines
@@ -66,6 +67,8 @@ class Detection : public TimedLoop {
     FLUORO _fluoro;
     Dispersion _disp;
 
+    PacketHandler *packet_handler;
+
     // =======================================================
     // loop() - Override the loop function from the TimedLoop 
     //          class
@@ -73,6 +76,8 @@ class Detection : public TimedLoop {
     void loop() override;
 
     void displayData();
+
+    void updateConfig();
 
 
   public:
@@ -87,7 +92,7 @@ class Detection : public TimedLoop {
     // ======================================
     // Constructor: Take analog pin out
     // ======================================
-    Detection();
+    Detection(PacketHandler *p);
 
     // =======================================================
     // setup() - Handles hardware setup after object creation

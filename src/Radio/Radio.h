@@ -100,9 +100,10 @@ class Radio {
 
 
     // =======================================================
-    // Accessor method for packets in Rx queue
+    // Accessor/setter methods for the Rx queue
     // =======================================================
-    genericPacket* popRxQueue();
+    genericPacket* getRxQueueIndex(int i);
+    void           resetRxQueue();
     
     // =======================================================
     // Accessor method for packet count of Rx queue

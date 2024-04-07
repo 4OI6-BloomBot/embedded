@@ -20,11 +20,13 @@ void delimeter() {
 // ====================================================
 // DETECTION - Constructor for the Detection wrapper class
 // ====================================================
-Detection::Detection() : TimedLoop(DETECTION_LOOP_DELAY) {
+Detection::Detection(PacketHandler *p) : TimedLoop(DETECTION_LOOP_DELAY) {
   // Call sensor constructors
   this->_turb.setPIN(TURB_PIN_OUT);
   this->_temp.setPIN(TEMP_PIN_OUT);
   this->_fluoro.setPIN(FLUORO_PIN_OUT);
+
+  this->packet_handler = p;
 
 }
 
@@ -36,7 +38,7 @@ void Detection::setup() {
   TimedLoop::setup();
 
   // Call dispersion setup
-  this->_disp.setup();
+  this->_disp.setup(this->packet_handler);
 
   // Call sensor setups
   this->_fluoro.setup();
@@ -82,6 +84,10 @@ void Detection::loop() {
   // }
   // this->fluoro_count += 1;
 
+  // Update parameters if there is a reference to the packet_handler
+  if (this->packet_handler)
+    updateConfig(); 
+
   this->is_detected = monitorDetection();
   #ifdef BYPASS_DETECT
     this->is_detected = 1;
@@ -114,6 +120,24 @@ void Detection::loop() {
   }
 
 }
+
+
+// ============================================================
+// Update the detection parameters using data from the server
+// ============================================================
+void Detection::updateConfig() {
+  dispConf *c = this->packet_handler->getConfigParam();
+
+  // If the response is not a nullpointer, update the config param
+  if (c) {
+    this->turb_threshold       = c->turb_threshold; 
+    this->delta_turb_threshold = c->delta_turb_threshold;
+    this->temp_threshold       = c->temp_threshold;
+    this->delta_temp_threshold = c->delta_temp_threshold;
+    this->fluoro_threshold     = c->fluoro_threshold;
+  }
+}
+
 
 bool Detection::monitorDetection() {
   if ((this->prev_turb != -1 && this->prev_temp != -1 && this->prev_fluoro != -1) && (this->prev_turb != 0 && this->prev_temp != 0 && this->prev_fluoro != 0)) {

@@ -19,7 +19,7 @@
 #include "Radio.h"
 #include "../GPS/GPS.h"
 #include "genericPacket.h"
-#include "../Detection/Detection.h"
+#include "../Detection/config.h"
 
 
 // ====================
@@ -41,12 +41,18 @@ class PacketHandler : TimedLoop {
   private:
     Radio     *radio;
     GPS       *gps;
-    Detection *detection;
 
     Protocol *tx_pkt_queue[PACKET_QUEUE_TX_LEN];
     uint16_t tx_queue_cnt;
     uint16_t configID;
     byte     hwID;
+
+    // ==================================================
+    // Store the configuration params so that they can 
+    // be accessed by the Detect class when needed
+    // ==================================================
+    dispConf * config;
+
     
     // ==================================================
     // loop() - Override loop fn from TimedLoop class.
@@ -81,13 +87,19 @@ class PacketHandler : TimedLoop {
     // Constructor:
     // Requires a pointer to a Radio and detection object
     // ====================================================
-    PacketHandler(Radio *radio, GPS *gps, Detection *detection);
+    PacketHandler(Radio *radio, GPS *gps);
 
 
     // =======================================================
     // setup() - Handles hardware setup after object creation
     // =======================================================
     void setup();
+
+
+    // =======================================================
+    // Return the config parameters for the Detection algo
+    // =======================================================
+    dispConf* getConfigParam();
 
 
     // =======================================================

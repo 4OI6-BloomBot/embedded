@@ -45,16 +45,20 @@
   PATHING         pathing;
 #endif
 
-#ifndef NO_DETECT
-  Detection detect;
-#endif
-
 #ifndef NO_RADIO_GPS
   Radio           rf(10, 9, 2);
   GPS             gps(6, 7);
-  PacketHandler   packet_handler(&rf, &gps, &detect);
+  PacketHandler   packet_handler(&rf, &gps);
   DetectionSender detection_sender(&packet_handler);
   LocationSender  location_sender(&gps, &packet_handler);
+#endif
+
+#ifndef NO_DETECT
+  #ifndef NO_RADIO_GPS
+    Detection detect(&packet_handler);
+  #else
+    Detection detect(nullptr);
+  #endif
 #endif
 
 
