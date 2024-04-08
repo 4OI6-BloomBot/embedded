@@ -23,7 +23,7 @@
 
 #define TEMP_PIN_OUT          6
 
-#define TEMP_SPOOF_DATA
+// #define TEMP_SPOOF_DATA
 
 class TEMP : public TimedLoop {
   

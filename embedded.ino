@@ -28,7 +28,7 @@
 #define DEBUG
 
 // #define NO_RADIO_GPS
-#define NO_PATHING
+// #define NO_PATHING
 // #define NO_DETECT
 
 // =====================================================
@@ -40,14 +40,14 @@
 // =====================================================
 
 #ifndef NO_PATHING
-  MotorController test(7, 8, 9);
-  SONIC           sonic(11, 12);
+  MotorController test;
+  SONIC           sonic;
   PATHING         pathing;
 #endif
 
 #ifndef NO_RADIO_GPS
-  Radio           rf(10, 9, 2);
-  GPS             gps(6, 7);
+  Radio           rf(7, 8, 2);
+  GPS             gps(4, 3);
   PacketHandler   packet_handler(&rf, &gps);
   DetectionSender detection_sender(&packet_handler);
   LocationSender  location_sender(&gps, &packet_handler);

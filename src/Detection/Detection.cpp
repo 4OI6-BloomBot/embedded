@@ -51,9 +51,9 @@ void Detection::setup() {
   this->en_sensor     = 1;
 
   // Turn LED on for fluorometer
-  #ifndef DISABLE_LED
-    this->_fluoro.enableLED();
-  #endif
+  // #ifndef DISABLE_LED
+  //   this->_fluoro.enableLED();
+  // #endif
 
 }
 
@@ -81,9 +81,9 @@ void Detection::loop() {
   #endif
 
   if (this->en_pump == 1) {
-    this->_fluoro.disableLED();                     // LED off during dispersion
+    // this->_fluoro.disableLED();                     // LED off during dispersion
     this->_disp.dispersionAlgo(this->is_detected);  // dispersion algo to determine treatment
-    this->_fluoro.enableLED();                      // LED on after dispersion
+    // this->_fluoro.enableLED();                      // LED on after dispersion
   }
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;

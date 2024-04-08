@@ -28,7 +28,7 @@ void FLUORO::setup() {
 
   TimedLoop::setup();
 
-  pinMode(LED_PIN, OUTPUT);
+  // pinMode(LED_PIN, OUTPUT);
 }
 
 // =========================================================================
@@ -62,16 +62,16 @@ float FLUORO::getFluoroOut() {
   return this->fluoro_out;
 }
 
-void FLUORO::enableLED() {
-  digitalWrite(LED_PIN, HIGH);
-}
+// void FLUORO::enableLED() {
+//   digitalWrite(LED_PIN, HIGH);
+// }
 
-void FLUORO::disableLED() {
-  digitalWrite(LED_PIN, LOW);
-}
+// void FLUORO::disableLED() {
+//   digitalWrite(LED_PIN, LOW);
+// }
 
 void FLUORO::disableSensor() {
-  disableLED();
+  // disableLED();
   this->en = 0;
 }
 

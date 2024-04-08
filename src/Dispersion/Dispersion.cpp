@@ -15,7 +15,7 @@
 // ====================================================
 Dispersion::Dispersion() : TimedLoop(DISPERSION_LOOP_DELAY) {
   // Call sensor constructors
-  this->_MC.setPIN(8, 9, 10);
+  this->_MC.setPIN(0, 0, 10);
 
   // Initialize packet_handler to null pointer
   // Will be updated by the packet handler once it is initialized

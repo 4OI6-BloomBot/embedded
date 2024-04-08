@@ -43,7 +43,6 @@ void GPS::setup() {
 //           time_t obj.
 // ======================================================
 time_t GPS::getTime() {
-
   // Make sure we have valid GPS data
   if (!gps->time.isValid() || !gps->date.isValid()) 
     return 0;
@@ -104,7 +103,6 @@ void GPS::loop() {
 // =======================================================
 coord* GPS::getLocation() {
   coord *current_pos = new coord();
-
   #ifndef GPS_SPOOF_DATA
     if (millis() > (last_update_time + GPS_VALID_PERIOD))
       return nullptr;
