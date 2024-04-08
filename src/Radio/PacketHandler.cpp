@@ -91,9 +91,13 @@ void PacketHandler::loop() {
 // =========================================================
 bool PacketHandler::sendPkt() {
   Protocol *pkt     = this->popTxQueue();
-  byte*     payload = pkt->toPayload();;
+
+  // Update the hwID of the packet
+  pkt->hwID = this->hwID;
   
-  bool success = this->radio->tx(payload, pkt->getPayloadSize());
+  // Convert the packet to bytes and transmit
+  byte* payload = pkt->toPayload();;
+  bool success  = this->radio->tx(payload, pkt->getPayloadSize());
 
   // Garbage collection
   delete[] payload;
