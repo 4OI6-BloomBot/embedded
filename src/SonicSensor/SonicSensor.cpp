@@ -5,6 +5,8 @@
 #ifndef SONIC_CPP
 #define SONIC_CPP
 
+#define NO_LOGS
+
 // Includes
 #include "SonicSensor.h"
 
@@ -57,9 +59,10 @@ int SONIC::getDistance() {
   else {
     distance=(int)distance_calc;
   }
-
-  Serial.print(distance);
-  Serial.println(" is current distance.");
+  #ifndef NO_LOGS
+    Serial.print(distance);
+    Serial.println(" is current distance.");
+  #endif
   return distance;
 }
 
