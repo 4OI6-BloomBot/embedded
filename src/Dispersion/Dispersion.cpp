@@ -43,28 +43,18 @@ void Dispersion::disablePump() {
   this->_MC.setPower(0.0);
 }
 
-void Dispersion::dispersionAlgo(bool is_detected) {
+long int Dispersion::dispersionAlgo(bool is_detected) {
   if (is_detected) {
-      // Number of instances pump is activated for slow dispersion
-      for (int i = 0; i < NUM_DISP; i++) {
-        enablePump();
-
-        // Send data if PacketHandler is defined
-        if (this->packet_handler) this->sendDisp();
-
-        
-        // Length of time pump is enable at once (in factors of 10sec)
-        for (int j = 0; j < DISP_TIME; j++) {
-          delay(1000); // 1 sec
-          #ifndef NO_LOGS
-            Serial.print("PUMP: ");
-            Serial.print((j+1)*10);
-            Serial.println(" s");
-          #endif
-        }
-        disablePump();
-      }
+      this->shutoff_time = DISP_TIME*1000 + millis();
+      enablePump();
+      sendDisp();
+  } else {
+    if (millis() >= this->shutoff_time) {
+      disablePump();
     }
+
+  }
+  return this->shutoff_time;
 }
 
 // ====================================

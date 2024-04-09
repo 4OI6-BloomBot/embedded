@@ -31,7 +31,7 @@
 
 #define GPS_TIME_OFFSET     -5     // EST is -5 hours from UTC
 
-// #define GPS_SPOOF_DATA
+#define GPS_SPOOF_DATA
 
 class GPS : public TimedLoop {
   

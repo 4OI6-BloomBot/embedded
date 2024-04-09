@@ -62,6 +62,9 @@ class Detection : public TimedLoop {
     bool en_pump;
     bool en_sensor;
 
+    long int timeout_time;
+    long int disp_time;
+
     TURB _turb;
     TEMP _temp;
     FLUORO _fluoro;

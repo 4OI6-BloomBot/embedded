@@ -28,7 +28,7 @@
 #define DEBUG
 
 // #define NO_RADIO_GPS
-// #define NO_PATHING
+#define NO_PATHING
 // #define NO_DETECT
 
 // =====================================================
@@ -77,7 +77,7 @@ void setup() {
   #ifndef NO_DETECT
     detect.setup();
   #endif
-
+  
   #ifndef NO_PATHING
     sonic.setup();
     pathing.setup();
