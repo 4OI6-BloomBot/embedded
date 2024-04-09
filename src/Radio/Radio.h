@@ -49,6 +49,8 @@ class Radio {
 
     byte payload[32];
 
+    genericPacket *rxPkt;
+
     int            rx_queue_cnt;
     genericPacket *rx_pkt_queue[PACKET_QUEUE_RX_LEN]; 
 
@@ -110,6 +112,10 @@ class Radio {
     // =======================================================
     int getRxQueueCnt();
 
+
+    genericPacket* getRxPkt();
+
+    bool newRxData;
 };
 
 #endif

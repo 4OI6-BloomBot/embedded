@@ -65,23 +65,38 @@ void PacketHandler::loop() {
 
 
   // Check if there are packets available in the radio Rx queue
-  if (this->radio->getRxQueueCnt() >= PACKET_QUEUE_RX_LOW_WATER) {
-    for (int i = 0; i < this->radio->getRxQueueCnt(); i++) {
-      pkt = this->radio->getRxQueueIndex(i);
+  // if (this->radio->getRxQueueCnt() >= PACKET_QUEUE_RX_LOW_WATER) {
+  //   for (int i = 0; i < this->radio->getRxQueueCnt(); i++) {
+  //     pkt = this->radio->getRxQueueIndex(i);
+  //     Serial.println("here2");
+  //     // If the pkt is a nullpointer, break
+  //     if (!pkt) continue;
+      
+  //     // Check if the hwID matches the device.
+  //     if (pkt->hwID == this->hwID) {
+  //       this->parseRxData(pkt);
+  //     }
+
+  //     // Garbage collection
+  //     delete pkt;
+  //   }
+  //   this->radio->resetRxQueue();
+  // }
+
+  if (this->radio->newRxData) {
+      pkt = this->radio->getRxPkt();
       Serial.println("here2");
-      // If the pkt is a nullpointer, break
-      if (!pkt) continue;
       
       // Check if the hwID matches the device.
       if (pkt->hwID == this->hwID) {
         this->parseRxData(pkt);
       }
 
+      this->radio->newRxData = false;
+
       // Garbage collection
       delete pkt;
     }
-    this->radio->resetRxQueue();
-  }
 }
 
 

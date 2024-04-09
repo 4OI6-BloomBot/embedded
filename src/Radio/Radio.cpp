@@ -32,6 +32,9 @@ Radio::Radio(byte PIN_CE, byte PIN_CSN, byte PIN_IRQ) {
   // Set initial values
   this->rx_queue_cnt = 0;
 
+  // Reset newRxData
+  this->newRxData = false;
+
 }
 
 
@@ -132,6 +135,8 @@ void Radio::handleRxInterrupt() {
     genericPacket* pkt = this->getRxData();
     Serial.println("HEREE1");
     if (pkt) {
+      this->rxPkt = pkt;
+      this->newRxData = true;
       // this->rx_pkt_queue[this->rx_queue_cnt] = pkt;
       // this->rx_queue_cnt++;
     }
@@ -154,6 +159,10 @@ genericPacket* Radio::getRxData() {
   }
 
   return nullptr;
+}
+
+genericPacket* Radio::getRxPkt() {
+  return this->rxPkt;
 }
 
 
