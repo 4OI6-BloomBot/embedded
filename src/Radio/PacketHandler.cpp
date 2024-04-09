@@ -68,7 +68,7 @@ void PacketHandler::loop() {
   if (this->radio->getRxQueueCnt() >= PACKET_QUEUE_RX_LOW_WATER) {
     for (int i = 0; i < this->radio->getRxQueueCnt(); i++) {
       pkt = this->radio->getRxQueueIndex(i);
-
+      Serial.println("here2");
       // If the pkt is a nullpointer, break
       if (!pkt) continue;
       

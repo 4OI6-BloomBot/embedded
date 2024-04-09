@@ -21,7 +21,7 @@
 #include "../Radio/Protocols/Protocol.h"
 #include "../Radio/PacketHandler.h"
 
-#define DETECTION_SENDER_LOOP_DELAY 10000
+#define DETECTION_SENDER_LOOP_DELAY 100000
 
 
 class DetectionSender : public TimedLoop {

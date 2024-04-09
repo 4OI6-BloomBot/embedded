@@ -7,7 +7,7 @@
 
 // #define DISABLE_LED
 
-#define NO_LOGS
+// #define NO_LOGS
 
 // Includes
 #include "Detection.h"
@@ -68,10 +68,13 @@ void Detection::loop() {
   // Update parameters if there is a reference to the packet_handler
   if (this->packet_handler)
     updateConfig(); 
-
-  this->is_detected = monitorDetection();
+  
+  if (millis() > this->timeout_time) {
+    this->is_detected = monitorDetection();
+  }
   if (this->bypass_detect == 1) {
     this->is_detected = 1;
+    this->bypass_detect = 0;
   }
 
   #ifndef NO_LOGS
@@ -82,27 +85,16 @@ void Detection::loop() {
 
   if (this->en_pump == 1) {
     // this->_fluoro.disableLED();                     // LED off during dispersion
-    this->_disp.dispersionAlgo(this->is_detected);  // dispersion algo to determine treatment
+    this->disp_time = this->_disp.dispersionAlgo(this->is_detected);  // dispersion algo to determine treatment
     // this->_fluoro.enableLED();                      // LED on after dispersion
+    if (this->is_detected == 1) {
+      this->timeout_time = disp_time + TIMEOUT*1000;
+    }
+    this->is_detected = 0;
   }
   this->prev_temp   = this->curr_temp;
   this->prev_turb   = this->curr_turb;
   this->prev_fluoro = this->curr_fluoro;
-
-  if (this->is_detected == 1) {
-    resetSensorData();
-    for (int i = 0; i < TIMEOUT/10; i++) {
-      delay(10000); // TIMEOUT in seconds, *1000 converts delay to seconds
-      #ifndef NO_LOGS
-        Serial.print("TIMEOUT: ");
-        Serial.print((i+1)*10);
-        Serial.println(" s");
-      #endif
-    }
-    #ifndef NO_LOGS
-      delimeter();
-    #endif
-  }
 
 }
 

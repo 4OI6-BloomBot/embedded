@@ -130,10 +130,10 @@ void Radio::handleRxInterrupt() {
   // to store it.
   if (rx_dr && this->rx_queue_cnt < (PACKET_QUEUE_RX_LEN - 1)) {
     genericPacket* pkt = this->getRxData();
-    
+    Serial.println("HEREE1");
     if (pkt) {
-      this->rx_pkt_queue[this->rx_queue_cnt] = pkt;
-      this->rx_queue_cnt++;
+      // this->rx_pkt_queue[this->rx_queue_cnt] = pkt;
+      // this->rx_queue_cnt++;
     }
   }
 
